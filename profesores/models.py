@@ -12,7 +12,7 @@ class Profesor(models.Model):
     primer_nombre = models.CharField(max_length=100, verbose_name='Primer Nombre')
     segundo_nombre = models.CharField(max_length=100, null=True, blank=True,
         verbose_name='Segundo Nombre')
-    primer_appelido = models.CharField(max_length=100, verbose_name='Primer Apellido')
+    primer_apellido = models.CharField(max_length=100, verbose_name='Primer Apellido')
     segundo_apellido = models.CharField(max_length=100, null=True, blank=True,
         verbose_name='Segundo Apellido')
     cedula = models.CharField(max_length=10, primary_key=True, verbose_name='Cédula')
