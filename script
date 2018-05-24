@@ -1,0 +1,12 @@
+#!/bin/bash
+# Automatically run django development server using venv created with virtualenv
+
+# This script assumes that sip-software directory is in /home/pedro/
+# and venv directory is inside sip-software directory (/home/pedro/sip-software/)
+
+# Put this on /usr/local/bin/ with name sip to run this only writing sip
+# wherever you are or run with ./run
+
+cd ~/sip
+source ~/sip/venv/bin/activate
+python manage.py runserver
