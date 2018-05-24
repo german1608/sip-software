@@ -24,7 +24,17 @@ class Busqueda(View):
 
 
 		submit = request.POST.get('input')
-		busqueda = Asignatura.objects.get(codasig=submit)
+		
+		encontrado = False
+
+		for asignatura in Asignatura.objects.all():
+			if asignatura.codasig == submit:
+				encontrado = True
+
+		busqueda = None		
+		if encontrado:
+			busqueda = Asignatura.objects.get(codasig=submit)
+
 
 		# Verificamos si la busqueda es exitosa o no.
 		if busqueda != None:
