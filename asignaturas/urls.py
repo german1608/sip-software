@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
-from .views import index
+from asignaturas.views import Busqueda
 
 app_name = 'asignaturas'
 urlpatterns = [
-    path('', index, name='index'),
+    path('', Busqueda.as_view(), name='busqueda'),
 ]

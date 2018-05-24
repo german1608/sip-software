@@ -1,10 +1,16 @@
 {% extends 'base/base_coordinador.html' %}
 {% load static %}
 
-            {% block wrapper %}
-                <div class="container-fluid">
-                    <div class="animated fadeIn">
-
-                    </div>
-                </div>
-            {% endblock wrapper %}
+{% block wrapper %}
+<div class="container-fluid">
+    <div class="animated fadeIn">
+    	<form method="POST">
+    		{% csrf_token %}
+		  <div>
+		    <input type="search" id="miBusqueda" name="input">
+		    <button>Buscar</button>
+		  </div>
+		</form>
+    </div>
+</div>
+{% endblock wrapper %}
