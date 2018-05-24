@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<!--
+* CoreUI - Free Bootstrap Admin Template
+* @version v2.0.0
+* @link https://coreui.io
+* Copyright (c) 2018 creativeLabs Łukasz Holeczek
+* Licensed under MIT (https://coreui.io/license)
+-->
+
+<html lang="en">
+  
+  <head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="Sistema de Inscripción de Postgrado">
+    <meta name="author" content="Oozma Kappa">
+
+    <title>SIP - {{pagename}}</title>
+    <!-- Icons-->
+    <link href="{% static 'core-ui/vendors/@coreui/icons/css/coreui-icons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'core-ui/vendors/flag-icon-css/css/flag-icon.min.css' %}" rel="stylesheet">
+    <link href="{% static 'core-ui/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'core-ui/vendors/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet">
+    <!-- Main styles for this application-->
+    <link href="{% static 'core-ui/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'core-ui/vendors/pace-progress/css/pace.min.css' %}" rel="stylesheet">
+
+    {% block customhead %}
+    {% endblock %}
+    {% endblock head %}
+  </head>
+    {% block content %}
+    {% endblock content %}
+
+    {% block scripts %}
+    <!-- Bootstrap and necessary plugins-->
+    <script src="{% static 'core-ui/vendors/jquery/js/jquery.min.js' %}"></script>
+    <script src="{% static 'core-ui/vendors/popper.js/js/popper.min.js' %}"></script>
+    <script src="{% static 'core-ui/vendors/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'core-ui/vendors/pace-progress/js/pace.min.js' %}"></script>
+    <script src="{% static 'core-ui/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'core-ui/vendors/@coreui/coreui/js/coreui.min.js' %}"></script>
+    {% endblock scripts %}
+
+    {% block customscripts %}
+    {% endblock customscripts %}  
+</html>
