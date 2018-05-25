@@ -1,0 +1,10 @@
+{% extends 'asignaturas/index.html' %}
+{% block content %}
+<form action="{% url 'asignaturas:eliminar-asignatura' %}" method="post">
+    {% csrf_token %}
+    <p>Código de la asignatura: </p>
+    <input type="text" name='codasig'>
+    <input type="text" name='_method' value="delete">
+    <button type="submit">Eliminar</button>
+</form>
+{% endblock content %}
