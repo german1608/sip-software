@@ -4,3 +4,10 @@ from .models import Asignatura
 #       - Anade 
 #       - Elimina 
 #       - Modifica 
+
+def eliminarAsignatura(codasig):
+    try:
+        delete_return = Asignatura.objects.get(codasig=codasig).delete()
+        print('Se borraron {} asignaturas: {}'.format(delete_return[0], delete_return[1]))
+    except DoesNotExist as e:
+        print(e)
