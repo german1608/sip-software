@@ -46,7 +46,7 @@ class Horario(models.Model):
     hora_inicio = models.PositiveIntegerField(validators=[hora_valida],
         verbose_name='Hora Inicio')
     hora_final = models.PositiveIntegerField(validators=[hora_valida],
-        verbose_name='Hora Inicio')
+        verbose_name='Hora Final')
     asignatura = models.ForeignKey(Asignatura, verbose_name='Asignatura',
         related_name='horarios', on_delete=models.CASCADE)
 
