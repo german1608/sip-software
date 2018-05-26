@@ -22,11 +22,16 @@
     <!-- Icons-->
     <link href="{% static 'core-ui/vendors/@coreui/icons/css/coreui-icons.min.css' %}" rel="stylesheet">
     <link href="{% static 'core-ui/vendors/flag-icon-css/css/flag-icon.min.css' %}" rel="stylesheet">
-    <link href="{% static 'core-ui/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    {% comment %} <link href="{% static 'core-ui/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet"> {% endcomment %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link href="{% static 'core-ui/vendors/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet">
     <!-- Main styles for this application-->
     <link href="{% static 'core-ui/css/style.css' %}" rel="stylesheet">
     <link href="{% static 'core-ui/vendors/pace-progress/css/pace.min.css' %}" rel="stylesheet">
+
+    <!--Hojas de estilo-->
+    {% block stylesheets %}
+    {% endblock stylesheets %}
 
     {% block customhead %}
     {% endblock %}
@@ -35,7 +40,6 @@
     {% block content %}
     {% endblock content %}
 
-    {% block scripts %}
     <!-- Bootstrap and necessary plugins-->
     <script src="{% static 'core-ui/vendors/jquery/js/jquery.min.js' %}"></script>
     <script src="{% static 'core-ui/vendors/popper.js/js/popper.min.js' %}"></script>
@@ -43,6 +47,9 @@
     <script src="{% static 'core-ui/vendors/pace-progress/js/pace.min.js' %}"></script>
     <script src="{% static 'core-ui/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js' %}"></script>
     <script src="{% static 'core-ui/vendors/@coreui/coreui/js/coreui.min.js' %}"></script>
+
+    <!--Scrips-->
+    {% block scripts %}
     {% endblock scripts %}
 
     {% block customscripts %}

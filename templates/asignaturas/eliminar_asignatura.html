@@ -1,10 +1,14 @@
-{% extends 'asignaturas/index.html' %}
-{% block content %}
+{% extends 'base/base_coordinador.html' %}
+{% block wrapper %}
 <form action="{% url 'asignaturas:eliminar-asignatura' %}" method="post">
     {% csrf_token %}
-    <p>Código de la asignatura: </p>
-    <input type="text" name='codasig'>
-    <input type="text" name='_method' value="delete">
-    <button type="submit">Eliminar</button>
+    <label for="codasig">Código de la asignatura: </label>
+    <div class="input-group">
+        <div class="w-5">
+            <input class="form-control" placeholder="XX1111" type="text" name='codasig' id="codasig">
+        </div>
+        <input type="text" name='_method' value="delete" style="display: none;">
+        <button class="btn btn-primary" type="submit">Eliminar</button>
+    </div>
 </form>
-{% endblock content %}
+{% endblock wrapper %}

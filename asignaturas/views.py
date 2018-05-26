@@ -5,13 +5,12 @@ from django.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-# Create your views here.
 def index(request):
     context = {}
 
     context['pagename'] = 'Dashboard'
     
-    return render(request, 'base/blanco.html', context)
+    return render(request, 'asignaturas/index.html', context)
 
 # Vista para eliminar asignatura
 class EliminarAsignaturaView(TemplateView):
