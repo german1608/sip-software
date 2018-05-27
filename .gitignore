@@ -10,7 +10,6 @@ local_settings.py
 db.sqlite3
 media
 .vscode
-.env/
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
@@ -18,3 +17,5 @@ media
 
 
 # End of https://www.gitignore.io/api/django
+venv/
+restricciones.txt
