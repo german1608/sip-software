@@ -1,0 +1,5 @@
+/*Botones de Eliminar y Editar*/
+#t_asignaturas .asignatura-btn {
+    float: right;
+    margin-right: 3px;
+}

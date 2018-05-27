@@ -19,3 +19,5 @@ media
 # End of https://www.gitignore.io/api/django
 venv/
 restricciones.txt
+# GIFs de muestra
+*.gif
