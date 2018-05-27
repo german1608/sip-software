@@ -1,9 +1,9 @@
 {% extends "base/base_coordinador.html" %}
 {% load static %}
-{% block stylesheets %}
+{% block customhead %}
 <link rel="stylesheet" href="{% static 'css/jquery.dataTables.css' %}" type="text/css">
 <link rel="stylesheet" href="{% static 'css/asignaturas/index.css' %}" type="text/css">
-{% endblock stylesheets %}
+{% endblock customhead %}
 {% block wrapper %}
 
  <!-- New  button -->
@@ -69,6 +69,19 @@
                 <td>CI2511</td>
                 <td>4</td>
               </tr>
+              <tr>
+                <td>
+                  <a href="#">Matemáticas combinatorias</a>
+                  <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
+                    <i class="far fa-trash-alt"></i>
+                  </button>
+                  <button class="btn btn-success asignatura-btn">
+                    <i class="far fa-edit"></i>
+                  </button>
+                </td>
+                <td>MA3512</td>
+                <td>4</td>
+              </tr>
             </tbody>
           </table>
       </div>
@@ -129,8 +142,8 @@
 </div>
 
 {% endblock wrapper %}
-{% block scripts %}
+{% block customscripts %}
 <!-- Para el Datatable-->
 <script src="{% static 'js/jquery.dataTables.js' %}" charset="utf8"></script>
 <script src="{% static 'js/asignaturas/index.js' %}"></script>
-{%  endblock scripts %}
+{%  endblock customscripts %}
