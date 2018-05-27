@@ -32,7 +32,9 @@
                 <td>
                   <a href="#">{{asignatura.nombre}}</a>
                   <!--Este boton todavía no hace nada-->
-                  <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
+                  <button class="btn btn-danger asignatura-btn" data-toggle="modal" 
+                  data-target="#confirmar-eliminar-modal" data-codasig="{{asignatura.codasig}}"
+                  onclick="show_eliminar_modal(this);">
                     <i class="far fa-trash-alt"></i>
                   </button>
                   <button class="btn btn-success asignatura-btn">

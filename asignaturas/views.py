@@ -4,10 +4,7 @@ from django.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Asignatura
-<<<<<<< HEAD
-=======
 
->>>>>>> b47cb0f8e284c2df419421ec627ac21271bbe529
 
 def index(request):
     context = {

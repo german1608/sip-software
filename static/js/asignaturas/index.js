@@ -10,7 +10,7 @@ $(document).ready( function () {
 function show_eliminar_modal(btn) {
     // Obtener código de asignatura
     let codasig = $(btn).data('codasig');
-
+    console.log(codasig);
     // Actualizar data del modal
     $('.asignatura-a-eliminar').html(codasig);
     $('#confirmar-eliminar-modal input[name=codasig]').val(codasig);
