@@ -18,3 +18,5 @@ media
 
 
 # End of https://www.gitignore.io/api/django
+# GIFs de muestra
+*.gif
