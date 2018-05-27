@@ -4,9 +4,13 @@ import asignaturas.gestionAsignatura
 from django.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from .models import Asignatura
+
 
 def index(request):
-    context = {}
+    context = {
+        'asignaturas' : Asignatura.objects.all(),
+    }
 
     context['pagename'] = 'Dashboard'
     
