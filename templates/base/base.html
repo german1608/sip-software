@@ -19,6 +19,7 @@
     <meta name="author" content="Oozma Kappa">
 
     <title>SIP - {{pagename}}</title>
+    {% block stylesheets %}
     <!-- Icons-->
     <link href="{% static 'core-ui/vendors/@coreui/icons/css/coreui-icons.min.css' %}" rel="stylesheet">
     <link href="{% static 'core-ui/vendors/flag-icon-css/css/flag-icon.min.css' %}" rel="stylesheet">
@@ -28,17 +29,18 @@
     <link href="{% static 'core-ui/css/style.css' %}" rel="stylesheet">
     <link href="{% static 'core-ui/vendors/pace-progress/css/pace.min.css' %}" rel="stylesheet">
 
-    <!--Hojas de estilo-->
-    {% block stylesheets %}
     {% endblock stylesheets %}
-
+    
+    <!--Hojas de estilo personalizadas-->
     {% block customhead %}
-    {% endblock %}
+    {% endblock customhead %}
     {% endblock head %}
   </head>
     {% block content %}
     {% endblock content %}
-
+    
+    <!--Scrips-->
+    {% block scripts %}
     <!-- Bootstrap and necessary plugins-->
     <script src="{% static 'core-ui/vendors/jquery/js/jquery.min.js' %}"></script>
     <script src="{% static 'core-ui/vendors/popper.js/js/popper.min.js' %}"></script>
@@ -47,10 +49,9 @@
     <script src="{% static 'core-ui/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js' %}"></script>
     <script src="{% static 'core-ui/vendors/@coreui/coreui/js/coreui.min.js' %}"></script>
 
-    <!--Scrips-->
-    {% block scripts %}
     {% endblock scripts %}
 
+    <!--Scripts personalizados-->
     {% block customscripts %}
     {% endblock customscripts %}  
 </html>
