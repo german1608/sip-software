@@ -1,9 +1,9 @@
 {% extends "base/base_coordinador.html" %}
 {% load static %}
-{% block stylesheets %}
+{% block customhead %}
 <link rel="stylesheet" href="{% static 'css/jquery.dataTables.css' %}" type="text/css">
 <link rel="stylesheet" href="{% static 'css/asignaturas/index.css' %}" type="text/css">
-{% endblock stylesheets %}
+{% endblock customhead %}
 {% block wrapper %}
 
  <!-- New  button -->
@@ -104,8 +104,8 @@
 </div>
 
 {% endblock wrapper %}
-{% block scripts %}
+{% block customscripts %}
 <!-- Para el Datatable-->
 <script src="{% static 'js/jquery.dataTables.js' %}" charset="utf8"></script>
 <script src="{% static 'js/asignaturas/index.js' %}"></script>
-{%  endblock scripts %}
+{%  endblock customscripts %}
