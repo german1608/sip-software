@@ -72,8 +72,9 @@
               <tr>
                 <td>
                   <a href="#">Matemáticas combinatorias</a>
-                  <button class="btn btn-danger asignatura-btn asignatura-btn-eliminar" data-toggle="modal"
-                  data-target="#confirmar-eliminar-modal" data-codasig="MA3512">
+                  <button id="eliminar-MA3512" class="btn btn-danger asignatura-btn asignatura-btn-eliminar" 
+                  data-toggle="modal" data-target="#confirmar-eliminar-modal" data-codasig="MA3512" 
+                  onClick="show_eliminar_modal(this);">
                     <i class="far fa-trash-alt"></i>
                   </button>
                   <button class="btn btn-success asignatura-btn">
@@ -132,11 +133,27 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">¿Estás seguro?</h4>
+                <h4 class="modal-title">¿Estás seguro que deseas eliminar <span class="asignatura-a-eliminar"></span>?</h4>
             </div>
             <div class="modal-body">
-                <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Eliminar</button>
-                <button type="button" data-dismiss="modal" class="btn">Cancelar</button>
+              
+              <!--Form para eliminar la asignatura-->
+              <form action="{% url 'asignaturas:eliminar-asignatura' %}" method="post">
+                  {% csrf_token %}
+                  <!-- Para indicarle al backend que se debe eliminar-->
+                  <input type="text" value="delete" name="_method" style="display: none;">
+
+                  <!--Para pasarle al backend la asignatura-->
+                  <input type="text" name="codasig" style="display: none;" required>
+
+                  <button type="submit" class="btn btn-primary" id="delete">
+                    Eliminar
+                  </button>
+
+                  <button type="button" data-dismiss="modal" class="btn">
+                    Cancelar
+                  </button>
+              </form>
             </div>
         </div>
     </div>

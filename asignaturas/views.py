@@ -33,7 +33,7 @@ class EliminarAsignaturaView(TemplateView):
         eliminarAsignatura(self.request.POST.get('codasig'))
 
         # Redirige al inicio por ahora
-        return HttpResponseRedirect(reverse('asignaturas:index'))
+        return HttpResponseRedirect(reverse('asignaturas:dashboard'))
         
 
 '''
