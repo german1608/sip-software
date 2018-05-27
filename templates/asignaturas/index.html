@@ -6,6 +6,11 @@
 {% endblock stylesheets %}
 {% block wrapper %}
 
+ <!-- New  button -->
+ <div class="text-center">
+    <button type="button" data-toggle="modal" data-target="#agregar-modal" class="btn btn-primary" id="new">Agregar</button>
+</div>
+
 <div class="container-fluid">
   <div class="animated fadeIn">
     <h1 class="display-3">Asignaturas</h1>
@@ -26,7 +31,12 @@
                 <td>
                   <a href="#">Traductores e Interpretadores</a>
                   <!--Este boton todavía no hace nada-->
-                  <button class="btn btn-danger eliminar-asignatura-btn"><i class="far fa-trash-alt"></i></button>
+                  <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
+                    <i class="far fa-trash-alt"></i>
+                  </button>
+                  <button class="btn btn-success asignatura-btn">
+                    <i class="far fa-edit"></i>
+                  </button>
                 </td>
                 <td>CI3725</td>
                 <td>5</td>
@@ -35,7 +45,12 @@
                 <td>
                   <a href="#">Modelos Lineales I</a>
                   <!--Este boton todavía no hace nada-->
-                  <button class="btn btn-danger eliminar-asignatura-btn"><i class="far fa-trash-alt"></i></button>
+                  <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
+                    <i class="far fa-trash-alt"></i>
+                  </button>
+                  <button class="btn btn-success asignatura-btn">
+                    <i class="far fa-edit"></i>
+                  </button>
                 </td>
                 <td>PS1111</td>
                 <td>4</td>
@@ -44,7 +59,12 @@
                 <td>
                   <a href="#">Lógica Simbólica</a>
                   <!--Este boton todavía no hace nada-->
-                  <button class="btn btn-danger eliminar-asignatura-btn"><i class="far fa-trash-alt"></i></button>
+                  <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
+                    <i class="far fa-trash-alt"></i>
+                  </button>
+                  <button class="btn btn-success asignatura-btn">
+                    <i class="far fa-edit"></i>
+                  </button>
                 </td>
                 <td>CI2511</td>
                 <td>4</td>
@@ -54,6 +74,58 @@
       </div>
     </div>
   </div>
+</div>
+
+<!--Modal para agregar asignatura-->
+<div class="modal fade" id="agregar-modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal_title"></h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="nombre"><span class="glyphicon glyphicon-pencil"></span> Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Introduzca el nombre"
+                               required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="creditos"><span class="glyphicon glyphicon-pencil"></span> Créditos</label>
+                        <input type="number" class="form-control" id="creditos" name="creditos"
+                               placeholder="Introduzca los créditos" required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="codigo"><span class="glyphicon glyphicon-file"></span> Código</label>
+                        <input type="text" class="form-control" id="codigo" name="codigo"
+                               placeholder="Introduzca el código" required="true">
+                    </div>
+
+                    <input type="hidden" id="type" name="type" value="">
+                    <button type="submit" class="btn btn-success btn-block"><span
+                            class="glyphicon glyphicon-ok"></span> OK
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="confirmar-eliminar-modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">¿Estás seguro?</h4>
+            </div>
+            <div class="modal-body">
+                <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Eliminar</button>
+                <button type="button" data-dismiss="modal" class="btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock wrapper %}

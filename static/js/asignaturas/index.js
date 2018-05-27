@@ -4,5 +4,5 @@ $(document).ready( function () {
 } );
 
 $('.eliminar-asignatura-btn').on('click', () => {
-    alert('Este botón se implementará luego de que la Datatable muestre data real de la base de datos.')
+    
 })
