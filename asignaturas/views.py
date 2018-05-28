@@ -4,6 +4,7 @@ from django.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Asignatura
+from .forms import AsignaturaForm, HorarioFormset, ProgramaFormset
 
 
 def index(request):
@@ -12,7 +13,9 @@ def index(request):
     }
 
     context['pagename'] = 'Dashboard'
-    
+    context['form'] = AsignaturaForm()
+    context['formset1'] = HorarioFormset()
+    context['formset2'] = ProgramaFormset()
     return render(request, 'asignaturas/index.html', context)
 
 # Vista para eliminar asignatura
