@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'asignaturas',
     'profesores',
-    'coordinacion'
+    'coordinacion',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
