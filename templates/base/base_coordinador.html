@@ -10,8 +10,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a class="navbar-brand" href="#">
-                <img class="navbar-brand-full" src="{% static 'core-ui/img/brand/logo.svg' %}" width="89" height="25" alt="Oozma Kappa Logo">
-                <img class="navbar-brand-minimized" src="{% static 'core-ui/img/brand/sygnet.svg' %}" width="30" height="30" alt="Oozma Kappa Logo">
+                <img class="navbar-brand-full" src="{% static 'images/USB_logo.svg.png' %}" width="70" height="45" alt="Oozma Kappa Logo">
+                <img class="navbar-brand-minimized" src="{% static 'images/USB_logo.svg.png' %}" width="30" height="20" alt="Oozma Kappa Logo">
             </a>
             <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
                 <span class="navbar-toggler-icon"></span>
@@ -51,12 +51,11 @@
         <div class="app-body">
             
             {% block sidebar %}
-            <div class="sidebar">
+            <div class="sidebar" style="background-color:black">
                 <nav class="sidebar-nav">
                     <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <i class="nav-icon icon-speedometer"></i> Dashboard
+                        <a id="db" class="nav-link" href="#" style="color:#D1A811">Dashboard
                         </a>
                     </li>
                     <li class="nav-title">SECCION 1</li>
@@ -101,7 +100,7 @@
             </div>
             {% endblock sidebar %}
 
-            <main class="main">
+            <main class="main" style="background-color:#C9C6BB">
                 <!-- Breadcrumb-->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Inicio</li>
@@ -114,14 +113,14 @@
         </div>
 
         {% block footer %}
-        <footer class="app-footer">
+        <footer class="app-footer" style="background-color:#D1A811">
             <div>
             <a href="#">SIP</a>
-            <span>&copy; 2018 Oozma Kappa.</span>
+            <span style="color:black">&copy; 2018 Oozma Kappa.</span>
             </div>
             <div class="ml-auto">
-            <span>Powered by</span>
-            <a href="#">Oozma Kappa</a>
+            <span style="color:black">Powered by</span>
+            <a href="#" style="color:black">Oozma Kappa</a>
             </div>
         </footer>
         {% endblock footer %}
