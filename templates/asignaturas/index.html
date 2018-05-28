@@ -31,10 +31,10 @@
                 <td>
                   <a href="#">Traductores e Interpretadores</a>
                   <!--Este boton todavía no hace nada-->
-                  <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
+                  <button id="traductores" class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
                     <i class="far fa-trash-alt"></i>
                   </button>
-                  <button class="btn btn-success asignatura-btn">
+                  <button class="editar_asignatura btn btn-success asignatura-btn" data-toggle="modal" data-target="#editar-modal" data->
                     <i class="far fa-edit"></i>
                   </button>
                 </td>
@@ -48,7 +48,7 @@
                   <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
                     <i class="far fa-trash-alt"></i>
                   </button>
-                  <button class="btn btn-success asignatura-btn">
+                  <button class="editar_asignatura btn btn-success asignatura-btn" data-toggle="modal" data-target="#editar-modal">
                     <i class="far fa-edit"></i>
                   </button>
                 </td>
@@ -62,7 +62,7 @@
                   <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
                     <i class="far fa-trash-alt"></i>
                   </button>
-                  <button class="btn btn-success asignatura-btn">
+                  <button class="editar_asignatura btn btn-success asignatura-btn" data-toggle="modal" data-target="#editar-modal"  >
                     <i class="far fa-edit"></i>
                   </button>
                 </td>
@@ -75,7 +75,7 @@
                   <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
                     <i class="far fa-trash-alt"></i>
                   </button>
-                  <button class="btn btn-success asignatura-btn">
+                  <button class="editar_asignatura btn btn-success asignatura-btn" data-toggle="modal" data-target="#editar-modal">
                     <i class="far fa-edit"></i>
                   </button>
                 </td>
@@ -139,6 +139,42 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Editar modal -->
+<div class="modal fade" id="editar-modal" role="dialog">
+  <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="modal_title">Edición de asignatura</h4>
+          </div>
+          <div class="modal-body">
+              <form role="form">
+                  <div class="form-group">
+                      <label for="nombre"><span class="glyphicon glyphicon-pencil"></span> Nombre</label>
+                      <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Introduzca el nombre"
+                             required="true">
+                  </div>
+                  <div class="form-group">
+                      <label for="creditos"><span class="glyphicon glyphicon-pencil"></span> Créditos</label>
+                      <input type="number" class="form-control" id="creditos" name="creditos"
+                             placeholder="Introduzca los créditos" required="true">
+                  </div>
+                  <div class="form-group">
+                      <label for="codigo"><span class="glyphicon glyphicon-file"></span> Código</label>
+                      <input type="text" class="form-control" id="codigo" name="codigo"
+                             placeholder="Introduzca el código" required="true">
+                  </div>
+
+                  <input type="hidden" id="type" name="type" value="">
+                  <button type="submit" class="btn btn-success btn-block"><span
+                          class="glyphicon glyphicon-ok"></span> OK
+                  </button>
+              </form>
+          </div>
+      </div>
+  </div>
 </div>
 
 {% endblock wrapper %}
