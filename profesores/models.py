@@ -19,3 +19,8 @@ class Profesor(models.Model):
     carnet = models.CharField(max_length=10, unique=True, verbose_name='Carné')
     fecha_nacimiento = models.DateField(validators=[fecha_nacimiento_valida],
         verbose_name='Fecha de Nacimiento')
+
+    # Se agrega la funcion para imprimir el objeto Profesor de una manera 
+    # user friendly 
+    def __str__(self):
+        return self.primer_nombre + " " + self.primer_apellido

@@ -15,12 +15,17 @@ class Asignatura(models.Model):
     pertenece = models.ForeignKey(Coordinacion, verbose_name='Coordinación',
         related_name='asignaturas', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.codasig + ": " + self.nombre
+
 class ProgramaAsignatura(models.Model):
     codigo = models.CharField(max_length=6, primary_key=True,
         verbose_name='Código de Programa')
     asignatura = models.ForeignKey(Asignatura,
         related_name='programas', on_delete=models.CASCADE, verbose_name='Asignatura')
 
+    def __str__(self):
+        return self.codigo + ": " + str(self.asignatura.nombre)
     class Meta:
         unique_together = ('codigo', 'asignatura')
 
@@ -50,5 +55,20 @@ class Horario(models.Model):
     asignatura = models.ForeignKey(Asignatura, verbose_name='Asignatura',
         related_name='horarios', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.determinarFecha(self.dia) + ": " + str(self.hora_inicio) + "-" + str(self.hora_final)
+
+    def determinarFecha(self, numero):
+        if numero == 0:
+            return 'Lunes'
+        elif numero == 1:
+            return 'Martes' 
+        elif numero == 2:
+            return 'Miercoles'
+        elif numero == 3:
+            return 'Jueves'
+        elif numero == 4:
+            return 'Viernes'
+       
     class Meta:
         unique_together = ('asignatura', 'hora_inicio', 'hora_final', 'dia')
