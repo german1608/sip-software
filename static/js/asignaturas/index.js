@@ -3,12 +3,15 @@ $(document).ready( function () {
     $('#t_asignaturas').DataTable();
 } );
 
-// $('#eliminar_asignatura').on('click', () => {
-//     console.log(this.id);
-//     $('#nombre').attr("value");
-// })
-
-$("button.editar_asignatura").on('click', () => {
-    console.log("gila");
-    $("#nombre").attr("value");
-})
+/**
+ * Mostrar modal para eliminar asignatura.
+ * @param btn Botón presionado
+ */
+function show_eliminar_modal(btn) {
+    // Obtener código de asignatura
+    let codasig = $(btn).data('codasig');
+    console.log(codasig);
+    // Actualizar data del modal
+    $('.asignatura-a-eliminar').html(codasig);
+    $('#confirmar-eliminar-modal input[name=codasig]').val(codasig);
+}

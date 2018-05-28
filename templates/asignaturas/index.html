@@ -10,12 +10,12 @@
  <div class="text-center">
     <button type="button" data-toggle="modal" data-target="#agregar-modal" class="btn btn-primary" id="new">Agregar</button>
 </div>
-
 <div class="container-fluid">
   <div class="animated fadeIn">
     <h1 class="display-3">Asignaturas</h1>
     <div class="row">
       <div class="col">
+
           <!-- Datable de Asignaturas-->
           <table id="t_asignaturas" class="display">
             <!--Asignaturas de prueba-->
@@ -27,61 +27,25 @@
               </tr>
             </thead>
             <tbody>
+             {% for asignatura in asignaturas %}
               <tr>
                 <td>
-                  <a href="#">Traductores e Interpretadores</a>
+                  <a href="#">{{asignatura.nombre}}</a>
                   <!--Este boton todavía no hace nada-->
-                  <button id="traductores" class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
+                  <button class="btn btn-danger asignatura-btn" data-toggle="modal" 
+                  data-target="#confirmar-eliminar-modal" data-codasig="{{asignatura.codasig}}"
+                  onclick="show_eliminar_modal(this);">
                     <i class="far fa-trash-alt"></i>
                   </button>
                   <button class="editar_asignatura btn btn-success asignatura-btn" data-toggle="modal" data-target="#editar-modal" data->
                     <i class="far fa-edit"></i>
                   </button>
                 </td>
-                <td>CI3725</td>
-                <td>5</td>
+                <td>{{asignatura.codasig}}</td>
+                <td>{{asignatura.creditos}}</td>
               </tr>
-              <tr>
-                <td>
-                  <a href="#">Modelos Lineales I</a>
-                  <!--Este boton todavía no hace nada-->
-                  <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
-                    <i class="far fa-trash-alt"></i>
-                  </button>
-                  <button class="editar_asignatura btn btn-success asignatura-btn" data-toggle="modal" data-target="#editar-modal">
-                    <i class="far fa-edit"></i>
-                  </button>
-                </td>
-                <td>PS1111</td>
-                <td>4</td>
-              </tr>
-              <tr>
-                <td>
-                  <a href="#">Lógica Simbólica</a>
-                  <!--Este boton todavía no hace nada-->
-                  <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
-                    <i class="far fa-trash-alt"></i>
-                  </button>
-                  <button class="editar_asignatura btn btn-success asignatura-btn" data-toggle="modal" data-target="#editar-modal"  >
-                    <i class="far fa-edit"></i>
-                  </button>
-                </td>
-                <td>CI2511</td>
-                <td>4</td>
-              </tr>
-              <tr>
-                <td>
-                  <a href="#">Matemáticas combinatorias</a>
-                  <button class="btn btn-danger asignatura-btn" data-toggle="modal" data-target="#confirmar-eliminar-modal">
-                    <i class="far fa-trash-alt"></i>
-                  </button>
-                  <button class="editar_asignatura btn btn-success asignatura-btn" data-toggle="modal" data-target="#editar-modal">
-                    <i class="far fa-edit"></i>
-                  </button>
-                </td>
-                <td>MA3512</td>
-                <td>4</td>
-              </tr>
+              {% endfor %}
+             
             </tbody>
           </table>
       </div>
@@ -131,11 +95,27 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">¿Estás seguro?</h4>
+                <h4 class="modal-title">¿Estás seguro que deseas eliminar <span class="asignatura-a-eliminar"></span>?</h4>
             </div>
             <div class="modal-body">
-                <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Eliminar</button>
-                <button type="button" data-dismiss="modal" class="btn">Cancelar</button>
+
+              <!--Form para eliminar la asignatura-->
+              <form action="{% url 'asignaturas:eliminar-asignatura' %}" method="post">
+                  {% csrf_token %}
+                  <!-- Para indicarle al backend que se debe eliminar-->
+                  <input type="text" value="delete" name="_method" style="display: none;">
+
+                  <!--Para pasarle al backend la asignatura-->
+                  <input type="text" name="codasig" style="display: none;" required>
+
+                  <button type="submit" class="btn btn-primary" id="delete">
+                    Eliminar
+                  </button>
+
+                  <button type="button" data-dismiss="modal" class="btn">
+                    Cancelar
+                  </button>
+              </form>
             </div>
         </div>
     </div>
