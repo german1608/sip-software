@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.urls import path
-from asignaturas.views import Busqueda
+from .views import *
 
 app_name = 'asignaturas'
 urlpatterns = [
-    path('', Busqueda.as_view(), name='busqueda'),
+    path('', IndexView.as_view(), name="dashboard"),
+    path('eliminar/', EliminarAsignaturaView.as_view(), name='eliminar-asignatura')
 ]
