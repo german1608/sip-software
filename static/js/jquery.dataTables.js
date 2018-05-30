@@ -11318,7 +11318,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sNext": "Next",
+				"sNext": "Siguiente",
 	
 	
 				/**
@@ -11341,7 +11341,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sPrevious": "Previous"
+				"sPrevious": "Anterior"
 			},
 	
 			/**
@@ -11396,7 +11396,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+			"sInfo": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
 	
 	
 			/**
@@ -11417,7 +11417,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
+			"sInfoEmpty": "Mostrando 0 a 0 de 0 entradas",
 	
 	
 			/**
@@ -11439,7 +11439,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoFiltered": "(filtered from _MAX_ total entries)",
+			"sInfoFiltered": "(filtered from _MAX_ total entradas)",
 	
 	
 			/**
@@ -11557,7 +11557,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Show _MENU_ entries",
+			"sLengthMenu": "Mostrar _MENU_ entradas",
 	
 	
 			/**
@@ -11637,7 +11637,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Search:",
+			"sSearch": "Buscar:",
 	
 	
 			/**
@@ -14476,11 +14476,11 @@
 	
 	$.extend( extPagination, {
 		simple: function ( page, pages ) {
-			return [ 'previous', 'next' ];
+			return [ 'anterior', 'siguiente' ];
 		},
 	
 		full: function ( page, pages ) {
-			return [  'first', 'previous', 'next', 'last' ];
+			return [  'primero', 'anterior', 'siguiente', 'ultima' ];
 		},
 	
 		numbers: function ( page, pages ) {
@@ -14488,11 +14488,11 @@
 		},
 	
 		simple_numbers: function ( page, pages ) {
-			return [ 'previous', _numbers(page, pages), 'next' ];
+			return [ 'anterior', _numbers(page, pages), 'siguiente' ];
 		},
 	
 		full_numbers: function ( page, pages ) {
-			return [ 'first', 'previous', _numbers(page, pages), 'next', 'last' ];
+			return [ 'primero', 'anterior', _numbers(page, pages), 'siguiente', 'ultima' ];
 		},
 	
 		// For testing and plug-ins to use
@@ -14534,25 +14534,25 @@
 									container.append('<span class="ellipsis">&#x2026;</span>');
 									break;
 	
-								case 'first':
+								case 'primero':
 									btnDisplay = lang.sFirst;
 									btnClass = button + (page > 0 ?
 										'' : ' '+classes.sPageButtonDisabled);
 									break;
 	
-								case 'previous':
+								case 'anterior':
 									btnDisplay = lang.sPrevious;
 									btnClass = button + (page > 0 ?
 										'' : ' '+classes.sPageButtonDisabled);
 									break;
 	
-								case 'next':
+								case 'siguiente':
 									btnDisplay = lang.sNext;
 									btnClass = button + (page < pages-1 ?
 										'' : ' '+classes.sPageButtonDisabled);
 									break;
 	
-								case 'last':
+								case 'ultima':
 									btnDisplay = lang.sLast;
 									btnClass = button + (page < pages-1 ?
 										'' : ' '+classes.sPageButtonDisabled);

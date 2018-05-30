@@ -7,16 +7,41 @@ from .models import Asignatura
 from .forms import AsignaturaForm, HorarioFormset, ProgramaFormset
 
 
-def index(request):
-    context = {
-        'asignaturas' : Asignatura.objects.all(),
-    }
+class Index(TemplateView):
+    template_name = 'asignaturas/index.html'
 
-    context['pagename'] = 'Dashboard'
-    context['form'] = AsignaturaForm()
-    context['formset1'] = HorarioFormset()
-    context['formset2'] = ProgramaFormset()
-    return render(request, 'asignaturas/index.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['asignaturas'] = Asignatura.objects.all()
+        context['pagename'] = 'Asignaturas'
+        context['form'] = AsignaturaForm()
+        context['formset1'] = HorarioFormset()
+        context['formset2'] = ProgramaFormset()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = AsignaturaForm(request.POST)
+        formset1 = HorarioFormset(request.POST)
+        formset2 = ProgramaFormset(request.POST)
+        context = self.get_context_data()
+
+        if form.is_valid() and formset1.is_valid() and formset2.is_valid():
+            form.save()
+            for instance in formset1.save(commit=False):
+                instance.asignatura = form.instance
+                instance.save()
+            for instance in formset2.save(commit=False):
+                instance.asignatura = form.instance
+                instance.save()
+        else:
+            print(form.errors)
+            print(formset1.errors)
+            print(formset2.errors)
+            context['form'] = form
+            context['formset1'] = formset1
+            context['formset2'] = formset2
+        return render(request, self.template_name, context)
+
 
 # Vista para eliminar asignatura
 class EliminarAsignaturaView(TemplateView):
@@ -51,3 +76,51 @@ def eliminarAsignatura(codasig):
         print('Se borraron {} asignaturas: {}'.format(delete_return[0], delete_return[1]))
     except Exception as e:
         print(e)
+
+class IndexView(View):
+    
+    template_name = 'asignaturas/index.html'
+
+
+    def get(self, request):
+
+        # Expresion regular para hacer match con el input
+        regex = re.compile('[A-Z][A-Z][0-9]{4}')
+        
+        # Diccionario con los datos de respuesta
+        datos_respuesta = {}
+
+
+        submit = request.GET.get('input')
+        
+        encontrado = False
+
+        for asignatura in Asignatura.objects.all():
+            if asignatura.codasig == submit:
+                encontrado = True
+
+        busqueda = None     
+        if encontrado:
+            busqueda = Asignatura.objects.get(codasig=submit)
+
+
+        # Verificamos si la busqueda es exitosa o no.
+        if busqueda != None:
+            # Verificamos si la busqueda cumple con la sintaxis de un codigo de asignatura.
+            if not regex.match(busqueda.codasig):
+                raise ValidationError(u'%s no cumple con la sintaxis de codigo de asignatura' % busqueda)
+            else:
+                datos_respuesta['nombre'] = busqueda.nombre
+                datos_respuesta['codasig'] = busqueda.codasig
+                datos_respuesta['creditos'] = busqueda.creditos
+                print(type(busqueda.profesores))
+                datos_respuesta['nombre_coordinacion'] = busqueda.pertenece.nombre
+                datos_respuesta['codigo_coordinacion'] = busqueda.pertenece.codigo
+                jsonBusqueda = JsonResponse(datos_respuesta) 
+                return jsonBusqueda    
+        else:
+            datos_respuesta['status_code'] = 404
+            datos_respuesta['error'] = 'La busqueda fue infructuosa'    
+
+
+        return render(self.request, "asignaturas/index.html")    

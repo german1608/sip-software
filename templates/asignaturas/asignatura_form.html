@@ -1,0 +1,108 @@
+{% load widget_tweaks %}
+
+<!--Modal para agregar asignatura-->
+<input type="hidden" name="horario_formset_prefix" value="{{formset1.prefix}}">
+<input type="hidden" name="programa_formset_prefix" value="{{formset2.prefix}}">
+<div class="modal fade" id="agregar-modal" role="dialog">
+  <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal_title">Agregar asignatura</h4>
+          </div>
+          <div class="modal-body" >
+              <!-- La paginacion esta implementada a traves de tabs (Sujeto a cambios) -->
+              <ul class="nav nav-tabs" id="tabContent">
+                <li class="nav-item active"><a class="nav-link show active" href="#informacion_basica" data-toggle="tab">Información básica</a></li>
+                <li class="nav-item"><a class="nav-link" href="#horario" data-toggle="tab">Horarios</a></li>
+                <li class="nav-item"><a class="nav-link" href="#programa" data-toggle="tab">Programas</a></li>
+              </ul>
+              <form action="" method="POST" >
+                {% csrf_token %}
+                <div class="tab-content">
+
+                  <div class="tab-pane active" id="informacion_basica">
+                    <!-- Datos para la informacion basica -->
+                    <div class="form-group">
+                      <label for="nombre"><span class="glyphicon glyphicon-pencil"></span> {{ form.nombre.label }}</label>
+                      {% render_field form.nombre class="form-control" id="nombre" placeholder="Introduzca el nombre" %}
+                    </div>
+                    <div class="form-group">
+                      <label for="creditos"><span class="glyphicon glyphicon-pencil"></span> {{ form.creditos.label }}</label>
+                      {% render_field form.creditos class="form-control" id="nombre" placeholder="Introduzca el número de créditos" %}
+                    </div>
+                    <div class="form-group">
+                      <label for="codigo"><span class="glyphicon glyphicon-file"></span> {{ form.codasig.label }}</label>
+                      {% render_field form.codasig class="form-control" id="codigo" placeholder="Introduzca el código" %}
+                    </div>
+
+                    <div class="form-group">
+                      <label for="profesores"><span class="glyphicon glyphicon-file"></span> {{ form.profesores.label }}</label>
+                      {% render_field form.profesores class="form-control" %}
+                    </div>
+
+                    <div class="form-group">
+                      <label for="coordinacion"><span class="glyphicon glyphicon-file"></span> {{ form.pertenece.label }}</label>
+                      {% render_field form.pertenece class="form-control" %}
+                    </div>
+
+                    <input type="hidden" id="type" name="type" value="">
+                    <button type="submit" class="btn btn-success btn-block"><span
+                      class="glyphicon glyphicon-ok"></span> Siguiente
+                    </button>
+
+                  </div>
+
+                  <!-- Informacion de los horarios de la asignatura -->
+                  <div class="tab-pane" id="horario">
+                    {% for form in formset1 %}
+                    <div class="form-row">
+                      {{form.asignatura}}
+                      {{form.id}}
+                      <div class="form-group col-md-6">
+                        <label for="dia"><span class="glyphicon glyphicon-pencil"></span> {{ form.dia.label }}</label>
+                        {% render_field form.dia id="dia" class="form-control"%}
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="hora_inicio"><span class="glyphicon glyphicon-pencil"></span> {{ form.hora_inicio.label }}</label>
+                        {% render_field form.hora_inicio id="hora_inicio" class="form-control"%}
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="hora_final"><span class="glyphicon glyphicon-pencil"></span> {{ form.hora_final.label }}</label>
+                        {% render_field form.hora_final id="hora_final" class="form-control"%}
+                      </div>
+                    </div>
+                    {% endfor %}
+                    {{formset1.management_form}}
+
+                    <input type="hidden" id="type" name="type" value="">
+                    <button type="submit" class="btn btn-success btn-block"><span
+                      class="glyphicon glyphicon-ok"></span> Siguiente
+                    </button>
+                  </div>
+
+                  <!-- Form para los programas  -->
+                  <div class="tab-pane" id="programa">
+                      {% for form in formset2 %}
+                        <div class="form-group">
+                            {{form.asignatura}}
+                            {{form.id}}
+                            <label for="codigo"><span class="glyphicon glyphicon-pencil"></span> {{ form.codigo.label }}</label>
+                            {% render_field form.codigo class="form-control" id="codigo" placeholder="Introduzca el código" %}
+                        </div>
+                      {% endfor %}
+                      {{formset2.management_form}}
+
+                      <input type="hidden" id="type" name="type" value="">
+                      <button type="submit" class="btn btn-success btn-block"><span
+                              class="glyphicon glyphicon-ok"></span> Agregar
+                      </button>
+                  </div>
+                </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>

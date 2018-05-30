@@ -1,6 +1,20 @@
 $(document).ready( function () {
     // Inicializar Datable para asignaturas
     $('#t_asignaturas').DataTable();
+    const horarioPrefix = $('[name=horario_formset_prefix]').val()
+    const programaPrefix = $('[name=programa_formset_prefix]').val()
+    $('#horario .form-row').formset({
+        prefix: horarioPrefix,
+        formCssClass: 'dynamic-formset1',
+        'addText': 'Añadir horario',
+        'addCssClass': 'btn btn-success'
+    })
+    $('#programa .form-group').formset({
+        prefix: programaPrefix,
+        formCssClass: 'dynamic-formset2',
+        'addText': 'Añadir programa',
+        'addCssClass': 'btn btn-success'
+    })
 } );
 
 /**
