@@ -17,6 +17,8 @@ $(document).ready( function () {
     })
 } );
 
+var edit_mode = false;
+
 /**
  * Mostrar modal para eliminar asignatura.
  * @param btn Botón presionado
@@ -36,7 +38,6 @@ function show_eliminar_modal(btn) {
  */
 function show_informacion_modal(a){
     let nombre = $(a).data('nombre');
-    console.log(nombre);
 
     // Se anade las clases readonly al input para que no sea modificable
     $('#nombre-asig').val(nombre);
@@ -49,6 +50,15 @@ function show_informacion_modal(a){
  * @param btn Boton para habilitar la edicion de la asignatura 
  */
 function habilitar_edicion(btn){
-    $('.mostrar-only').removeAttr('readonly');
-    $('.mostrar-only').attr('class', "mostrar-only form-control");
+    switch (edit_mode) {
+        case false:
+            $('.mostrar-only').removeAttr('readonly');
+            $('.mostrar-only').attr('class', "mostrar-only form-control");
+            break;
+        case true:
+            $('.mostrar-only').attr('readonly', "");
+            $('.mostrar-only').attr('class', "mostrar-only form-control-plaintext");
+            break;
+    }
+    edit_mode = !edit_mode;
 }
