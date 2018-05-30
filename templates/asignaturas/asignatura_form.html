@@ -34,12 +34,12 @@
                   <div class="tab-pane active" id="informacion_basica">
                     <!-- Datos para la informacion basica -->
                     <div class="form-group">
-                      <label for="nombre"><span class="glyphicon glyphicon-pencil"></span> {{ form.nombre.label }}</label>
+                      <label for="nombre-asig"><span class="glyphicon glyphicon-pencil"></span> {{ form.nombre.label }}</label>
                       {% render_field form.nombre class="form-control mostrar-only" id="nombre-asig" placeholder="Introduzca el nombre" %}
                     </div>
                     <div class="form-group">
                       <label for="creditos"><span class="glyphicon glyphicon-pencil"></span> {{ form.creditos.label }}</label>
-                      {% render_field form.creditos class="form-control mostrar-only" id="nombre" placeholder="Introduzca el número de créditos" %}
+                      {% render_field form.creditos class="form-control mostrar-only" id="creditos" placeholder="Introduzca el número de créditos" %}
                     </div>
                     <div class="form-group">
                       <label for="codigo"><span class="glyphicon glyphicon-file"></span> {{ form.codasig.label }}</label>

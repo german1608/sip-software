@@ -38,7 +38,7 @@
              {% for asignatura in asignaturas %}
               <tr>
                 <td>
-                  <a href="#agregar-modal" data-toggle="modal" data-nombre="{{asignatura.nombre}}" onclick="show_informacion_modal(this)">{{asignatura.nombre}}</a>
+                  <a class="nombre-asignatura" href="#" onclick="obtenerAsignatura(this);" data-nombre="{{asignatura.nombre}}" data-codasig="{{asignatura.codasig}}">{{asignatura.nombre}}</a>
                   <!--Este boton todavía no hace nada-->
                   <button class="btn btn-danger asignatura-btn" data-toggle="modal"
                   data-target="#confirmar-eliminar-modal" data-codasig="{{asignatura.codasig}}"
@@ -57,7 +57,6 @@
     </div>
   </div>
 </div>
-
 {% include "asignaturas/asignatura_form.html" %}
 
 {% include "asignaturas/eliminar_asignatura.html" %}

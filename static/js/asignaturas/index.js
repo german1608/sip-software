@@ -63,3 +63,25 @@ function habilitar_edicion(btn){
     edit_mode = !edit_mode;
     $('.editar_asignatura').toggleClass('active');
 }
+
+
+/**
+ * Obtener del backend información de la asignatura cuando
+ * se abre el modal para editar.
+ */
+function obtenerAsignatura(btn) {
+    $.ajax({
+        url: '/asignaturas/editar',
+        method: 'GET',
+        data: {
+            codasig: $(btn).data('codasig')
+        },
+        success: (data) => {
+            asig = JSON.parse(data[0])[0];
+            let form = data[1];
+            console.log(form);
+            $('#agregar-modal').replaceWith(form);
+            $('#agregar-modal').modal();
+        }
+    })
+}

@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.views.generic import View
 from django.views.generic.base import TemplateView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from .models import Asignatura
 from .forms import AsignaturaForm, HorarioFormset, ProgramaFormset
+
+from django.core import serializers
+from django.template.loader import render_to_string
 
 
 class Index(TemplateView):
@@ -66,6 +69,15 @@ class EliminarAsignaturaView(TemplateView):
         # Redirige al inicio por ahora
         return HttpResponseRedirect(reverse('asignaturas:dashboard'))
         
+class EditarAsignaturaView(View):
+    def get(self, request, *args, **kwargs):
+        codasig = request.GET.get('codasig', '')
+        asig = Asignatura.objects.get(codasig=codasig)
+        form = AsignaturaForm(instance=asig)
+        rendered = render_to_string('asignaturas/asignatura_form.html', context={'form': form})
+        data = [serializers.serialize('json', Asignatura.objects.filter(codasig=codasig)), 
+            rendered]
+        return JsonResponse(data, safe=False)
 
 '''
 Funciones de Gestión de Asignatura
