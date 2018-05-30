@@ -61,4 +61,5 @@ function habilitar_edicion(btn){
             break;
     }
     edit_mode = !edit_mode;
+    $('.editar_asignatura').toggleClass('active');
 }
