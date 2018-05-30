@@ -100,7 +100,7 @@
                             {{form.asignatura}}
                             {{form.id}}
                             <label for="codigo"><span class="glyphicon glyphicon-pencil"></span> {{ form.codigo.label }}</label>
-                            {% render_field form.codigo class="form-control" id="codigo mostrar-only" placeholder="Introduzca el código" %}
+                            {% render_field form.codigo class="form-control mostrar-only" id="codigo" placeholder="Introduzca el código" %}
                         </div>
                       {% endfor %}
                       {{formset2.management_form}}

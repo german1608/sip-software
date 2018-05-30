@@ -1,20 +1,7 @@
 $(document).ready( function () {
     // Inicializar Datable para asignaturas
     $('#t_asignaturas').DataTable();
-    const horarioPrefix = $('[name=horario_formset_prefix]').val()
-    const programaPrefix = $('[name=programa_formset_prefix]').val()
-    $('#horario .form-row').formset({
-        prefix: horarioPrefix,
-        formCssClass: 'dynamic-formset1',
-        'addText': 'Añadir horario',
-        'addCssClass': 'btn btn-success'
-    })
-    $('#programa .form-group').formset({
-        prefix: programaPrefix,
-        formCssClass: 'dynamic-formset2',
-        'addText': 'Añadir programa',
-        'addCssClass': 'btn btn-success'
-    })
+    activarFormSets();
 } );
 
 var edit_mode = false;
@@ -36,13 +23,30 @@ function show_eliminar_modal(btn) {
  * Mostrar el modal para mostrar la informacion de la asignatura 
  * @param a Link de la tabla de asignaturas 
  */
-function show_informacion_modal(a){
-    let nombre = $(a).data('nombre');
-
+function show_informacion_modal(){
+    $('#agregar-modal').modal();
+    activarFormSets();
     // Se anade las clases readonly al input para que no sea modificable
-    $('#nombre-asig').val(nombre);
+    $('.anadir-horario-btn').addClass('disabled');
     $('.mostrar-only').attr('readonly', "");
     $('.mostrar-only').attr('class', "mostrar-only form-control-plaintext");
+}
+
+function activarFormSets() {
+    const horarioPrefix = $('[name=horario_formset_prefix]').val()
+    const programaPrefix = $('[name=programa_formset_prefix]').val()
+    $('#horario .form-row').formset({
+        prefix: horarioPrefix,
+        formCssClass: 'dynamic-formset1',
+        'addText': 'Añadir horario',
+        'addCssClass': 'btn btn-success anadir-horario-btn'
+    })
+    $('#programa .form-group').formset({
+        prefix: programaPrefix,
+        formCssClass: 'dynamic-formset2',
+        'addText': 'Añadir programa',
+        'addCssClass': 'btn btn-success'
+    })
 }
 
 /**
@@ -52,10 +56,12 @@ function show_informacion_modal(a){
 function habilitar_edicion(btn){
     switch (edit_mode) {
         case false:
+            $('.anadir-horario-btn').removeClass('disabled');
             $('.mostrar-only').removeAttr('readonly');
             $('.mostrar-only').attr('class', "mostrar-only form-control");
             break;
         case true:
+            $('.anadir-horario-btn').addClass('disabled');
             $('.mostrar-only').attr('readonly', "");
             $('.mostrar-only').attr('class', "mostrar-only form-control-plaintext");
             break;
@@ -81,7 +87,7 @@ function obtenerAsignatura(btn) {
             let form = data[1];
             console.log(form);
             $('#agregar-modal').replaceWith(form);
-            $('#agregar-modal').modal();
+            show_informacion_modal();
         }
     })
 }

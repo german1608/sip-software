@@ -73,8 +73,12 @@ class EditarAsignaturaView(View):
     def get(self, request, *args, **kwargs):
         codasig = request.GET.get('codasig', '')
         asig = Asignatura.objects.get(codasig=codasig)
-        form = AsignaturaForm(instance=asig)
-        rendered = render_to_string('asignaturas/asignatura_form.html', context={'form': form})
+        context = {
+            'form': AsignaturaForm(instance=asig),
+            'formset1': HorarioFormset(instance=asig),
+            'formset2': ProgramaFormset(instance=asig)
+        }
+        rendered = render_to_string('asignaturas/asignatura_form.html', context=context)
         data = [serializers.serialize('json', Asignatura.objects.filter(codasig=codasig)), 
             rendered]
         return JsonResponse(data, safe=False)
