@@ -19,6 +19,29 @@ class Index(TemplateView):
         context['formset2'] = ProgramaFormset()
         return context
 
+    def post(self, request, *args, **kwargs):
+        form = AsignaturaForm(request.POST)
+        formset1 = HorarioFormset(request.POST)
+        formset2 = ProgramaFormset(request.POST)
+        context = self.get_context_data()
+
+        if form.is_valid() and formset1.is_valid() and formset2.is_valid():
+            form.save()
+            for instance in formset1.save(commit=False):
+                instance.asignatura = form.instance
+                instance.save()
+            for instance in formset2.save(commit=False):
+                instance.asignatura = form.instance
+                instance.save()
+        else:
+            print(form.errors)
+            print(formset1.errors)
+            print(formset2.errors)
+            context['form'] = form
+            context['formset1'] = formset1
+            context['formset2'] = formset2
+        return render(request, self.template_name, context)
+
 
 # Vista para eliminar asignatura
 class EliminarAsignaturaView(TemplateView):
