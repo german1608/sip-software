@@ -7,16 +7,18 @@ from .models import Asignatura
 from .forms import AsignaturaForm, HorarioFormset, ProgramaFormset
 
 
-def index(request):
-    context = {
-        'asignaturas' : Asignatura.objects.all(),
-    }
+class Index(TemplateView):
+    template_name = 'asignaturas/index.html'
 
-    context['pagename'] = 'Dashboard'
-    context['form'] = AsignaturaForm()
-    context['formset1'] = HorarioFormset()
-    context['formset2'] = ProgramaFormset()
-    return render(request, 'asignaturas/index.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['asignaturas'] = Asignatura.objects.all()
+        context['pagename'] = 'Asignaturas'
+        context['form'] = AsignaturaForm()
+        context['formset1'] = HorarioFormset()
+        context['formset2'] = ProgramaFormset()
+        return context
+
 
 # Vista para eliminar asignatura
 class EliminarAsignaturaView(TemplateView):
