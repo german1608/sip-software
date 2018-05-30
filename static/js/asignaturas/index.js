@@ -26,9 +26,14 @@ function show_eliminar_modal(btn) {
 function show_informacion_modal(){
     $('#agregar-modal').modal();
     activarFormSets();
+    deshabilitarForm();
+}
+
+function deshabilitarForm() {
     // Se anade las clases readonly al input para que no sea modificable
     $('.anadir-horario-btn').addClass('disabled');
     $('.mostrar-only').attr('readonly', "");
+    $('.mostrar-only').attr('disabled', '');
     $('.mostrar-only').attr('class', "mostrar-only form-control-plaintext");
 }
 
@@ -45,7 +50,7 @@ function activarFormSets() {
         prefix: programaPrefix,
         formCssClass: 'dynamic-formset2',
         'addText': 'Añadir programa',
-        'addCssClass': 'btn btn-success'
+        'addCssClass': 'btn btn-success  anadir-horario-btn'
     })
 }
 
@@ -58,12 +63,11 @@ function habilitar_edicion(btn){
         case false:
             $('.anadir-horario-btn').removeClass('disabled');
             $('.mostrar-only').removeAttr('readonly');
+            $('.mostrar-only').removeAttr('disabled');
             $('.mostrar-only').attr('class', "mostrar-only form-control");
             break;
         case true:
-            $('.anadir-horario-btn').addClass('disabled');
-            $('.mostrar-only').attr('readonly', "");
-            $('.mostrar-only').attr('class', "mostrar-only form-control-plaintext");
+            deshabilitarForm();
             break;
     }
     edit_mode = !edit_mode;

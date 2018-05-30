@@ -78,7 +78,7 @@ class EditarAsignaturaView(View):
             'formset1': HorarioFormset(instance=asig),
             'formset2': ProgramaFormset(instance=asig)
         }
-        rendered = render_to_string('asignaturas/asignatura_form.html', context=context)
+        rendered = render_to_string('asignaturas/asignatura_form.html', context=context, request=request)
         data = [serializers.serialize('json', Asignatura.objects.filter(codasig=codasig)), 
             rendered]
         return JsonResponse(data, safe=False)
