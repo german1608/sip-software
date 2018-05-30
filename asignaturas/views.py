@@ -76,3 +76,51 @@ def eliminarAsignatura(codasig):
         print('Se borraron {} asignaturas: {}'.format(delete_return[0], delete_return[1]))
     except Exception as e:
         print(e)
+
+class IndexView(View):
+    
+    template_name = 'asignaturas/index.html'
+
+
+    def get(self, request):
+
+        # Expresion regular para hacer match con el input
+        regex = re.compile('[A-Z][A-Z][0-9]{4}')
+        
+        # Diccionario con los datos de respuesta
+        datos_respuesta = {}
+
+
+        submit = request.GET.get('input')
+        
+        encontrado = False
+
+        for asignatura in Asignatura.objects.all():
+            if asignatura.codasig == submit:
+                encontrado = True
+
+        busqueda = None     
+        if encontrado:
+            busqueda = Asignatura.objects.get(codasig=submit)
+
+
+        # Verificamos si la busqueda es exitosa o no.
+        if busqueda != None:
+            # Verificamos si la busqueda cumple con la sintaxis de un codigo de asignatura.
+            if not regex.match(busqueda.codasig):
+                raise ValidationError(u'%s no cumple con la sintaxis de codigo de asignatura' % busqueda)
+            else:
+                datos_respuesta['nombre'] = busqueda.nombre
+                datos_respuesta['codasig'] = busqueda.codasig
+                datos_respuesta['creditos'] = busqueda.creditos
+                print(type(busqueda.profesores))
+                datos_respuesta['nombre_coordinacion'] = busqueda.pertenece.nombre
+                datos_respuesta['codigo_coordinacion'] = busqueda.pertenece.codigo
+                jsonBusqueda = JsonResponse(datos_respuesta) 
+                return jsonBusqueda    
+        else:
+            datos_respuesta['status_code'] = 404
+            datos_respuesta['error'] = 'La busqueda fue infructuosa'    
+
+
+        return render(self.request, "asignaturas/index.html")    
