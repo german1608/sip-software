@@ -9,6 +9,16 @@
       <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title" id="modal_title">Agregar asignatura</h4>
+            <div class="float-right">
+              <button class="editar_asignatura btn btn-success asignatura-btn" onclick="habilitar_edicion(this)">
+                <i class="far fa-edit"></i>
+              </button>
+              <button class="btn btn-danger asignatura-btn" data-toggle="modal"
+                  data-target="#confirmar-eliminar-modal" data-codasig="{{asignatura.codasig}}"
+                  onclick="show_eliminar_modal(this);">
+                  <i class="far fa-trash-alt"></i>
+              </button>
+            </div>
           </div>
           <div class="modal-body" >
               <!-- La paginacion esta implementada a traves de tabs (Sujeto a cambios) -->
@@ -25,25 +35,25 @@
                     <!-- Datos para la informacion basica -->
                     <div class="form-group">
                       <label for="nombre"><span class="glyphicon glyphicon-pencil"></span> {{ form.nombre.label }}</label>
-                      {% render_field form.nombre class="form-control" id="nombre" placeholder="Introduzca el nombre" %}
+                      {% render_field form.nombre class="form-control mostrar-only" id="nombre-asig" placeholder="Introduzca el nombre" %}
                     </div>
                     <div class="form-group">
                       <label for="creditos"><span class="glyphicon glyphicon-pencil"></span> {{ form.creditos.label }}</label>
-                      {% render_field form.creditos class="form-control" id="nombre" placeholder="Introduzca el número de créditos" %}
+                      {% render_field form.creditos class="form-control mostrar-only" id="nombre" placeholder="Introduzca el número de créditos" %}
                     </div>
                     <div class="form-group">
                       <label for="codigo"><span class="glyphicon glyphicon-file"></span> {{ form.codasig.label }}</label>
-                      {% render_field form.codasig class="form-control" id="codigo" placeholder="Introduzca el código" %}
+                      {% render_field form.codasig class="form-control mostrar-only" id="codigo" placeholder="Introduzca el código" %}
                     </div>
 
                     <div class="form-group">
                       <label for="profesores"><span class="glyphicon glyphicon-file"></span> {{ form.profesores.label }}</label>
-                      {% render_field form.profesores class="form-control" %}
+                      {% render_field form.profesores class="form-control mostrar-only" %}
                     </div>
 
                     <div class="form-group">
                       <label for="coordinacion"><span class="glyphicon glyphicon-file"></span> {{ form.pertenece.label }}</label>
-                      {% render_field form.pertenece class="form-control" %}
+                      {% render_field form.pertenece class="form-control mostrar-only" %}
                     </div>
 
                     <input type="hidden" id="type" name="type" value="">
@@ -61,17 +71,17 @@
                       {{form.id}}
                       <div class="form-group col-md-6">
                         <label for="dia"><span class="glyphicon glyphicon-pencil"></span> {{ form.dia.label }}</label>
-                        {% render_field form.dia id="dia" class="form-control"%}
+                        {% render_field form.dia id="dia" class="form-control mostrar-only"%}
                       </div>
 
                       <div class="form-group col-md-3">
                         <label for="hora_inicio"><span class="glyphicon glyphicon-pencil"></span> {{ form.hora_inicio.label }}</label>
-                        {% render_field form.hora_inicio id="hora_inicio" class="form-control"%}
+                        {% render_field form.hora_inicio id="hora_inicio" class="form-control mostrar-only"%}
                       </div>
 
                       <div class="form-group col-md-3">
                         <label for="hora_final"><span class="glyphicon glyphicon-pencil"></span> {{ form.hora_final.label }}</label>
-                        {% render_field form.hora_final id="hora_final" class="form-control"%}
+                        {% render_field form.hora_final id="hora_final" class="form-control mostrar-only"%}
                       </div>
                     </div>
                     {% endfor %}
@@ -90,7 +100,7 @@
                             {{form.asignatura}}
                             {{form.id}}
                             <label for="codigo"><span class="glyphicon glyphicon-pencil"></span> {{ form.codigo.label }}</label>
-                            {% render_field form.codigo class="form-control" id="codigo" placeholder="Introduzca el código" %}
+                            {% render_field form.codigo class="form-control" id="codigo mostrar-only" placeholder="Introduzca el código" %}
                         </div>
                       {% endfor %}
                       {{formset2.management_form}}
