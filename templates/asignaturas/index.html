@@ -38,15 +38,12 @@
              {% for asignatura in asignaturas %}
               <tr>
                 <td>
-                  <a href="#">{{asignatura.nombre}}</a>
+                  <a href="#agregar-modal" data-toggle="modal" data-nombre="{{asignatura.nombre}}" onclick="show_informacion_modal(this)">{{asignatura.nombre}}</a>
                   <!--Este boton todavía no hace nada-->
                   <button class="btn btn-danger asignatura-btn" data-toggle="modal"
                   data-target="#confirmar-eliminar-modal" data-codasig="{{asignatura.codasig}}"
                   onclick="show_eliminar_modal(this);">
                     <i class="far fa-trash-alt"></i>
-                  </button>
-                  <button class="editar_asignatura btn btn-success asignatura-btn" data-toggle="modal" data-target="#editar-modal" data->
-                    <i class="far fa-edit"></i>
                   </button>
                 </td>
                 <td>{{asignatura.codasig}}</td>
@@ -63,73 +60,7 @@
 
 {% include "asignaturas/asignatura_form.html" %}
 
-<!-- Delete Modal -->
-<div class="modal fade" id="confirmar-eliminar-modal" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">¿Estás seguro que deseas eliminar <span class="asignatura-a-eliminar"></span>?</h4>
-            </div>
-            <div class="modal-body">
-
-              <!--Form para eliminar la asignatura-->
-              <form action="{% url 'asignaturas:eliminar-asignatura' %}" method="post">
-                  {% csrf_token %}
-                  <!-- Para indicarle al backend que se debe eliminar-->
-                  <input type="text" value="delete" name="_method" style="display: none;">
-
-                  <!--Para pasarle al backend la asignatura-->
-                  <input type="text" name="codasig" style="display: none;" required>
-
-                  <button type="submit" class="btn btn-primary" id="delete">
-                    Eliminar
-                  </button>
-
-                  <button type="button" data-dismiss="modal" class="btn">
-                    Cancelar
-                  </button>
-              </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Editar modal -->
-<div class="modal fade" id="editar-modal" role="dialog">
-  <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-          <div class="modal-header">
-              <h4 class="modal-title" id="modal_title">Edición de asignatura</h4>
-          </div>
-          <div class="modal-body">
-              <form role="form">
-                  <div class="form-group">
-                      <label for="nombre"><span class="glyphicon glyphicon-pencil"></span> Nombre</label>
-                      <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Introduzca el nombre"
-                             required="true">
-                  </div>
-                  <div class="form-group">
-                      <label for="creditos"><span class="glyphicon glyphicon-pencil"></span> Créditos</label>
-                      <input type="number" class="form-control" id="creditos" name="creditos"
-                             placeholder="Introduzca los créditos" required="true">
-                  </div>
-                  <div class="form-group">
-                      <label for="codigo"><span class="glyphicon glyphicon-file"></span> Código</label>
-                      <input type="text" class="form-control" id="codigo" name="codigo"
-                             placeholder="Introduzca el código" required="true">
-                  </div>
-
-                  <input type="hidden" id="type" name="type" value="">
-                  <button type="submit" class="btn btn-success btn-block"><span
-                          class="glyphicon glyphicon-ok"></span> OK
-                  </button>
-              </form>
-          </div>
-      </div>
-  </div>
-</div>
+{% include "asignaturas/eliminar_asignatura.html" %}
 
 {% endblock wrapper %}
 {% block customscripts %}

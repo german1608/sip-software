@@ -1,14 +1,31 @@
-{% extends 'base/base_coordinador.html' %}
-{% block wrapper %}
-<form action="{% url 'asignaturas:eliminar-asignatura' %}" method="post">
-    {% csrf_token %}
-    <label for="codasig">Código de la asignatura: </label>
-    <div class="input-group">
-        <div class="w-5">
-            <input class="form-control" placeholder="XX1111" type="text" name='codasig' id="codasig">
+<!-- Delete Modal -->
+<div class="modal fade" id="confirmar-eliminar-modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">¿Estás seguro que deseas eliminar <span class="asignatura-a-eliminar"></span>?</h4>
+            </div>
+            <div class="modal-body">
+
+              <!--Form para eliminar la asignatura-->
+              <form action="{% url 'asignaturas:eliminar-asignatura' %}" method="post">
+                  {% csrf_token %}
+                  <!-- Para indicarle al backend que se debe eliminar -->
+                  <input type="text" value="delete" name="_method" style="display: none;">
+
+                  <!--Para pasarle al backend la asignatura-->
+                  <input type="text" name="codasig" style="display: none;" required>
+
+                  <button type="submit" class="btn btn-primary" id="delete">
+                    Eliminar
+                  </button>
+
+                  <button type="button" data-dismiss="modal" class="btn">
+                    Cancelar
+                  </button>
+              </form>
+            </div>
         </div>
-        <input type="text" name='_method' value="delete" style="display: none;">
-        <button class="btn btn-primary" type="submit">Eliminar</button>
     </div>
-</form>
-{% endblock wrapper %}
+</div>
