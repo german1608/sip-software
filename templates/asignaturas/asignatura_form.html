@@ -30,9 +30,9 @@
               <form action="" method="POST" >
                 {% csrf_token %}
                 <div class="tab-content">
-                  <input type="hidden" name="codasig-original" value="{{form.instance.codasig}}">
                   <div class="tab-pane active" id="informacion_basica">
                     <!-- Datos para la informacion basica -->
+                    <input type="hidden" name="id" value="{{form.instance.id}}">
                     <div class="form-group">
                       <label for="nombre-asig"><span class="glyphicon glyphicon-pencil"></span> {{ form.nombre.label }}</label>
                       {% render_field form.nombre class="form-control mostrar-only" id="nombre-asig" placeholder="Introduzca el nombre" %}

@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             name='Asignatura',
             fields=[
                 ('nombre', models.CharField(max_length=100, verbose_name='Nombre')),
-                ('codasig', models.CharField(max_length=10, primary_key=True, serialize=False, verbose_name='Código de Asignatura')),
+                ('codasig', models.CharField(max_length=10, unique=True, serialize=False, verbose_name='Código de Asignatura')),
                 ('creditos', models.PositiveSmallIntegerField(verbose_name='Créditos')),
                 ('pertenece', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='asignaturas', to='coordinacion.Coordinacion', verbose_name='Coordinación')),
                 ('profesores', models.ManyToManyField(related_name='profesores', to='profesores.Profesor', verbose_name='Profesores')),

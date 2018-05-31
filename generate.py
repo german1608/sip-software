@@ -80,7 +80,8 @@ if is_empty(ProgramaAsignatura):
         ProgramaAsignatura(url='german.com'),
         ProgramaAsignatura(url='youtube.com'),
         ProgramaAsignatura(url='gustavo.com'),
-        ProgramaAsignatura(url='daniel.com'),
+        ProgramaAsignatura(url='daniel.com'),ProgramaAsignatura(url='gustavo.com'),
+        ProgramaAsignatura(url='david.com'),
     ]
 
     # Aqui se itera sobre las asignaturas y se le agregan los programas

@@ -24,11 +24,11 @@ class Index(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        codasig = request.POST.get('codasig-original', '')
+        id = request.POST.get('id', '')
         pprint(request.POST)
         try:
             # Vemos si ya la asignatura existe
-            asignatura = Asignatura.objects.get(codasig=codasig)
+            asignatura = Asignatura.objects.get(id=id)
             form = AsignaturaForm(request.POST, instance=asignatura)
             formset1 = HorarioFormset(request.POST, instance=asignatura)
             formset2 = ProgramaFormset(request.POST, instance=asignatura)

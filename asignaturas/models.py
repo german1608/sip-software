@@ -7,7 +7,7 @@ from profesores.models import Profesor
 
 class Asignatura(models.Model):
     nombre = models.CharField(max_length=100, verbose_name='Nombre')
-    codasig = models.CharField(max_length=10, primary_key=True,
+    codasig = models.CharField(max_length=10, unique=True,
         verbose_name='Código de Asignatura')
     creditos = models.PositiveSmallIntegerField(verbose_name='Créditos')
     profesores = models.ManyToManyField(Profesor, verbose_name='Profesores',
