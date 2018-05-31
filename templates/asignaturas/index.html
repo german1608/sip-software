@@ -45,7 +45,7 @@
                 <td>
                   <a class="nombre-asignatura" href="#" onclick="obtenerAsignatura(this, '{% url 'asignaturas:editar-asignatura' %}');" data-nombre="{{asignatura.nombre}}" data-codasig="{{asignatura.codasig}}">{{asignatura.nombre}}</a>
                   <!--Este boton todavía no hace nada-->
-                  <button class="btn btn-danger asignatura-btn" data-toggle="modal"
+                  <button class="btn btn-danger asignatura-btn-1" data-toggle="modal"
                   data-target="#confirmar-eliminar-modal" data-codasig="{{asignatura.codasig}}"
                   onclick="show_eliminar_modal(this);">
                     <i class="far fa-trash-alt"></i>
