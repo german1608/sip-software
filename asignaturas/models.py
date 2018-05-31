@@ -19,7 +19,7 @@ class Asignatura(models.Model):
         return self.codasig + ": " + self.nombre
 
 class ProgramaAsignatura(models.Model):
-    url = models.URLField(verbose_name='Código de Programa', unique=True)
+    url = models.URLField(verbose_name='Código de Programa')
     asignatura = models.ForeignKey(Asignatura,
         related_name='programas', on_delete=models.CASCADE, verbose_name='Asignatura')
 

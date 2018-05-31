@@ -19,8 +19,8 @@ class Index(TemplateView):
         context['asignaturas'] = Asignatura.objects.all()
         context['pagename'] = 'Asignaturas'
         context['form'] = AsignaturaForm()
-        context['formset1'] = HorarioFormset()
-        context['formset2'] = ProgramaFormset()
+        context['formset1'] = HorarioFormset(prefix="horarios")
+        context['formset2'] = ProgramaFormset(prefix="programas")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -30,14 +30,14 @@ class Index(TemplateView):
             # Vemos si ya la asignatura existe
             asignatura = Asignatura.objects.get(id=id)
             form = AsignaturaForm(request.POST, instance=asignatura)
-            formset1 = HorarioFormset(request.POST, instance=asignatura)
-            formset2 = ProgramaFormset(request.POST, instance=asignatura)
+            formset1 = HorarioFormset(request.POST, instance=asignatura, prefix="horarios")
+            formset2 = ProgramaFormset(request.POST, instance=asignatura, prefix="programas")
         except Exception as e:
             print('\n\nocurrió un error',e)
             # Crear asignatura
             form = AsignaturaForm(request.POST)
-            formset1 = HorarioFormset(request.POST)
-            formset2 = ProgramaFormset(request.POST)
+            formset1 = HorarioFormset(request.POST, prefix="horarios")
+            formset2 = ProgramaFormset(request.POST, prefix="programas")
 
         context = self.get_context_data()
         if form.is_valid() and formset1.is_valid() and formset2.is_valid():
