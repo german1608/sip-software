@@ -1,9 +1,27 @@
+toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": true,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
+
 $(document).ready( function () {
     // Inicializar Datable para asignaturas
     const tablaUrl = $('[name="tabla-json"]').val()
     $('#t_asignaturas').DataTable({
         'ajax': tablaUrl
     });
+    toastr["success"]("", "Materia creada")
 } );
 
 var edit_mode = false;
