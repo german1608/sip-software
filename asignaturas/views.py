@@ -79,14 +79,14 @@ class EliminarAsignaturaView(TemplateView):
         # workaround para DELETE methods
         if method == 'delete':
             return self.delete(*args, **kwargs)
-
+        print('hola2')
         return super(EliminarAsignaturaView, self).dispatch(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         eliminarAsignatura(self.request.POST.get('codasig'))
-
+        print('hola')
         # Redirige al inicio por ahora
-        return HttpResponseRedirect(reverse('asignaturas:dashboard'))
+        return JsonResponse({'ok': True})
 
 class AnadirAsignaturaView(View):
     def get(self, request, *args, **kwargs):

@@ -46,6 +46,25 @@ $(document).ready( function () {
             }
         })
     })
+
+    $('#form-eliminar').on('submit', function (e) {
+        e.preventDefault()
+        const form = $(this)
+        console.log(form.serialize())
+        $.ajax({
+            method: form.attr('method'),
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (res) {
+                toastr["success"]("", "Asignatura Eliminada")
+                $("#confirmar-eliminar-modal").modal('hide')
+                $('#agregar-modal').modal('hide')
+                tablaAsignaturas.ajax.reload()
+            },
+            error: function (e) {
+            }
+        })
+    })
 } );
 
 var edit_mode = false;

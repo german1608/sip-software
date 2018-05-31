@@ -9,7 +9,7 @@
             <div class="modal-body">
 
               <!--Form para eliminar la asignatura-->
-              <form action="{% url 'asignaturas:eliminar-asignatura' %}" method="post">
+              <form id="form-eliminar" action="{% url 'asignaturas:eliminar-asignatura' %}" method="post">
                   {% csrf_token %}
                   <!-- Para indicarle al backend que se debe eliminar -->
                   <input type="text" value="delete" name="_method" style="display: none;">
