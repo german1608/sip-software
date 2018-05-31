@@ -38,11 +38,11 @@ function show_informacion_modal(agregar){
     console.log('agregar', agregar)
     if (!agregar) {
         deshabilitarForm();
-        $('#agregar-btn-text').html('Editar');
+        $('#submit-btn').addClass('d-none');
         $('.asignatura-btn').removeClass('d-none');
     }
     else {
-        $('#agregar-btn-text').html('Agregar');
+        $('#submit-btn').removeClass('d-none');
         $('.asignatura-btn').addClass('d-none');
     }
 }
