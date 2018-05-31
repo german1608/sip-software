@@ -23,13 +23,25 @@ class Index(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        form = AsignaturaForm(request.POST)
-        formset1 = HorarioFormset(request.POST)
-        formset2 = ProgramaFormset(request.POST)
+        codasig = request.POST.get('codasig', '')
+        try:
+            # Vemos si ya la asignatura existe
+            asignatura = Asignatura.objects.get(codasig=codasig)
+
+            form = AsignaturaForm(request.POST, instance=asignatura)
+            formset1 = HorarioFormset(request.POST, instance=asignatura)
+            formset2 = ProgramaFormset(request.POST, instance=asignatura)
+        except Exception as e:
+            # Crear asignatura
+            form = AsignaturaForm(request.POST)
+            formset1 = HorarioFormset(request.POST)
+            formset2 = ProgramaFormset(request.POST)
+
         context = self.get_context_data()
 
         if form.is_valid() and formset1.is_valid() and formset2.is_valid():
             form.save()
+            print(formset1)
             for instance in formset1.save(commit=False):
                 instance.asignatura = form.instance
                 instance.save()
@@ -69,6 +81,17 @@ class EliminarAsignaturaView(TemplateView):
         # Redirige al inicio por ahora
         return HttpResponseRedirect(reverse('asignaturas:dashboard'))
         
+class AnadirAsignaturaView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'form': AsignaturaForm(),
+            'formset1': HorarioFormset(),
+            'formset2': ProgramaFormset()
+        }
+        rendered = render_to_string('asignaturas/asignatura_form.html', context=context, request=request)
+        data = rendered
+        return JsonResponse(data, safe=False)
+
 class EditarAsignaturaView(View):
     def get(self, request, *args, **kwargs):
         codasig = request.GET.get('codasig', '')
@@ -79,8 +102,7 @@ class EditarAsignaturaView(View):
             'formset2': ProgramaFormset(instance=asig)
         }
         rendered = render_to_string('asignaturas/asignatura_form.html', context=context, request=request)
-        data = [serializers.serialize('json', Asignatura.objects.filter(codasig=codasig)), 
-            rendered]
+        data = rendered
         return JsonResponse(data, safe=False)
 
 '''

@@ -13,7 +13,6 @@ var edit_mode = false;
 function show_eliminar_modal(btn) {
     // Obtener código de asignatura
     let codasig = $(btn).data('codasig');
-    console.log(codasig);
     // Actualizar data del modal
     $('.asignatura-a-eliminar').html(codasig);
     $('#confirmar-eliminar-modal input[name=codasig]').val(codasig);
@@ -21,12 +20,14 @@ function show_eliminar_modal(btn) {
 
 /**
  * Mostrar el modal para mostrar la informacion de la asignatura 
- * @param a Link de la tabla de asignaturas 
+ * @param agregar booleano que dice si es un modal para agregar una nueva asignatura
  */
-function show_informacion_modal(){
+function show_informacion_modal(agregar){
     $('#agregar-modal').modal();
     activarFormSets();
-    deshabilitarForm();
+    console.log('agregar', agregar)
+    if (!agregar)
+        deshabilitarForm();
 }
 
 function deshabilitarForm() {
@@ -78,20 +79,21 @@ function habilitar_edicion(btn){
 /**
  * Obtener del backend información de la asignatura cuando
  * se abre el modal para editar.
+ * @param btn botón presionado
+ * @param url url a donde hacer el GET request
+ * @param agregar booleano que dice si es un modal para agregar
  */
-function obtenerAsignatura(btn) {
+function obtenerAsignatura(btn, url, agregar) {
+    console.log(url);
     $.ajax({
-        url: '/asignaturas/editar',
+        url: url,
         method: 'GET',
         data: {
             codasig: $(btn).data('codasig')
         },
-        success: (data) => {
-            asig = JSON.parse(data[0])[0];
-            let form = data[1];
-            console.log(form);
+        success: (form) => {
             $('#agregar-modal').replaceWith(form);
-            show_informacion_modal();
+            show_informacion_modal(agregar);
         }
     })
 }

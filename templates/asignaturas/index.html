@@ -19,7 +19,10 @@
       </form>
     </div>
     <div class="text-center">
-        <button type="button" data-toggle="modal" data-target="#agregar-modal" class="btn btn-primary" id="new">Agregar</button>
+        <button type="button"
+        class="btn btn-primary" id="new" onclick="obtenerAsignatura(this, '{% url 'asignaturas:anadir-asignatura' %}', true);">
+          Agregar
+        </button>
     </div>
     <div class="row">
       <div class="col">
@@ -38,7 +41,7 @@
              {% for asignatura in asignaturas %}
               <tr>
                 <td>
-                  <a class="nombre-asignatura" href="#" onclick="obtenerAsignatura(this);" data-nombre="{{asignatura.nombre}}" data-codasig="{{asignatura.codasig}}">{{asignatura.nombre}}</a>
+                  <a class="nombre-asignatura" href="#" onclick="obtenerAsignatura(this, '{% url 'asignaturas:editar-asignatura' %}');" data-nombre="{{asignatura.nombre}}" data-codasig="{{asignatura.codasig}}">{{asignatura.nombre}}</a>
                   <!--Este boton todavía no hace nada-->
                   <button class="btn btn-danger asignatura-btn" data-toggle="modal"
                   data-target="#confirmar-eliminar-modal" data-codasig="{{asignatura.codasig}}"
