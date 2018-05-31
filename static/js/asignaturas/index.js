@@ -26,8 +26,13 @@ function show_informacion_modal(agregar){
     $('#agregar-modal').modal();
     activarFormSets();
     console.log('agregar', agregar)
-    if (!agregar)
+    if (!agregar) {
         deshabilitarForm();
+        $('#agregar-btn-text').html('Editar');
+    }
+    else {
+        $('#agregar-btn-text').html('Agregar');
+    }
 }
 
 function deshabilitarForm() {
