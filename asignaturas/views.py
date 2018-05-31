@@ -33,7 +33,6 @@ class Index(TemplateView):
             formset1 = HorarioFormset(request.POST, instance=asignatura, prefix="horarios")
             formset2 = ProgramaFormset(request.POST, instance=asignatura, prefix="programas")
         except Exception as e:
-            print('\n\nocurrió un error',e)
             # Crear asignatura
             form = AsignaturaForm(request.POST)
             formset1 = HorarioFormset(request.POST, prefix="horarios")
