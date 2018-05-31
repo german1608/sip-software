@@ -78,7 +78,6 @@ function activarFormSets() {
  * @param btn Boton para habilitar la edicion de la asignatura 
  */
 function habilitar_edicion(btn){
-    console.log(edit_mode)
     switch (edit_mode) {
         case false:
             $('.anadir-horario-btn').removeClass('disabled');
@@ -98,7 +97,7 @@ function habilitar_edicion(btn){
             $('#submit-btn').click();
             break;
     }
-    edit_mode = !edit_mode;
+    edit_mode = true;
     $('.editar_asignatura').toggleClass('active');
 }
 

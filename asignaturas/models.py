@@ -14,6 +14,7 @@ class Asignatura(models.Model):
         related_name='profesores')
     pertenece = models.ForeignKey(Coordinacion, verbose_name='Coordinación',
         related_name='asignaturas', on_delete=models.CASCADE)
+    #fecha_de_ejecucion = models.DateField(default=date)
 
     def __str__(self):
         return self.codasig + ": " + self.nombre

@@ -24,7 +24,6 @@ class Index(TemplateView):
 
     def post(self, request, *args, **kwargs):
         id = request.POST.get('id', '')
-        pprint(request.POST)
         try:
             # Vemos si ya la asignatura existe
             asignatura = Asignatura.objects.get(id=id)
@@ -55,11 +54,9 @@ class Index(TemplateView):
         '''
         Borrar los forms borrados
         '''
-        print(formset1.deleted_forms)
         for form1 in formset1.deleted_forms:
             form1.instance.delete()
 
-        print(formset2.deleted_forms)
         for form2 in formset2.deleted_forms:
             form2.instance.delete()
 

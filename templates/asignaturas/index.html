@@ -24,11 +24,25 @@
           Agregar
         </button>
     </div>
+    <div id="form-errors" class="text-danger">
+        <ul>
+          {% if form.errors %}
+            <li class="d-block">{{form.errors}}</li>
+          {% endif %}
+          {% for form1 in formset1 %}
+            {% if form1.errors %}
+              <li class="d-block">{{form1.errors}}</li>
+            {% endif %}
+          {% endfor %}
+          {% for form2 in formset2 %}
+            {% if form2.errors %}
+              <li class="d-block">{{form2.errors}}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
     <div class="row">
       <div class="col">
-          {{form.errors}}
-          {{formset1.errors}}
-          {{formset2.errors}}
           <!-- Datable de Asignaturas-->
           <table id="t_asignaturas" class="display">
             <!--Asignaturas de prueba-->
