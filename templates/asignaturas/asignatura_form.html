@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<form action="" method="POST" id="form-modal">
+<form action="{% url 'asignaturas:anadir-asignatura' %}" method="POST" id="form-modal">
   {% csrf_token %}
   <div class="tab-content">
     <div class="tab-pane active" id="informacion_basica">

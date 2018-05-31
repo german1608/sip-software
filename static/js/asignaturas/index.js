@@ -15,61 +15,40 @@ toastr.options = {
     "hideMethod": "fadeOut"
 }
 const asigIdContainer = '#asig-container'
-
+var tablaAsignaturas
 $(document).ready( function () {
     // Inicializar Datable para asignaturas
     const tablaUrl = $('[name="tabla-json"]').val()
-    $('#t_asignaturas').DataTable({
+    tablaAsignaturas = $('#t_asignaturas').DataTable({
         'ajax': tablaUrl
     });
-    // toastr["success"]("", "Materia creada")
+
+    $(asigIdContainer).on('submit', '#form-modal', function (e) {
+        const $form = $(this)
+        e.preventDefault()
+        $.ajax({
+            url: $form.attr('action'),
+            method: $form.attr('method'),
+            data: $form.serialize(),
+            success: function (json) {
+                const html = json.html,
+                    valid = json.valid
+
+                if (!valid) {
+                    toastr["error"]("", "Tiene errores en el formulario")
+                    $(asigIdContainer).html(html)
+                    activarPlugins()
+                } else {
+                    toastr["success"]("", "Materia creada")
+                    $('#agregar-modal').modal('hide')
+                    tablaAsignaturas.ajax.reload()
+                }
+            }
+        })
+    })
 } );
 
 var edit_mode = false;
-
-/**
- * Mostrar modal para eliminar asignatura.
- * @param btn Botón presionado
- */
-function show_eliminar_modal(btn) {
-    // Obtener código de asignatura
-    let codasig = $(btn).data('codasig');
-    // Actualizar data del modal
-    $('.asignatura-a-eliminar').html(codasig);
-    $('#confirmar-eliminar-modal input[name=codasig]').val(codasig);
-}
-
-/**
- * Mostrar el modal para mostrar la informacion de la asignatura 
- * @param agregar booleano que dice si es un modal para agregar una nueva asignatura
- */
-function show_informacion_modal(agregar){
-    $('#agregar-modal').modal();
-
-    $('.delete-form input').attr('type', 'button');
-
-    console.log('agregar', agregar)
-    if (!agregar) {
-        $('#submit-btn').addClass('d-none');
-        $('.asignatura-btn').removeClass('d-none');
-    }
-    else {
-        activarPlugins()
-        
-        $('#submit-btn').removeClass('d-none');
-        $('.asignatura-btn').addClass('d-none');
-    }
-}
-
-function deshabilitarForm() {
-    // Se anade las clases readonly al input para que no sea modificable
-    $('.anadir-horario-btn').addClass('disabled');
-    $('.mostrar-only').attr('readonly', "");
-    $('.mostrar-only').attr('disabled', '');
-    $('.mostrar-only').attr('class', "mostrar-only form-control-plaintext");
-    $('.delete-row').addClass('d-none');
-}
-
 function activarPlugins() {
     const horarioPrefix = $('[name=horario_formset_prefix]').val()
     const programaPrefix = $('[name=programa_formset_prefix]').val()
@@ -98,8 +77,8 @@ function activarPlugins() {
 }
 
 /**
- * Habilitar los input para modificar los campos 
- * @param btn Boton para habilitar la edicion de la asignatura 
+ * Habilitar los input para modificar los campos
+ * @param btn Boton para habilitar la edicion de la asignatura
  */
 function habilitar_edicion(btn){
     switch (edit_mode) {
@@ -125,6 +104,42 @@ function habilitar_edicion(btn){
     $('.editar_asignatura').toggleClass('active');
 }
 
+/**
+ * Mostrar modal para eliminar asignatura.
+ * @param btn Botón presionado
+ */
+function show_eliminar_modal(btn) {
+    // Obtener código de asignatura
+    let codasig = $(btn).data('codasig');
+    // Actualizar data del modal
+    $('.asignatura-a-eliminar').html(codasig);
+    $('#confirmar-eliminar-modal input[name=codasig]').val(codasig);
+}
+
+/**
+ * Mostrar el modal para mostrar la informacion de la asignatura
+ * @param agregar booleano que dice si es un modal para agregar una nueva asignatura
+ */
+function show_informacion_modal(agregar){
+    $('#agregar-modal').modal();
+
+    $('.delete-form input').attr('type', 'button');
+
+    console.log('agregar', agregar)
+    if (!agregar) {
+        $('#submit-btn').addClass('d-none');
+        $('.asignatura-btn').removeClass('d-none');
+    }
+    else {
+        activarPlugins()
+
+        $('#submit-btn').removeClass('d-none');
+        $('.asignatura-btn').addClass('d-none');
+    }
+}
+
+
+
 
 /**
  * Obtener del backend información de la asignatura cuando
@@ -135,18 +150,15 @@ function habilitar_edicion(btn){
  */
 function obtenerAsignatura(btn, url, agregar) {
     $.ajax({
-    url: url,
-    method: 'GET',
-    // data: {
-    //     codasig: $(btn).data('codasig')
-    // },
-    success: (form) => {
-        $(asigIdContainer).html(form);
-        show_informacion_modal(agregar);
-        edit_mode = false;
-    },
-    error: (err) => {
-        console.log(err)
-    }
-})
+        url: url,
+        method: 'GET',
+        success: (form) => {
+            $(asigIdContainer).html(form);
+            show_informacion_modal(agregar);
+            edit_mode = false;
+        },
+        error: (err) => {
+            console.log(err)
+        }
+    })
 }
