@@ -163,3 +163,12 @@ def eliminarAsignatura(codasig):
     except Exception as e:
         print(e)
 
+
+class AsignaturasAsJson(View):
+    def get(self, *args, **kwargs):
+        asignaturas = list(map(
+            lambda x: [x['nombre'], x['codasig'], x['creditos'], x['fecha_de_ejecucion']],
+            Asignatura.objects.all()
+            .values('nombre', 'codasig', 'creditos', 'fecha_de_ejecucion')
+        ))
+        return JsonResponse({'data': asignaturas})

@@ -1,6 +1,9 @@
 $(document).ready( function () {
     // Inicializar Datable para asignaturas
-    $('#t_asignaturas').DataTable();
+    const tablaUrl = $('[name="tabla-json"]').val()
+    $('#t_asignaturas').DataTable({
+        'ajax': tablaUrl
+    });
 } );
 
 var edit_mode = false;
