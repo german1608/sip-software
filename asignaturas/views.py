@@ -167,7 +167,19 @@ def eliminarAsignatura(codasig):
 class AsignaturasAsJson(View):
     def get(self, *args, **kwargs):
         asignaturas = list(map(
-            lambda x: [x['nombre'], x['codasig'], x['creditos'], x['fecha_de_ejecucion']],
+            lambda x: [
+                '''<a href="#"
+                class="nombre-asignatura"
+                onclick="obtenerAsignatura(this, '{url}');"
+                data-nombre="{nombre}" data-codasig="{codasig}"
+                >{nombre}</a>'''.format(
+                    nombre=x['nombre'],
+                    url=reverse('asignaturas:editar-asignatura'),
+                    codasig=x['codasig']
+                ),
+                x['codasig'],
+                x['creditos'],
+                x['fecha_de_ejecucion']],
             Asignatura.objects.all()
             .values('nombre', 'codasig', 'creditos', 'fecha_de_ejecucion')
         ))
