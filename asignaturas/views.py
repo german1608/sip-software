@@ -24,16 +24,23 @@ class Index(TemplateView):
         formset1 = HorarioFormset(request.POST)
         formset2 = ProgramaFormset(request.POST)
         context = self.get_context_data()
-
+        
         if form.is_valid() and formset1.is_valid() and formset2.is_valid():
             form.save()
-            for instance in formset1.save(commit=False):
-                instance.asignatura = form.instance
-                instance.save()
-            for instance in formset2.save(commit=False):
-                instance.asignatura = form.instance
-                instance.save()
+            lista = formset1.save(commit=False)
+
+            if self.horario_valido(lista):
+            
+                for instance in formset1.save(commit=False): 
+                    instance.asignatura = form.instance
+                    instance.save()
+                for instance in formset2.save(commit=False):
+                    instance.asignatura = form.instance
+                    instance.save()
+            else:
+                print("Horario inválido");
         else:
+           
             print(form.errors)
             print(formset1.errors)
             print(formset2.errors)
@@ -42,6 +49,15 @@ class Index(TemplateView):
             context['formset2'] = formset2
         return render(request, self.template_name, context)
 
+    def horario_valido(self,lista):
+        for i in lista:    
+            for x in lista:
+                if i!=x:
+                    if i.dia==x.dia:
+                        if (i.hora_inicio>=x.hora_inicio and i.hora_inicio<=x.hora_final) or (i.hora_final>=x.hora_inicio and i.hora_final<=x.hora_final) or (i.hora_inicio>x.hora_inicio and i.hora_final<x.hora_final) or (i.hora_inicio<x.hora_inicio and i.hora_final>x.hora_final):
+                            return False
+            
+        return True
 
 # Vista para eliminar asignatura
 class EliminarAsignaturaView(TemplateView):
