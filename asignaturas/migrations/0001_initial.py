@@ -38,13 +38,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ProgramaAsignatura',
             fields=[
-                ('codigo', models.CharField(max_length=6, primary_key=True, serialize=False, verbose_name='Código de Programa')),
+                ('url', models.URLField(serialize=False, verbose_name='Código de Programa')),
                 ('asignatura', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='programas', to='asignaturas.Asignatura', verbose_name='Asignatura')),
             ],
         ),
         migrations.AlterUniqueTogether(
             name='programaasignatura',
-            unique_together={('codigo', 'asignatura')},
+            unique_together={('url', 'asignatura')},
         ),
         migrations.AlterUniqueTogether(
             name='horario',

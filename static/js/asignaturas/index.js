@@ -1,7 +1,6 @@
 $(document).ready( function () {
     // Inicializar Datable para asignaturas
     $('#t_asignaturas').DataTable();
-    activarFormSets();
 } );
 
 var edit_mode = false;
@@ -32,7 +31,9 @@ function show_informacion_modal(agregar){
 
     $('.horario-input').attr('min', '1');
     $('.horario-input').attr('max', '12');
-    
+
+    $('.delete-form input').attr('type', 'button');
+
     activarFormSets();
     console.log('agregar', agregar)
     if (!agregar) {

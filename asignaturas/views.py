@@ -8,6 +8,7 @@ from .forms import AsignaturaForm, HorarioFormset, ProgramaFormset
 
 from django.core import serializers
 from django.template.loader import render_to_string
+from pprint import pprint
 
 
 class Index(TemplateView):
@@ -23,7 +24,8 @@ class Index(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        codasig = request.POST.get('codasig', '')
+        codasig = request.POST.get('codasig-original', '')
+        pprint(request.POST)
         try:
             # Vemos si ya la asignatura existe
             asignatura = Asignatura.objects.get(codasig=codasig)
@@ -31,13 +33,13 @@ class Index(TemplateView):
             formset1 = HorarioFormset(request.POST, instance=asignatura)
             formset2 = ProgramaFormset(request.POST, instance=asignatura)
         except Exception as e:
+            print('\n\nocurrió un error',e)
             # Crear asignatura
             form = AsignaturaForm(request.POST)
             formset1 = HorarioFormset(request.POST)
             formset2 = ProgramaFormset(request.POST)
 
         context = self.get_context_data()
-
         if form.is_valid() and formset1.is_valid() and formset2.is_valid():
             form.save()
             for instance in formset1.save(commit=False):
@@ -47,12 +49,16 @@ class Index(TemplateView):
                 instance.asignatura = form.instance
                 instance.save()
         else:
-            print(form.errors)
-            print(formset1.errors)
-            print(formset2.errors)
             context['form'] = form
             context['formset1'] = formset1
             context['formset2'] = formset2
+
+
+        '''
+        Borrar los forms borrados
+        '''
+        print('deleted forms',formset1.deleted_forms)
+
         return render(request, self.template_name, context)
 
 

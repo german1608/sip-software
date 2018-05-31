@@ -19,15 +19,14 @@ class Asignatura(models.Model):
         return self.codasig + ": " + self.nombre
 
 class ProgramaAsignatura(models.Model):
-    codigo = models.CharField(max_length=6, primary_key=True,
-        verbose_name='Código de Programa')
+    url = models.URLField(verbose_name='Código de Programa', unique=True)
     asignatura = models.ForeignKey(Asignatura,
         related_name='programas', on_delete=models.CASCADE, verbose_name='Asignatura')
 
     def __str__(self):
         return self.codigo + ": " + str(self.asignatura.nombre)
     class Meta:
-        unique_together = ('codigo', 'asignatura')
+        unique_together = ('url', 'asignatura')
 
 def hora_valida(x):
     if not (1 <= x <= 12):

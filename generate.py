@@ -76,16 +76,11 @@ if is_empty(Horario):
 # Se crean los programas por asignaturas
 if is_empty(ProgramaAsignatura):
     programas = [
-        ProgramaAsignatura(codigo='1'),
-        ProgramaAsignatura(codigo='2'),
-        ProgramaAsignatura(codigo='3'),
-        ProgramaAsignatura(codigo='4'),
-        ProgramaAsignatura(codigo='5'),
-        ProgramaAsignatura(codigo='6'),
-        ProgramaAsignatura(codigo='7'),
-        ProgramaAsignatura(codigo='8'),
-        ProgramaAsignatura(codigo='9'),
-        ProgramaAsignatura(codigo='10'),
+        ProgramaAsignatura(url='google.com'),
+        ProgramaAsignatura(url='german.com'),
+        ProgramaAsignatura(url='youtube.com'),
+        ProgramaAsignatura(url='gustavo.com'),
+        ProgramaAsignatura(url='daniel.com'),
     ]
 
     # Aqui se itera sobre las asignaturas y se le agregan los programas
@@ -93,8 +88,8 @@ if is_empty(ProgramaAsignatura):
 
     iteradorProgramas = 0
     for asignatura in coordinacion.asignaturas.all():
-        asignatura.programas.create(codigo=programas[iteradorProgramas].codigo)
-        asignatura.programas.create(codigo=programas[iteradorProgramas + 1].codigo)
+        asignatura.programas.create(url=programas[iteradorProgramas].url)
+        asignatura.programas.create(url=programas[iteradorProgramas + 1].url)
         iteradorProgramas += 2
         print("Se asocio exitosamente los programas de la asignatura: " + asignatura.codasig)
         
