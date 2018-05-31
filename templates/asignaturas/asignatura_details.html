@@ -1,0 +1,90 @@
+<div class="tab-content">
+  <div class="tab-pane active" id="informacion_basica">
+    <!-- Datos para la informacion basica -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <h6 class="text-muted">Nombre de la Asignatura</h6>
+          <h4>{{asignatura.nombre}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h6 class="text-muted">Créditos</h6>
+          <h4>{{asignatura.creditos}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h6 class="text-muted">Código</h6>
+          <h4>{{asignatura.codasig}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h6 class="text-muted">Profesores</h6>
+          <ul>
+            {% for profesor in asignatura.profesores.all %}
+            <li>{{profesor}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h6 class="text-muted">Coordinación</h6>
+          <h4>{{asignatura.pertenece}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h6 class="text-muted">Fecha de Ejecución</h6>
+          <h4>{{asignatura.fecha_de_ejecucion}}</h4>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Informacion de los horarios de la asignatura -->
+  <div class="tab-pane" id="horario">
+    <div class="container-fluid">
+      {% for horario in horarios %}
+      <div class="row">
+        <div class="col">
+          <h6 class="text-muted">Día</h6>
+          <h5>{{horario.get_dia_display}}</h5>
+        </div>
+        <div class="col">
+          <h6 class="text-muted">Inicio</h6>
+          <h5>{{horario.hora_inicio}}</h5>
+        </div>
+        <div class="col">
+          <h6 class="text-muted">Fin</h6>
+          <h5>{{horario.hora_final}}</h5>
+        </div>
+
+      </div>
+      {% if forloop.counter != horarios.count %}
+      <hr>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Form para los programas  -->
+  <div class="tab-pane" id="programa">
+    {% for programa in programas %}
+    <div class="row">
+      <div class="col">
+        <h6 class="text-muted">Url</h6>
+        <h5>{{programa.url}}</h5>
+      </div>
+    </div>
+    {% if forloop.counter != horarios.count %}
+    <hr>
+    {% endif %}
+    {% endfor %}
+
+  </div>
+</div>

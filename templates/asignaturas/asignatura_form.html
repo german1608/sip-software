@@ -1,128 +1,100 @@
 {% load widget_tweaks %}
 
-<!--Modal para agregar asignatura-->
-<input type="hidden" name="horario_formset_prefix" value="{{formset1.prefix}}">
-<input type="hidden" name="programa_formset_prefix" value="{{formset2.prefix}}">
-<div class="modal fade" id="agregar-modal" role="dialog">
-  <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="modal_title">Agregar asignatura</h4>
-            <div class="float-right">
-              <button class="editar_asignatura btn btn-success asignatura-btn" onclick="habilitar_edicion(this)">
-                <i class="far fa-edit"></i>
-              </button>
-              <button class="btn btn-danger asignatura-btn" data-toggle="modal"
-                  data-target="#confirmar-eliminar-modal" data-codasig="{{form.instance.codasig}}"
-                  onclick="show_eliminar_modal(this);">
-                  <i class="far fa-trash-alt"></i>
-              </button>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </div>
-          <div class="modal-body" >
-              <!-- La paginacion esta implementada a traves de tabs (Sujeto a cambios) -->
-              <ul class="nav nav-tabs" id="tabContent">
-                <li class="nav-item active"><a class="nav-link show active" href="#informacion_basica" data-toggle="tab">Información básica</a></li>
-                <li class="nav-item"><a class="nav-link" href="#horario" data-toggle="tab">Horarios</a></li>
-                <li class="nav-item"><a class="nav-link" href="#programa" data-toggle="tab">Programas</a></li>
-              </ul>
-              <form action="" method="POST" id="form-modal">
-                {% csrf_token %}
-                <div class="tab-content">
-                  <div class="tab-pane active" id="informacion_basica">
-                    <!-- Datos para la informacion basica -->
-                    <input type="hidden" name="id" value="{{form.instance.id}}">
-                    <div class="form-group">
-                      <label for="nombre-asig"><span class="glyphicon glyphicon-pencil"></span> {{ form.nombre.label }}</label>
-                      {% render_field form.nombre class="form-control mostrar-only" id="nombre-asig" placeholder="Introduzca el nombre" %}
-                    </div>
-                    <div class="form-group">
-                      <label for="creditos"><span class="glyphicon glyphicon-pencil"></span> {{ form.creditos.label }}</label>
-                      {% render_field form.creditos class="form-control mostrar-only" id="creditos" placeholder="Introduzca el número de créditos" %}
-                    </div>
-                    <div class="form-group">
-                      <label for="codigo"><span class="glyphicon glyphicon-file"></span> {{ form.codasig.label }}</label>
-                      {% render_field form.codasig class="form-control" id="codigo" placeholder="Formatos válidos LLLXXX, LLXXXX, LL-XXXX" pattern="[A-Z]{2}-[0-9]{4}|[A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{4}" %}
-                    </div>
-
-                    <div class="form-group">
-                      <label for="profesores"><span class="glyphicon glyphicon-file"></span> {{ form.profesores.label }}</label>
-                      {% render_field form.profesores class="form-control mostrar-only" %}
-                    </div>
-
-                    <div class="form-group">
-                      <label for="coordinacion"><span class="glyphicon glyphicon-file"></span> {{ form.pertenece.label }}</label>
-                      {% render_field form.pertenece class="form-control mostrar-only" %}
-                    </div>
-
-                    <div class="form-group">
-                      <label for="fecha-de-ejecucion">{{form.fecha_de_ejecucion.label}} <span class="text-secondary font-italic">(mm/dd/yy)</span></label>
-                      {% render_field form.fecha_de_ejecucion class="form-control mostrar-only" type="date" %}
-                    </div>
-                    {{ form.DELETE }}
-                    <input type="hidden" id="type" name="type" value="">
-                    {% comment %} <button type="button" data-toggle="tab" class="btn btn-success btn-block"><span
-                      class="glyphicon glyphicon-ok"></span> Siguiente
-                    </button> {% endcomment %}
-
-                  </div>
-
-                  <!-- Informacion de los horarios de la asignatura -->
-                  <div class="tab-pane" id="horario">
-                    {% for form1 in formset1 %}
-                    <div class="form-row">
-                      {{form1.asignatura}}
-                      {{form1.id}}
-                      <div class="form-group col-md-6">
-                        <label for="dia"><span class="glyphicon glyphicon-pencil"></span> {{ form1.dia.label }}</label>
-                        {% render_field form1.dia id="dia" class="form-control mostrar-only"%}
-                      </div>
-
-                      <div class="form-group col-md-3">
-                        <label for="hora_inicio"><span class="glyphicon glyphicon-pencil"></span> {{ form1.hora_inicio.label }}</label>
-                        {% render_field form1.hora_inicio id="hora_inicio" class="form-control mostrar-only horario-input"%}
-                      </div>
-
-                      <div class="form-group col-md-3">
-                        <label for="hora_final"><span class="glyphicon glyphicon-pencil"></span> {{ form1.hora_final.label }}</label>
-                        {% render_field form1.hora_final id="hora_final" class="form-control mostrar-only horario-input"%}
-                      </div>
-                      {% if form1.instance.pk %}{{ form1.DELETE }}{% endif %}
-                    </div>
-                    {% endfor %}
-                    {{formset1.management_form}}
-
-                    <input type="hidden" id="type" name="type" value="">
-                    {% comment %} <button type="button" data-toggle="tab" class="btn btn-success btn-block"><span
-                      class="glyphicon glyphicon-ok"></span> Siguiente
-                    </button> {% endcomment %}
-                  </div>
-
-                  <!-- Form para los programas  -->
-                  <div class="tab-pane" id="programa">
-                      {% for form2 in formset2 %}
-                        <div class="form-group">
-                            {{form2.asignatura}}
-                            {{form2.id}}
-                            <label for="url"><span class="glyphicon glyphicon-pencil"></span> {{ form2.url.label }}</label>
-                            {% render_field form2.url class="form-control mostrar-only" id="url" placeholder="Introduzca el url" %}
-                            {% if form2.instance.pk %}{{ form2.DELETE }}{% endif %}
-                        </div>
-                      {% endfor %}
-                      {{formset2.management_form}}
-
-                      <input type="hidden" id="type" name="type" value="">
-                  </div>
-                  <button id="submit-btn" type="submit" class="btn btn-primary btn-block"><span
-                    class="glyphicon glyphicon-ok"></span> Agregar
-                  </button>
-                </div>
-              </form>
-          </div>
+<form action="" method="POST" id="form-modal">
+  {% csrf_token %}
+  <div class="tab-content">
+    <div class="tab-pane active" id="informacion_basica">
+      <!-- Datos para la informacion basica -->
+      <input type="hidden" name="id" value="{{form.instance.id}}">
+      <div class="form-group">
+        <label for="nombre-asig"><span class="glyphicon glyphicon-pencil"></span> {{ form.nombre.label }}</label>
+        {% render_field form.nombre class="form-control" id="nombre-asig" placeholder="Introduzca el nombre" %}
+        <span class="text-danger">{{form.nombre.errors.as_text}}</span>
       </div>
+      <div class="form-group">
+        <label for="creditos"><span class="glyphicon glyphicon-pencil"></span> {{ form.creditos.label }}</label>
+        {% render_field form.creditos class="form-control" id="creditos" placeholder="Introduzca el número de créditos" %}
+        <span class="text-danger">{{form.creditos.errors.as_text}}</span>
+      </div>
+      <div class="form-group">
+        <label for="codigo"><span class="glyphicon glyphicon-file"></span> {{ form.codasig.label }}</label>
+        {% render_field form.codasig class="form-control" id="codigo" placeholder="Formatos válidos LLLXXX, LLXXXX, LL-XXXX" pattern="[A-Z]{2}-[0-9]{4}|[A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{4}" %}
+        <span class="text-danger">{{form.codasig.errors.as_text}}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="profesores"><span class="glyphicon glyphicon-file"></span> {{ form.profesores.label }}</label>
+        <div>
+          {% render_field form.profesores class="fselect form-control" %}
+        </div>
+        <span class="text-danger">{{form.profesores.errors.as_text}}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="coordinacion"><span class="glyphicon glyphicon-file"></span> {{ form.pertenece.label }}</label>
+        {% render_field form.pertenece class="form-control" %}
+        <span class="text-danger">{{form.pertenece.errors.as_text}}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="fecha-de-ejecucion">{{form.fecha_de_ejecucion.label}} <span class="text-secondary font-italic">(mm/dd/yy)</span></label>
+        {% render_field form.fecha_de_ejecucion class="datepicker form-control"  %}
+        <span class="text-danger">{{form.fecha_de_ejecucion.errors.as_text}}</span>
+      </div>
+    </div>
+
+    <!-- Informacion de los horarios de la asignatura -->
+    <div class="tab-pane" id="horario">
+      {% for form1 in formset1 %}
+      <div class="form-row">
+        {{form1.asignatura}}
+        {{form1.id}}
+        <div class="form-group col-md-6">
+          <label for="dia"><span class="glyphicon glyphicon-pencil"></span> {{ form1.dia.label }}</label>
+          {% render_field form1.dia id="dia" class="form-control"%}
+          <span class="text-danger">{{form1.dia.errors.as_text}}</span>
+      </div>
+
+        <div class="form-group col-md-3">
+          <label for="hora_inicio"><span class="glyphicon glyphicon-pencil"></span> {{ form1.hora_inicio.label }}</label>
+          {% render_field form1.hora_inicio id="hora_inicio" class="form-control horario-input"%}
+          <span class="text-danger">{{form1.hora_inicio.errors.as_text}}</span>
+        </div>
+
+        <div class="form-group col-md-3">
+          <label for="hora_final"><span class="glyphicon glyphicon-pencil"></span> {{ form1.hora_final.label }}</label>
+          {% render_field form1.hora_final id="hora_final" class="form-control horario-input"%}
+          <span class="text-danger">{{form1.hora_final.errors.as_text}}</span>
+        </div>
+        {% if form1.instance.pk %}{{ form1.DELETE }}{% endif %}
+      </div>
+      {% endfor %}
+      {{formset1.management_form}}
+
+      <input type="hidden" id="type" name="type" value="">
+      {% comment %} <button type="button" data-toggle="tab" class="btn btn-success btn-block"><span
+        class="glyphicon glyphicon-ok"></span> Siguiente
+      </button> {% endcomment %}
+    </div>
+
+    <!-- Form para los programas  -->
+    <div class="tab-pane" id="programa">
+        {% for form2 in formset2 %}
+          <div class="form-group">
+              {{form2.asignatura}}
+              {{form2.id}}
+              <label for="url"><span class="glyphicon glyphicon-pencil"></span> {{ form2.url.label }}</label>
+              {% render_field form2.url class="form-control" id="url" placeholder="Introduzca el url" %}
+              <span class="text-danger">{{form2.url.errors.as_text}}</span>
+          {% if form2.instance.pk %}{{ form2.DELETE }}{% endif %}
+          </div>
+        {% endfor %}
+        {{formset2.management_form}}
+
+        <input type="hidden" id="type" name="type" value="">
+    </div>
+    <button id="submit-btn" type="submit" class="btn btn-primary btn-block"><span
+      class="glyphicon glyphicon-ok"></span> Agregar
+    </button>
   </div>
-</div>
+</form>

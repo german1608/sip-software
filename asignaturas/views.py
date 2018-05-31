@@ -170,17 +170,27 @@ class AsignaturasAsJson(View):
             lambda x: [
                 '''<a href="#"
                 class="nombre-asignatura"
-                onclick="obtenerAsignatura(this, '{url}');"
-                data-nombre="{nombre}" data-codasig="{codasig}"
+                onclick="obtenerAsignatura(this, '{url}', false);"
                 >{nombre}</a>'''.format(
                     nombre=x['nombre'],
-                    url=reverse('asignaturas:editar-asignatura'),
+                    url=reverse('asignaturas:detalles', kwargs={'pk': x['id']}),
                     codasig=x['codasig']
                 ),
                 x['codasig'],
                 x['creditos'],
                 x['fecha_de_ejecucion']],
             Asignatura.objects.all()
-            .values('nombre', 'codasig', 'creditos', 'fecha_de_ejecucion')
+            .values('nombre', 'codasig', 'creditos', 'fecha_de_ejecucion', 'id')
         ))
         return JsonResponse({'data': asignaturas})
+
+class AsignaturaDetallesView(TemplateView):
+    template_name = 'asignaturas/asignatura_details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        asignatura = Asignatura.objects.get(id=kwargs['pk'])
+        context['asignatura'] = asignatura
+        context['programas'] = asignatura.programas.all()
+        context['horarios'] = asignatura.horarios.all()
+        return context
