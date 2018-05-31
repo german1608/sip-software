@@ -43,6 +43,12 @@
         {% render_field form.fecha_de_ejecucion class="datepicker form-control"  %}
         <span class="text-danger">{{form.fecha_de_ejecucion.errors.as_text}}</span>
       </div>
+
+      <div class="form-group">
+        <label for="fecha-de-ejecucion">¿{{form.vista.label}}?</label>
+        {% render_field form.vista %}
+        <span class="text-danger">{{form.vista.errors.as_text}}</span>
+      </div>
     </div>
 
     <!-- Informacion de los horarios de la asignatura -->

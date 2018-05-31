@@ -17,6 +17,7 @@ class Asignatura(models.Model):
     pertenece = models.ForeignKey(Coordinacion, verbose_name='Coordinación',
         related_name='asignaturas', on_delete=models.CASCADE)
     fecha_de_ejecucion = models.DateField(default=datetime.date.today, verbose_name='Fecha de ejecución')
+    vista = models.BooleanField(default=False, verbose_name='Asignatura Vista')
 
     def __str__(self):
         return self.codasig + ": " + self.nombre
