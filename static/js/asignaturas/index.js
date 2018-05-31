@@ -29,9 +29,11 @@ function show_informacion_modal(agregar){
     if (!agregar) {
         deshabilitarForm();
         $('#agregar-btn-text').html('Editar');
+        $('#editar-asignatura-btn').removeClass('d-none');
     }
     else {
         $('#agregar-btn-text').html('Agregar');
+        $('#editar-asignatura-btn').addClass('d-none');
     }
 }
 
@@ -65,6 +67,7 @@ function activarFormSets() {
  * @param btn Boton para habilitar la edicion de la asignatura 
  */
 function habilitar_edicion(btn){
+    console.log(edit_mode)
     switch (edit_mode) {
         case false:
             $('.anadir-horario-btn').removeClass('disabled');
@@ -99,6 +102,7 @@ function obtenerAsignatura(btn, url, agregar) {
         success: (form) => {
             $('#agregar-modal').replaceWith(form);
             show_informacion_modal(agregar);
+            edit_mode = false;
         }
     })
 }
