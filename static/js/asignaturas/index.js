@@ -129,10 +129,10 @@ function show_informacion_modal(agregar){
     if (!agregar) {
         $('#submit-btn').addClass('d-none');
         $('.asignatura-btn').removeClass('d-none');
+        $('#eliminar-btn').attr('data-codasig', $('[name="detail_codasig"]').val())
     }
     else {
         activarPlugins()
-
         $('#submit-btn').removeClass('d-none');
         $('.asignatura-btn').addClass('d-none');
     }
