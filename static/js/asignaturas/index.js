@@ -29,11 +29,11 @@ function show_informacion_modal(agregar){
     if (!agregar) {
         deshabilitarForm();
         $('#agregar-btn-text').html('Editar');
-        $('#editar-asignatura-btn').removeClass('d-none');
+        $('.asignatura-btn').removeClass('d-none');
     }
     else {
         $('#agregar-btn-text').html('Agregar');
-        $('#editar-asignatura-btn').addClass('d-none');
+        $('.asignatura-btn').addClass('d-none');
     }
 }
 
