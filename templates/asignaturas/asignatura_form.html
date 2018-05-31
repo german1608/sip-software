@@ -46,7 +46,7 @@
                     </div>
                     <div class="form-group">
                       <label for="codigo"><span class="glyphicon glyphicon-file"></span> {{ form.codasig.label }}</label>
-                      {% render_field form.codasig class="form-control mostrar-only" id="codigo" placeholder="Introduzca el código" %}
+                      {% render_field form.codasig class="form-control" id="codigo" placeholder="Formatos válidos LLLXXX, LLXXXX, LL-XXXX" pattern="[A-Z]{2}-[0-9]{4}|[A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{4}" %}
                     </div>
 
                     <div class="form-group">
