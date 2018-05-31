@@ -86,6 +86,13 @@ function habilitar_edicion(btn){
             $('.mostrar-only').removeAttr('disabled');
             $('.mostrar-only').attr('class', "mostrar-only form-control");
             $('.delete-row').removeClass('d-none');
+
+            /**
+             * Se coloca un icono de guardado
+             */
+            $('.editar_asignatura').html('<i class="far fa-save"></i>');
+            $('.editar_asignatura').removeClass('btn-success');
+            $('.editar_asignatura').addClass('btn-primary');
             break;
         case true:
             $('#submit-btn').click();
