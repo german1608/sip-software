@@ -24,6 +24,15 @@ function show_eliminar_modal(btn) {
  */
 function show_informacion_modal(agregar){
     $('#agregar-modal').modal();
+     /**
+     * Se setean los rangos
+     */
+    $('#creditos').attr('min', '0');
+    $('#creditos').attr('max', '10');
+
+    $('.horario-input').attr('min', '1');
+    $('.horario-input').attr('max', '12');
+    
     activarFormSets();
     console.log('agregar', agregar)
     if (!agregar) {

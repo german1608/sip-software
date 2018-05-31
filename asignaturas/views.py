@@ -27,7 +27,6 @@ class Index(TemplateView):
         try:
             # Vemos si ya la asignatura existe
             asignatura = Asignatura.objects.get(codasig=codasig)
-
             form = AsignaturaForm(request.POST, instance=asignatura)
             formset1 = HorarioFormset(request.POST, instance=asignatura)
             formset2 = ProgramaFormset(request.POST, instance=asignatura)
@@ -41,7 +40,6 @@ class Index(TemplateView):
 
         if form.is_valid() and formset1.is_valid() and formset2.is_valid():
             form.save()
-            print(formset1)
             for instance in formset1.save(commit=False):
                 instance.asignatura = form.instance
                 instance.save()

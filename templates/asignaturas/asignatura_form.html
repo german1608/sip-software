@@ -76,12 +76,12 @@
 
                       <div class="form-group col-md-3">
                         <label for="hora_inicio"><span class="glyphicon glyphicon-pencil"></span> {{ form.hora_inicio.label }}</label>
-                        {% render_field form.hora_inicio id="hora_inicio" class="form-control mostrar-only"%}
+                        {% render_field form.hora_inicio id="hora_inicio" class="form-control mostrar-only horario-input"%}
                       </div>
 
                       <div class="form-group col-md-3">
                         <label for="hora_final"><span class="glyphicon glyphicon-pencil"></span> {{ form.hora_final.label }}</label>
-                        {% render_field form.hora_final id="hora_final" class="form-control mostrar-only"%}
+                        {% render_field form.hora_final id="hora_final" class="form-control mostrar-only horario-input"%}
                       </div>
                     </div>
                     {% endfor %}
