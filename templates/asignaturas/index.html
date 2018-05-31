@@ -11,24 +11,31 @@
 <div class="container-fluid">
   <div class="animated fadeIn">
     <h1>Asignaturas</h1>
-    <div class="col-lg-3" style="margin-bottom: 30px;">
-      <form method="GET">
-        <div class="search__container">
-          <input class="search__input" type="text" placeholder="Buscar" name="input">
-        </div>
-      </form>
-    </div>
     <div class="text-center">
         <button type="button"
         class="btn btn-primary" id="new" onclick="obtenerAsignatura(this, '{% url 'asignaturas:anadir-asignatura' %}', true);">
           Agregar
         </button>
     </div>
+    <div id="form-errors" class="text-danger">
+        <ul>
+          {% if form.errors %}
+            <li class="d-block">{{form.errors}}</li>
+          {% endif %}
+          {% for form1 in formset1 %}
+            {% if form1.errors %}
+              <li class="d-block">{{form1.errors}}</li>
+            {% endif %}
+          {% endfor %}
+          {% for form2 in formset2 %}
+            {% if form2.errors %}
+              <li class="d-block">{{form2.errors}}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
     <div class="row">
       <div class="col">
-          {{form.errors}}
-          {{formset1.errors}}
-          {{formset2.errors}}
           <!-- Datable de Asignaturas-->
           <table id="t_asignaturas" class="display">
             <!--Asignaturas de prueba-->
