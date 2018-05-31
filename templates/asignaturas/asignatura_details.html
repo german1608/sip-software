@@ -44,6 +44,12 @@
           <h4>{{asignatura.fecha_de_ejecucion}}</h4>
         </div>
       </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h6 class="text-muted">Estado de la asignatura</h6>
+          <h4>{% if asignatura.vista %}Vista{% else %}No vista{% endif %}</h4>
+        </div>
+      </div>      
     </div>
 
   </div>
