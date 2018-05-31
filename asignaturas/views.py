@@ -90,21 +90,33 @@ class EliminarAsignaturaView(TemplateView):
 
 class AnadirAsignaturaView(View):
     def get(self, request, *args, **kwargs):
+        _id = request.GET.get('id', '')
+        try:
+            # Vemos si ya la asignatura existe
+            asignatura = Asignatura.objects.get(id=_id)
+            form = AsignaturaForm(instance=asignatura)
+            formset1 = HorarioFormset(instance=asignatura, prefix=HORARIOS_PREFIX)
+            formset2 = ProgramaFormset(instance=asignatura, prefix=PROGRAMAS_PREFIX)
+        except Exception as e:
+            # Crear asignatura
+            form = AsignaturaForm()
+            formset1 = HorarioFormset(prefix=HORARIOS_PREFIX)
+            formset2 = ProgramaFormset(prefix=PROGRAMAS_PREFIX)
         context = {
-            'form': AsignaturaForm(),
-            'formset1': HorarioFormset(prefix=HORARIOS_PREFIX),
-            'formset2': ProgramaFormset(prefix=PROGRAMAS_PREFIX)
+            'form': form,
+            'formset1': formset1,
+            'formset2': formset2
         }
         rendered = render_to_string('asignaturas/asignatura_form.html', context=context, request=request)
         data = rendered
         return JsonResponse(data, safe=False)
 
     def post(self, request, *args, **kwargs):
-        id = request.POST.get('id', '')
+        _id = request.POST.get('id', '')
         pprint(request.POST)
         try:
             # Vemos si ya la asignatura existe
-            asignatura = Asignatura.objects.get(id=id)
+            asignatura = Asignatura.objects.get(id=_id)
             form = AsignaturaForm(request.POST, instance=asignatura)
             formset1 = HorarioFormset(request.POST, instance=asignatura, prefix=HORARIOS_PREFIX)
             formset2 = ProgramaFormset(request.POST, instance=asignatura, prefix=PROGRAMAS_PREFIX)

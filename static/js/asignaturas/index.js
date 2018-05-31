@@ -39,7 +39,7 @@ $(document).ready( function () {
                     $(asigIdContainer).html(html)
                     activarPlugins()
                 } else {
-                    toastr["success"]("", "Materia creada")
+                    toastr["success"]("", "Procedimiento exitoso")
                     $('#agregar-modal').modal('hide')
                     tablaAsignaturas.ajax.reload()
                 }
@@ -81,24 +81,27 @@ function activarPlugins() {
  * @param btn Boton para habilitar la edicion de la asignatura
  */
 function habilitar_edicion(btn){
-    switch (edit_mode) {
-        case false:
-            $('.anadir-horario-btn').removeClass('disabled');
-            $('.mostrar-only').removeAttr('readonly');
-            $('.mostrar-only').removeAttr('disabled');
-            $('.mostrar-only').attr('class', "mostrar-only form-control");
-            $('.delete-row').removeClass('d-none');
-
-            /**
-             * Se coloca un icono de guardado
-             */
-            $('.editar_asignatura').html('<i class="far fa-save"></i>');
-            $('.editar_asignatura').removeClass('btn-success');
-            $('.editar_asignatura').addClass('btn-primary');
-            break;
-        case true:
-            $('#submit-btn').click();
-            break;
+    if (!edit_mode) {
+        $.ajax({
+            url: $(btn).data('url'),
+            data: {
+                'id': $(btn).data('id'),
+            },
+            method: 'GET',
+            success: function (form) {
+                $(asigIdContainer).html(form)
+                activarPlugins()
+                /**
+                 * Se coloca un icono de guardado
+                 */
+                $('.editar_asignatura').html('<i class="far fa-save"></i>');
+                $('.editar_asignatura').removeClass('btn-success');
+                $('.editar_asignatura').addClass('btn-primary');
+            }
+        })
+    }
+    else {
+        $('#submit-btn').click();
     }
     edit_mode = true;
     $('.editar_asignatura').toggleClass('active');
@@ -130,6 +133,7 @@ function show_informacion_modal(agregar){
         $('#submit-btn').addClass('d-none');
         $('.asignatura-btn').removeClass('d-none');
         $('#eliminar-btn').attr('data-codasig', $('[name="detail_codasig"]').val())
+        $('.editar_asignatura').attr('data-id', $('[name="detail_id"]').val())
     }
     else {
         activarPlugins()
