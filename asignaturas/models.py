@@ -21,6 +21,30 @@ class Asignatura(models.Model):
     def __str__(self):
         return self.codasig + ": " + self.nombre
 
+    def horario_valido(self,lista):
+        for i in lista:    
+            for x in lista:
+                if i!=x:
+                    if i['dia']==x['dia']:
+                        if (i['hora_inicio']>=x['hora_inicio'] and i['hora_inicio']<=x['hora_final'])\
+                        or (i['hora_final']>=x['hora_inicio'] and i['hora_final']<=x['hora_final'])\
+                        or (i['hora_inicio']>x['hora_inicio'] and i['hora_final']<x['hora_final'])\
+                        or (i['hora_inicio']<x['hora_inicio'] and i['hora_final']>x['hora_final']):
+                            return False
+        return True
+
+    def clean(self):
+        super(Asignatura, self).clean()
+
+        horarios = list(map(
+            lambda x: x,
+            # lambda x: (x['dia'], x['hora_inicio'], x['hora_final']),
+            self.horarios.all().values('dia', 'hora_inicio', 'hora_final')
+        ))
+        print(horarios)
+        if not self.horario_valido(horarios):
+            raise ValidationError('Los horarios chocan')
+
 class ProgramaAsignatura(models.Model):
     url = models.URLField(verbose_name='Código de Programa')
     asignatura = models.ForeignKey(Asignatura,

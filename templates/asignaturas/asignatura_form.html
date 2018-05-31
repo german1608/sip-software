@@ -6,6 +6,8 @@
     <div class="tab-pane active" id="informacion_basica">
       <!-- Datos para la informacion basica -->
       <input type="hidden" name="id" value="{{form.instance.id}}">
+      <span class="text-danger">{{form.non_field_errors}}</span>
+      <!-- {{form.errors}} -->
       <div class="form-group">
         <label for="nombre-asig"><span class="glyphicon glyphicon-pencil"></span> {{ form.nombre.label }}</label>
         {% render_field form.nombre class="form-control" id="nombre-asig" placeholder="Introduzca el nombre" %}
@@ -47,13 +49,13 @@
     <div class="tab-pane" id="horario">
       {% for form1 in formset1 %}
       <div class="form-row">
-        {{form1.asignatura}}
-        {{form1.id}}
+          {{form1.asignatura}}
+          {{form1.id}}
         <div class="form-group col-md-6">
           <label for="dia"><span class="glyphicon glyphicon-pencil"></span> {{ form1.dia.label }}</label>
           {% render_field form1.dia id="dia" class="form-control"%}
           <span class="text-danger">{{form1.dia.errors.as_text}}</span>
-      </div>
+        </div>
 
         <div class="form-group col-md-3">
           <label for="hora_inicio"><span class="glyphicon glyphicon-pencil"></span> {{ form1.hora_inicio.label }}</label>
