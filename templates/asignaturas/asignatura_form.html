@@ -58,6 +58,11 @@
                       <label for="coordinacion"><span class="glyphicon glyphicon-file"></span> {{ form.pertenece.label }}</label>
                       {% render_field form.pertenece class="form-control mostrar-only" %}
                     </div>
+
+                    <div class="form-group">
+                      <label for="fecha-de-ejecucion">{{form.fecha_de_ejecucion.label}} <span class="text-secondary font-italic">(mm/dd/yy)</span></label>
+                      {% render_field form.fecha_de_ejecucion class="form-control mostrar-only" type="date" %}
+                    </div>
                     {{ form.DELETE }}
                     <input type="hidden" id="type" name="type" value="">
                     {% comment %} <button type="button" data-toggle="tab" class="btn btn-success btn-block"><span
