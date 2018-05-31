@@ -53,6 +53,7 @@ function deshabilitarForm() {
     $('.mostrar-only').attr('readonly', "");
     $('.mostrar-only').attr('disabled', '');
     $('.mostrar-only').attr('class', "mostrar-only form-control-plaintext");
+    $('.delete-row').addClass('d-none');
 }
 
 function activarFormSets() {
@@ -84,9 +85,10 @@ function habilitar_edicion(btn){
             $('.mostrar-only').removeAttr('readonly');
             $('.mostrar-only').removeAttr('disabled');
             $('.mostrar-only').attr('class', "mostrar-only form-control");
+            $('.delete-row').removeClass('d-none');
             break;
         case true:
-            deshabilitarForm();
+            $('#submit-btn').click();
             break;
     }
     edit_mode = !edit_mode;
@@ -102,8 +104,7 @@ function habilitar_edicion(btn){
  * @param agregar booleano que dice si es un modal para agregar
  */
 function obtenerAsignatura(btn, url, agregar) {
-    console.log(url);
-    $.ajax({
+        $.ajax({
         url: url,
         method: 'GET',
         data: {

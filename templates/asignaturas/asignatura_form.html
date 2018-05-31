@@ -27,7 +27,7 @@
                 <li class="nav-item"><a class="nav-link" href="#horario" data-toggle="tab">Horarios</a></li>
                 <li class="nav-item"><a class="nav-link" href="#programa" data-toggle="tab">Programas</a></li>
               </ul>
-              <form action="" method="POST" >
+              <form action="" method="POST" id="form-modal">
                 {% csrf_token %}
                 <div class="tab-content">
                   <div class="tab-pane active" id="informacion_basica">
@@ -109,7 +109,7 @@
 
                       <input type="hidden" id="type" name="type" value="">
                   </div>
-                  <button type="submit" class="btn btn-primary btn-block"><span
+                  <button id="submit-btn" type="submit" class="btn btn-primary btn-block"><span
                     class="glyphicon glyphicon-ok"></span> <span id="agregar-btn-text"></span>
                   </button>
                 </div>

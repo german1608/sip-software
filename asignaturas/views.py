@@ -10,7 +10,6 @@ from django.core import serializers
 from django.template.loader import render_to_string
 from pprint import pprint
 
-
 class Index(TemplateView):
     template_name = 'asignaturas/index.html'
 
@@ -56,7 +55,13 @@ class Index(TemplateView):
         '''
         Borrar los forms borrados
         '''
-        print('deleted forms',formset1.deleted_forms)
+        print(formset1.deleted_forms)
+        for form1 in formset1.deleted_forms:
+            form1.instance.delete()
+
+        print(formset2.deleted_forms)
+        for form2 in formset2.deleted_forms:
+            form2.instance.delete()
 
         return render(request, self.template_name, context)
 
@@ -94,6 +99,49 @@ class AnadirAsignaturaView(View):
         rendered = render_to_string('asignaturas/asignatura_form.html', context=context, request=request)
         data = rendered
         return JsonResponse(data, safe=False)
+
+    def post(self, request, *args, **kwargs):
+        id = request.POST.get('id', '')
+        pprint(request.POST)
+        try:
+            # Vemos si ya la asignatura existe
+            asignatura = Asignatura.objects.get(id=id)
+            form = AsignaturaForm(request.POST, instance=asignatura)
+            formset1 = HorarioFormset(request.POST, instance=asignatura, prefix="horarios")
+            formset2 = ProgramaFormset(request.POST, instance=asignatura, prefix="programas")
+        except Exception as e:
+            # Crear asignatura
+            form = AsignaturaForm(request.POST)
+            formset1 = HorarioFormset(request.POST, prefix="horarios")
+            formset2 = ProgramaFormset(request.POST, prefix="programas")
+
+        context = self.get_context_data()
+        if form.is_valid() and formset1.is_valid() and formset2.is_valid():
+            form.save()
+            for instance in formset1.save(commit=False):
+                instance.asignatura = form.instance
+                instance.save()
+            for instance in formset2.save(commit=False):
+                instance.asignatura = form.instance
+                instance.save()
+        else:
+            context['form'] = form
+            context['formset1'] = formset1
+            context['formset2'] = formset2
+
+
+        '''
+        Borrar los forms borrados
+        '''
+        print(formset1.deleted_forms)
+        for form1 in formset1.deleted_forms:
+            form1.instance.delete()
+
+        print(formset2.deleted_forms)
+        for form2 in formset2.deleted_forms:
+            form2.instance.delete()
+
+        return render(request, 'asignaturas/index.html', context)
 
 class EditarAsignaturaView(View):
     def get(self, request, *args, **kwargs):
