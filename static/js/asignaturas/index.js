@@ -36,6 +36,7 @@ $(document).ready( function () {
                     errors = json.errors
                 if (!valid) {
                     $(asigIdContainer).html(html)
+                    $('#info-pan').tab('show');
                     if ($('#form-modal [name=id]').val() === '') {
                         $('#submit-btn').removeClass('d-none')
                     }
