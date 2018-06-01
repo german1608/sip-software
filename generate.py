@@ -16,10 +16,21 @@ if is_empty(Coordinacion):
     coordinacion = Coordinacion(nombre="MAESTRÍA EN CIENCIAS DE LA COMPUTACIÓN", codigo='12345')
     coordinacion.save()
 else:   
-    coordinacion = Coordinacion.objects.get(nombre='12345')
-    
+    coordinacion = Coordinacion.objects.get(codigo='12345')
+
+
+if is_empty(Profesor):
+    profesores = [
+        Profesor(primer_nombre='Jirafales', primer_apellido='García', cedula='562726925', carnet='01-10456', fecha_nacimiento=datetime.datetime(1981, 5, 27)),
+    ]
+
+    for profesor in profesores:
+        profesor.save()
+        print('Se agrego exitosamente el profesor con el carnet: ' + profesor.carnet + ' a la base de datos')
+
 # Creacion de las 5 asignaturas  
 if is_empty(Asignatura):
+    profesor = Profesor.objects.get(cedula='562726925')
     asignaturas = [ 
         Asignatura(nombre="TEORÍA DE LA COMPUTACIÓN", codasig="CI-7541", creditos=4),
         Asignatura(nombre="MATEMÁTICAS DE LA COMPUTACIÓN", codasig="CI-7521",creditos=4),
@@ -45,17 +56,13 @@ if is_empty(Asignatura):
 
     for asignatura in asignaturas:
         coordinacion.asignaturas.create(nombre=asignatura.nombre, codasig=asignatura.codasig, creditos=asignatura.creditos) 
+        asignatura = Asignatura.objects.get(codasig=asignatura.codasig)
+        # asignatura.save()
+        # asignatura.pertenece = coordinacion
+        asignatura.profesores.add(profesor)
+        asignatura.save()
 
 # Creacion de 5 profesores 
-
-if is_empty(Profesor):
-    profesores = [
-        Profesor(primer_nombre='Jirafales', primer_apellido='García', cedula='562726925', carnet='01-10456', fecha_nacimiento=datetime.datetime(1981, 5, 27)),
-    ]
-
-    for profesor in profesores:
-        profesor.save()
-        print('Se agrego exitosamente el profesor con el carnet: ' + profesor.carnet + ' a la base de datos')
 
 # Se crean dos horarios por asignaturas
 if is_empty(Horario):
@@ -74,7 +81,7 @@ if is_empty(Horario):
 # Se crean los programas por asignaturas
 if is_empty(ProgramaAsignatura):
     programas = [
-        ProgramaAsignatura(url='PROG-01.com')
+        ProgramaAsignatura(url='https://PROG-01.com')
     ]
 
     # Aqui se itera sobre las asignaturas y se le agregan los programas
