@@ -16,7 +16,7 @@ table.dataTable {
 }
 table.dataTable thead th,
 table.dataTable tfoot th {
-  background-color: #D1A811;
+  background-color: #FAD534!important;
   
   font-weight: bold;
 }
@@ -308,7 +308,7 @@ table.dataTable td {
   background-size: 18px 18px;
   background-position: 95% center;
   border-radius: 50px;
-  border: 1px solid #D1A811;
+  border: 1px solid rgb(66, 65, 61);
   transition: all 250ms ease-in-out;
   backface-visibility: hidden;
   transform-style: preserve-3d;
@@ -465,6 +465,11 @@ table.dataTable td {
   .dataTables_wrapper .dataTables_paginate {
     margin-top: 0.5em;
   }
+
+  table.dataTable {
+    width: 60%;
+    margin: 0 auto;
+  }
 }
 @media screen and (max-width: 640px) {
   .dataTables_wrapper .dataTables_length,
@@ -474,5 +479,17 @@ table.dataTable td {
   }
   .dataTables_wrapper .dataTables_filter {
     margin-top: 0.5em;
+  }
+}
+
+
+@media screen and (max-width: 480px) {
+  table.dataTable {
+    width: 10%!important;
+    margin: 0 auto;
+  }
+
+  .sorting_asc{
+    width: 10px!important;
   }
 }
