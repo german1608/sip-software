@@ -102,9 +102,9 @@ function activarPlugins() {
 function habilitar_edicion(btn){
     if (!edit_mode) {
         $.ajax({
-            url: $(btn).data('url'),
+            url: $(btn).attr('data-url'),
             data: {
-                'id': $(btn).data('id'),
+                'id': $(btn).attr('data-id'),
             },
             method: 'GET',
             success: function (form) {
@@ -149,8 +149,13 @@ function show_informacion_modal(agregar){
 
     console.log('agregar', agregar)
     if (!agregar) {
+        console.log("proeans")
         $('#submit-btn').addClass('d-none');
         $('.asignatura-btn').removeClass('d-none');
+        $('.editar_asignatura').html('<i class="far fa-edit"></i>');
+        $('.editar_asignatura').addClass('btn-success');
+        $('.editar_asignatura').removeClass('btn-primary');
+
         $('#eliminar-btn').attr('data-codasig', $('[name="detail_codasig"]').val())
         $('.editar_asignatura').attr('data-id', $('[name="detail_id"]').val())
     }
