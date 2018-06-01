@@ -182,6 +182,7 @@ function obtenerAsignatura(btn, url, agregar) {
         method: 'GET',
         success: (form) => {
             $(asigIdContainer).html(form);
+            $('#info-pan').tab('show')
             show_informacion_modal(agregar);
             edit_mode = false;
         },
