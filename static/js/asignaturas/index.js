@@ -34,14 +34,18 @@ $(document).ready( function () {
                 const html = json.html,
                     valid = json.valid,
                     errors = json.errors
-                console.log(errors)
                 if (!valid) {
-                    for (key in errors) {
-                        if (errors[key].length)
-                            toastr["error"]("", errors[key])
-                    }
                     $(asigIdContainer).html(html)
+                    if ($('#form-modal [name=id]').val() === '') {
+                        $('#submit-btn').removeClass('d-none')
+                    }
                     activarPlugins()
+                    toastr['error']('', errors[0][0])
+                    for (key in errors.slice(1)) {
+                        console.log(key)
+                        if (errors[key][0].length)
+                            toastr["error"]("", errors[key][0])
+                    }
                 } else {
                     toastr["success"]("", "Procedimiento exitoso")
                     $('#agregar-modal').modal('hide')
@@ -113,6 +117,7 @@ function habilitar_edicion(btn){
             method: 'GET',
             success: function (form) {
                 $(asigIdContainer).html(form)
+                $('#info-pan').tab('show')
                 activarPlugins()
                 /**
                  * Se coloca un icono de guardado

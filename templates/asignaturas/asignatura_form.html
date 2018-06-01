@@ -5,7 +5,7 @@
   <div class="tab-content">
     <div class="tab-pane active" id="informacion_basica">
       <!-- Datos para la informacion basica -->
-      <input type="hidden" name="id" value="{{form.instance.id}}">
+      <input type="hidden" name="id" value="{{form.instance.id|default:''}}">
       <span class="text-danger">{{form.non_field_errors}}</span>
       <!-- {{form.errors}} -->
       <div class="form-group">
