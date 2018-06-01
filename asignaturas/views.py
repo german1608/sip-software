@@ -129,7 +129,9 @@ class AnadirAsignaturaView(View):
         # Se guardan en una lista los formularios de horarios
         horarios = [form1.instance for form1 in formset1]
 
-        if form.is_valid() and formset1.is_valid() and formset2.is_valid() and self.horario_valido(horarios):
+        if form.is_valid() and formset1.is_valid()\
+         and formset2.is_valid() and self.horario_valido(horarios)\
+         and self.horas_validas(horarios):
             form.save()
             for instance in formset1.save(commit=False):
                 instance.asignatura = form.instance
@@ -161,8 +163,6 @@ class AnadirAsignaturaView(View):
                     errors.append([str(err), '#info-pan'])
 
             for form1 in formset1:
-                print(form1.errors)
-                print(form1.non_field_errors())
                 if form1.errors:
                     for err in form1.errors:
                         errors.append([form1.errors[err] + str(form1.instance), '#hora-pan'])
@@ -178,6 +178,9 @@ class AnadirAsignaturaView(View):
 
             if (not self.horario_valido(horarios)):
                 errors.append(['Hay horarios solapados', '#hora-pan'])
+
+            if (not self.horas_validas(horarios)):
+                errors.append(['Hay hora de inicio mayor a hora final', '#hora-pan'])
 
             rendered = render_to_string('asignaturas/asignatura_form.html', context=context, request=request)
             return JsonResponse({
@@ -195,6 +198,11 @@ class AnadirAsignaturaView(View):
                             return False
         return True
 
+    def horas_validas(self, lista):
+        for i in lista:
+            if i.hora_inicio >= i.hora_final:
+                return False
+        return True
 class EditarAsignaturaView(View):
     def get(self, request, *args, **kwargs):
         pk = request.GET.get('id', '')
