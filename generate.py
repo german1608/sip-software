@@ -13,19 +13,30 @@ def is_empty(model):
 
 
 if is_empty(Coordinacion):
-    coordinacion = Coordinacion(nombre="Computacion avanzada", codigo='12345')
+    coordinacion = Coordinacion(nombre="MAESTRÍA EN CIENCIAS DE LA COMPUTACIÓN", codigo='12345')
     coordinacion.save()
 else:   
-    coordinacion = Coordinacion.objects.get(pk='12345')
+    coordinacion = Coordinacion.objects.get(nombre='12345')
     
 # Creacion de las 5 asignaturas  
 if is_empty(Asignatura):
     asignaturas = [ 
-        Asignatura(nombre="Introduccion a la computacion avanzada", codasig="CI4715", creditos=5),
-        Asignatura(nombre="Teoria de la computacion", codasig="CI1231",creditos=4),
-        Asignatura(nombre="Matematicas combinatorias", codasig="MA3512", creditos=4),
-        Asignatura(nombre="Mecanica avanzada", codasig="ME1234",creditos=3),
-        Asignatura(nombre="Guerra fria, rock and roll y su impacto social", codasig="CS2345",creditos=4),
+        Asignatura(nombre="TEORÍA DE LA COMPUTACIÓN", codasig="CI-7541", creditos=4),
+        Asignatura(nombre="MATEMÁTICAS DE LA COMPUTACIÓN", codasig="CI-7521",creditos=4),
+        Asignatura(nombre="TEORÍA DE ALGORITMOS", codasig="CI-7621", creditos=4),
+        Asignatura(nombre="INTRODUCCIÓN A LAS BASES DE DATOS LOGIC V", codasig="CI-5432",creditos=4),
+        Asignatura(nombre="COMPUTACIÓN GRÁFICA", codasig="CI-5321",creditos=4),
+        Asignatura(nombre="INTELIGENCIA ARTIFICAL DISTRIBUIDA", codasig="CI-6437",creditos=4),
+        Asignatura(nombre="ANÁLISIS DE ALGORITMOS PARALELOS", codasig="CI-6622",creditos=4),
+        Asignatura(nombre="PROGRAMACIÓN FUNCIONAL", codasig="CI-6642",creditos=4),
+        Asignatura(nombre="OPTIMIZACIÓN NO LINEAL I", codasig="CO-5412",creditos=4),
+        Asignatura(nombre="DISEÑO Y ANALISIS DE EXPERIMENTOS", codasig="CO-6315",creditos=4),
+        Asignatura(nombre="PROCESAMIENTO EN TIEMPO REAL", codasig="EC-6742",creditos=3),
+        Asignatura(nombre="TEORÍA DE JUEGOS Y DECIS. EN GRUPOS", codasig="MA6635",creditos=4),
+        Asignatura(nombre="TEC.HEURÍSTICA EN INVESTG. DE OPER", codasig="PS-7118",creditos=4),        
+        Asignatura(nombre="TÓPICOS ESPECIALES EN INGENIERÍA DE SOFTWARE", codasig="CI-6741",creditos=4),        
+        Asignatura(nombre="TÓPICOS EN ESTADISTICA III", codasig="CO-6323",creditos=4),
+        Asignatura(nombre="TRABAJO DE GRADO", codasig="TG-8528",creditos=8),
     ]
 
     # for asignatura in asignaturas:
@@ -39,11 +50,7 @@ if is_empty(Asignatura):
 
 if is_empty(Profesor):
     profesores = [
-        Profesor(primer_nombre='Sarah', primer_apellido='Elliot', cedula='562726925', carnet='11-10456', fecha_nacimiento=datetime.datetime(1997, 5, 27)),
-        Profesor(primer_nombre='Wohehiv', segundo_nombre='Cholesky', primer_apellido='Henry', cedula='89616548', carnet='08-98565', fecha_nacimiento=datetime.datetime(1993, 3, 1)),
-        Profesor(primer_nombre='Anguo', segundo_nombre='Larry', primer_apellido='Voong', cedula='99498489', carnet='09-11456', fecha_nacimiento=datetime.datetime(1996, 12, 30)),
-        Profesor(primer_nombre='Munny', segundo_nombre='Jose', primer_apellido='Saelee', cedula='78464512', carnet='14-10254', fecha_nacimiento=datetime.datetime(1989, 2, 25)),
-        Profesor(primer_nombre='Shaun', segundo_nombre='Diesel', primer_apellido='Reese', cedula='48646494', carnet='01-82556', fecha_nacimiento=datetime.datetime(1976, 7, 25)),
+        Profesor(primer_nombre='Jirafales', primer_apellido='García', cedula='562726925', carnet='01-10456', fecha_nacimiento=datetime.datetime(1981, 5, 27)),
     ]
 
     for profesor in profesores:
@@ -53,16 +60,8 @@ if is_empty(Profesor):
 # Se crean dos horarios por asignaturas
 if is_empty(Horario):
     horarios = [
-        Horario(dia= 0, hora_inicio= 7, hora_final= 8),
-        Horario(dia= 2, hora_inicio= 9, hora_final= 12),
-        Horario(dia= 3, hora_inicio= 10, hora_final= 11),
-        Horario(dia= 4, hora_inicio= 13, hora_final= 15),
-        Horario(dia= 1, hora_inicio= 15, hora_final= 16),
-        Horario(dia= 2, hora_inicio= 7, hora_final= 10),
-        Horario(dia= 3, hora_inicio= 8, hora_final=10),
-        Horario(dia= 4, hora_inicio= 7, hora_final= 9),
-        Horario(dia= 4, hora_inicio= 9, hora_final= 12),
-        Horario(dia= 2, hora_inicio= 16, hora_final= 17),
+        Horario(dia= 1, hora_inicio= 3, hora_final= 4),
+        Horario(dia= 3, hora_inicio= 3, hora_final= 4),
     ]
 
     # En esta parte se agregan los horarios 
@@ -70,18 +69,12 @@ if is_empty(Horario):
     for asignatura in coordinacion.asignaturas.all():
         asignatura.horarios.create(dia=horarios[iteradorHorarios].dia, hora_inicio=horarios[iteradorHorarios].hora_inicio, hora_final=horarios[iteradorHorarios].hora_final)
         asignatura.horarios.create(dia=horarios[iteradorHorarios + 1].dia, hora_inicio=horarios[iteradorHorarios + 1].hora_inicio, hora_final=horarios[iteradorHorarios + 1].hora_final)
-        iteradorHorarios += 2
         print("Se agrego exitosamente los horarios a la materia: " + asignatura.codasig)
 
 # Se crean los programas por asignaturas
 if is_empty(ProgramaAsignatura):
     programas = [
-        ProgramaAsignatura(url='google.com'),
-        ProgramaAsignatura(url='german.com'),
-        ProgramaAsignatura(url='youtube.com'),
-        ProgramaAsignatura(url='gustavo.com'),
-        ProgramaAsignatura(url='daniel.com'),ProgramaAsignatura(url='gustavo.com'),
-        ProgramaAsignatura(url='david.com'),
+        ProgramaAsignatura(url='PROG-01.com')
     ]
 
     # Aqui se itera sobre las asignaturas y se le agregan los programas
@@ -90,7 +83,5 @@ if is_empty(ProgramaAsignatura):
     iteradorProgramas = 0
     for asignatura in coordinacion.asignaturas.all():
         asignatura.programas.create(url=programas[iteradorProgramas].url)
-        asignatura.programas.create(url=programas[iteradorProgramas + 1].url)
-        iteradorProgramas += 2
         print("Se asocio exitosamente los programas de la asignatura: " + asignatura.codasig)
         
