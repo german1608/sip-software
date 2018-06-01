@@ -32,10 +32,14 @@ $(document).ready( function () {
             data: $form.serialize(),
             success: function (json) {
                 const html = json.html,
-                    valid = json.valid
-
+                    valid = json.valid,
+                    errors = json.errors
+                console.log(errors)
                 if (!valid) {
-                    toastr["error"]("", "Tiene errores en el formulario")
+                    for (key in errors) {
+                        if (errors[key].length)
+                            toastr["error"]("", errors[key])
+                    }
                     $(asigIdContainer).html(html)
                     activarPlugins()
                 } else {

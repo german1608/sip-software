@@ -127,7 +127,10 @@ class AnadirAsignaturaView(View):
             formset2 = ProgramaFormset(request.POST, prefix=PROGRAMAS_PREFIX)
 
         context = {}
-        if form.is_valid() and formset1.is_valid() and formset2.is_valid():
+        # Se guardan en una lista los formularios de horarios
+        horarios = [form1.instance for form1 in formset1]
+
+        if form.is_valid() and formset1.is_valid() and formset2.is_valid() and self.horario_valido(horarios):
             form.save()
             for instance in formset1.save(commit=False):
                 instance.asignatura = form.instance
@@ -144,17 +147,42 @@ class AnadirAsignaturaView(View):
             for form2 in formset2.deleted_forms:
                 form2.instance.delete()
             return JsonResponse({
-                'valid': True, 'html': ''
+                'valid': True, 'html': '', 'errors': []
             })
         else:
+            errors = []
             context['form'] = form
             context['formset1'] = formset1
             context['formset2'] = formset2
+            if form.errors:
+                errors.append(form.errors)
+
+            for form1 in formset1:
+                if form1.errors:
+                    errors.append(form1.errors)
+
+            for form2 in formset2:
+                if form2.errors:
+                    errors.append(form2.errors)
+
+            if (not self.horario_valido(horarios)):
+                errors.append('Hay horarios solapados')
+
             rendered = render_to_string('asignaturas/asignatura_form.html', context=context, request=request)
             return JsonResponse({
                 'valid': False,
-                'html': rendered
+                'html': rendered,
+                'errors': errors
             })
+
+    def horario_valido(self,lista):
+        for i in lista:    
+            for x in lista:
+                if i!=x:
+                    if i.dia==x.dia:
+                        if (i.hora_inicio>=x.hora_inicio and i.hora_inicio<=x.hora_final) or (i.hora_final>=x.hora_inicio and i.hora_final<=x.hora_final) or (i.hora_inicio>x.hora_inicio and i.hora_final<x.hora_final) or (i.hora_inicio<x.hora_inicio and i.hora_final>x.hora_final):
+                            return False
+            
 
 class EditarAsignaturaView(View):
     def get(self, request, *args, **kwargs):
