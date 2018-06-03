@@ -89,7 +89,7 @@ if not CUR_DOMAIN:
     CUR_DOMAIN = 'localhost'
 
 DATABASES_LIST = {
-    'landing': {
+    'sip-software': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'damolo9rdvm93v',
         'USER': 'vqwaxjxxlzoowv',
