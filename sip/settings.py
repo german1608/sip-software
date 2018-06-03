@@ -80,11 +80,34 @@ WSGI_APPLICATION = 'sip.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+try:
+    CUR_DOMAIN = os.environ.get('CUR_DOMAIN')
+except:
+    CUR_DOMAIN = 'localhost'
+
+if not CUR_DOMAIN:
+    CUR_DOMAIN = 'localhost'
+
+DATABASES_LIST = {
+    'landing': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'damolo9rdvm93v',
+        'USER': 'vqwaxjxxlzoowv',
+        'PASSWORD': 'e308d73c2d8b74cd350a3177b7654812125fb765d5562b541acc805189a06ed2',
+        'HOST': 'ec2-75-101-142-91.compute-1.amazonaws.com',
+        'PORT': '5432',
+        'OPTIONS': {
+            'connect_timeout': None,
+        }
+    },
+    'localhost': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+}
+
+DATABASES = {
+    'default': DATABASES_LIST[CUR_DOMAIN]
 }
 
 
