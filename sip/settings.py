@@ -25,7 +25,10 @@ SECRET_KEY = '(yz^dfyu3aq^-9c^v6ncm6c&s2vs8!!*ln1evbqlogl*q=+c9n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'sip-software.herokuapp.com',
+    'localhost'
+]
 
 
 # Application definition
