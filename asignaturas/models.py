@@ -72,6 +72,6 @@ class Horario(models.Model):
             return 'Jueves'
         elif numero == 4:
             return 'Viernes'
-       
+        return ''
     class Meta:
         unique_together = ('asignatura', 'hora_inicio', 'hora_final', 'dia')

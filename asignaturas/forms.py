@@ -8,10 +8,10 @@ class AsignaturaForm(forms.ModelForm):
         model = Asignatura
         fields = '__all__'
     def clean_creditos(self):
-    	creditos = self.cleaned_data['creditos']
-    	if creditos <= 0 :
-    		raise ValidationError('Los créditos deben ser mayor a cero')
-    	return creditos
+        creditos = self.cleaned_data['creditos']
+        if creditos <= 0 :
+            raise ValidationError('Los créditos deben ser mayor a cero')
+        return creditos
 
 class HorarioForm(forms.ModelForm):
     class Meta:
