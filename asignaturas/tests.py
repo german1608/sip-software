@@ -64,7 +64,7 @@ class HoraInicioTestCase(Base):
             'dia': 1,
             'hora_inicio': 1,
             'hora_final': 2,
-            'asignatura': self.asignatura
+            'asignatura': self.asignatura.id
         }
 
     def test_inicio_igual_final(self):
@@ -83,4 +83,4 @@ class HoraInicioTestCase(Base):
         self.data['hora_inicio'] = 1
         self.data['hora_final'] = 2
         form = HorarioForm(self.data)
-        self.assertTrue(form.is_valid())
+        self.assertTrue(form.is_valid(), form.errors)
