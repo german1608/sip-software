@@ -84,3 +84,24 @@ class HoraInicioTestCase(Base):
         self.data['hora_final'] = 2
         form = HorarioForm(self.data)
         self.assertTrue(form.is_valid(), form.errors)
+
+    def test_rango_valores_horas(self):
+        self.data['hora_inicio'] = 0
+        self.data['hora_final'] = 1
+        form = HorarioForm(self.data)
+        self.assertFalse(form.is_valid(), form.errors)
+
+        self.data['hora_inicio'] = 12
+        self.data['hora_final'] = 13
+        form = HorarioForm(self.data)
+        self.assertFalse(form.is_valid(), form.errors)
+
+    def test_rango_valores_dia(self):
+        self.data['hora_inicio'] = 1
+        self.data['hora_final'] = 2
+        self.data['dia'] = -1
+        form = HorarioForm(self.data)
+        self.assertFalse(form.is_valid(), form.errors)
+        self.data['dia'] = 5
+        form = HorarioForm(self.data)
+        self.assertFalse(form.is_valid(), form.errors)
