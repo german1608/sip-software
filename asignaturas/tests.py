@@ -1,7 +1,8 @@
 from django.test import TestCase
 from profesores.models import *
 from coordinacion.models import *
-from .forms import AsignaturaForm
+from .models import *
+from .forms import AsignaturaForm, HorarioForm
 
 import datetime
 # Create your tests here.
@@ -45,3 +46,41 @@ class CreditosTestCase(Base):
         self.data['creditos'] = 0
         form = AsignaturaForm(self.data)
         self.assertFalse(form.is_valid())
+
+class HoraInicioTestCase(Base):
+    def setUp(self):
+        super(HoraInicioTestCase, self).setUp()
+        self.asignatura = Asignatura.objects.create(
+            nombre='compu',
+            codasig='CI1234',
+            creditos=1,
+            pertenece=self.coordinacion,
+            fecha_de_ejecucion=datetime.date.today(),
+            vista=True
+        )
+        self.asignatura.profesores.add(self.profesor)
+        self.asignatura.save()
+        self.data = {
+            'dia': 1,
+            'hora_inicio': 1,
+            'hora_final': 2,
+            'asignatura': self.asignatura
+        }
+
+    def test_inicio_igual_final(self):
+        self.data['hora_final'] = 1
+        self.data['hora_inicio'] = 1
+        form = HorarioForm(self.data)
+        self.assertFalse(form.is_valid())
+
+    def test_inicio_mayor_final(self):
+        self.data['hora_final'] = 1
+        self.data['hora_inicio'] = 3
+        form = HorarioForm(self.data)
+        self.assertFalse(form.is_valid())
+
+    def test_inicio_menor_final(self):
+        self.data['hora_inicio'] = 1
+        self.data['hora_final'] = 2
+        form = HorarioForm(self.data)
+        self.assertTrue(form.is_valid())
