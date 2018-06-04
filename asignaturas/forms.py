@@ -7,5 +7,15 @@ class AsignaturaForm(forms.ModelForm):
         model = Asignatura
         fields = '__all__'
 
-ProgramaFormset = inlineformset_factory(Asignatura, ProgramaAsignatura, fields='__all__', min_num=1, extra=0, can_delete=True)
-HorarioFormset = inlineformset_factory(Asignatura, Horario, fields='__all__', min_num=1, extra=0, can_delete=True)
+class HorarioForm(forms.ModelForm):
+    class Meta:
+        model = Horario
+        fields = '__all__'
+
+class ProgramaForm(forms.ModelForm):
+    class Meta:
+        model = ProgramaAsignatura
+        fields = '__all__'
+
+ProgramaFormset = inlineformset_factory(Asignatura, ProgramaAsignatura, form=ProgramaForm, min_num=1, extra=0, can_delete=True)
+HorarioFormset = inlineformset_factory(Asignatura, Horario, form=HorarioForm, min_num=1, extra=0, can_delete=True)
