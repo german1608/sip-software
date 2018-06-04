@@ -2,10 +2,13 @@
 {% load static %}
 
     {% block content %}
+
+    
     <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
         
         {% block navbar %}  
         <header class="app-header navbar">
+            <link rel="stylesheet" type="text/css" href="{%static 'css/index.css'%}">
             <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -16,88 +19,46 @@
             <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item d-md-down-none">
-                <a class="nav-link" href="#">
-                    <i class="icon-bell"></i>
-                    <span class="badge badge-pill"></span>
-                </a>
-                </li>
-                <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="img-avatar" src="{% static 'core-ui/img/avatars/6.jpg' %}" alt="">
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <div class="dropdown-header text-center">
-                    <strong>Cuenta</strong>
-                    </div>
-                    <a class="dropdown-item" href="#">
-                    <i class="fa fa-bell-o"></i> Notificaciones
-                    <span class="badge badge-info">0</span>
-                    </a>
-                    <div class="dropdown-header text-center">
-                    <strong>Configuraciones</strong>
-                    </div>
-                    <a class="dropdown-item" href="#">
-                    <i class="fa fa-user"></i> Perfil</a>
-                    <a class="dropdown-item" href="#">
-                    <i class="fa fa-lock"></i> Cerrar sesión</a>
-                </div>
-                </li>
-            </ul>
         </header>
         {% endblock navbar %}
+
+        
 
         <div class="app-body">
             
             {% block sidebar %}
-            <div class="sidebar" style="background-color:black">
+            <div class="sidebar" style="background-color:#373736">
                 <nav class="sidebar-nav">
                     <ul class="nav">
-                    <li class="nav-item">
-                        <a id="db" class="nav-link" href="#" style="color:#D1A811">Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-title">SECCION 1</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <i class="nav-icon icon-pencil"></i> PÁGINA 1</a>
-                    </li>
-                    <li class="nav-title">SECCION 2</li>
-                    <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#">
-                        <i class="nav-icon icon-puzzle"></i> PÁGINA 2 DD</a>
-                        <ul class="nav-dropdown-items">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                            <i class="nav-icon icon-puzzle"></i> DROPDOWN 1</a>
+                            <a id="db" class="nav-link" href="#" style="color:#FAD534">Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-title">Coordinador</li>                            
+                        <li class="nav-item">
+                            <a id="as" href="/asignaturas/" class="nav-link" onclick="changeColor('as'); return false;"> 
+                            <i class="nav-icon icon-pencil"></i> 
+                            ASIGNATURAS
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                            <i class="nav-icon icon-puzzle"></i> DROPDOWN 2</a>
+                            <a href="#" class="nav-link" >
+                            <i class="nav-icon icon-pencil"></i> OFERTAS</a>
                         </li>
-                        </ul>
-                    </li>
-                    <li class="divider"></li>
-                    <li class="nav-title">SECCIÓN 3</li>
-                    <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#">
-                        <i class="nav-icon icon-star"></i> PÁGINA 3 DD</a>
-                        <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" target="_top">
-                            <i class="nav-icon icon-star"></i> DROPDOWN 1</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" target="_top">
-                            <i class="nav-icon icon-star"></i> DROPDOWN 2</a>
-                        </li>
-                        </ul>
-                    </li>
                     </ul>
                 </nav>
                 <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+                
+                <!-funcion para cambiar color>
+                <script>
+                 function changeColor(id)
+                    {
+                        document.getElementById(id).style.color = "white"; // forecolor
+                        document.getElementById(id).style.backgroundColor = "#FAD534"; // backcolor
+                    } 
+                </script>
             </div>
+            
             {% endblock sidebar %}
 
             <main class="main" style="background-color:#C9C6BB">
@@ -113,7 +74,7 @@
         </div>
 
         {% block footer %}
-        <footer class="app-footer" style="background-color:#D1A811">
+        <footer class="app-footer" style="background-color:#FAD534">
             <div>
             <a href="#">SIP</a>
             <span style="color:black">&copy; 2018 Oozma Kappa.</span>
