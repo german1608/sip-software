@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 
 from coordinacion.models import Coordinacion
 from profesores.models import Profesor
@@ -10,7 +11,14 @@ import datetime
 class Asignatura(models.Model):
     nombre = models.CharField(max_length=100, verbose_name='Nombre')
     codasig = models.CharField(max_length=10, unique=True,
-        verbose_name='Código de Asignatura')
+        verbose_name='Código de Asignatura', validators=[
+            RegexValidator(
+                regex='^[A-Z]{2}[0-9]{4}$',
+                message='Formato de código incorrecto. Ej: CO3121',
+                code='codigo_invalido'
+            )
+        ]
+    )
     creditos = models.PositiveSmallIntegerField(verbose_name='Créditos')
     profesores = models.ManyToManyField(Profesor, verbose_name='Profesores',
         related_name='profesores')

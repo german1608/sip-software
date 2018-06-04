@@ -45,3 +45,45 @@ class CreditosTestCase(Base):
         self.data['creditos'] = 0
         form = AsignaturaForm(self.data)
         self.assertFalse(form.is_valid())
+
+class CodigoAsignaturaTestCase(Base):
+
+    def test_codigos_minuscula(self):
+        self.data['codasig'] = 'ci3715'
+        form = AsignaturaForm(self.data)
+        self.assertFalse(form.is_valid())
+    
+    def test_codigo_titulo(self):
+        self.data['codasig'] = 'Ci3715'
+        form = AsignaturaForm(self.data)
+        self.assertFalse(form.is_valid())
+
+    def test_codigo_correcto(self):
+        self.data['codasig'] = 'CI3715'
+        form = AsignaturaForm(self.data)
+        self.assertTrue(form.is_valid())
+    
+    def test_codigo_intercalado(self):
+        self.data['codasig'] = 'cI3715'
+        form = AsignaturaForm(self.data)
+        self.assertFalse(form.is_valid())
+
+    def test_codigo_guiones(self):
+        self.data['codasig'] = 'CI-3715'
+        form = AsignaturaForm(self.data)
+        self.assertFalse(form.is_valid())
+    
+    def test_codigo_incompleto(self):
+        self.data['codasig'] = 'CI371'
+        form = AsignaturaForm(self.data)
+        self.assertFalse(form.is_valid())
+    
+    def test_codigo_invalido(self):
+        self.data['codasig'] = 'CI37151'
+        form = AsignaturaForm(self.data)
+        self.assertFalse(form.is_valid())
+    
+    def test_codigo_incorrecto(self):
+        self.data['codasig'] = '1CI3715'
+        form = AsignaturaForm(self.data)
+        self.assertFalse(form.is_valid())
