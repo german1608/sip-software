@@ -14,6 +14,14 @@ class AsignaturaForm(forms.ModelForm):
         return creditos
 
 class HorarioForm(forms.ModelForm):
+
+    def clean(self):
+        cleaned_data = super().clean()
+        hora_inicio = cleaned_data.get("hora_inicio")
+        hora_final = cleaned_data.get("hora_final")
+        if hora_inicio > hora_final or hora_inicio == hora_final:
+            raise forms.ValidationError("Error. La hora de inicio debe ser menor que la hora final")
+
     class Meta:
         model = Horario
         fields = '__all__'
