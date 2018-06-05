@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, URLValidator
 
 from coordinacion.models import Coordinacion
 from profesores.models import Profesor
@@ -31,7 +31,7 @@ class Asignatura(models.Model):
         return self.codasig + ": " + self.nombre
 
 class ProgramaAsignatura(models.Model):
-    url = models.URLField(verbose_name='Código de Programa')
+    url = models.CharField(max_length=500, validators=[URLValidator()], verbose_name='Código de Programa')
     asignatura = models.ForeignKey(Asignatura,
         related_name='programas', on_delete=models.CASCADE, verbose_name='Asignatura')
 

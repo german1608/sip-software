@@ -2,7 +2,7 @@ from django.test import TestCase
 from profesores.models import *
 from coordinacion.models import *
 from .models import *
-from .forms import AsignaturaForm, HorarioForm, HorarioFormset
+from .forms import AsignaturaForm, HorarioForm, HorarioFormset, ProgramaForm
 from .views import horario_valido
 
 from datetime import date
@@ -195,3 +195,46 @@ class HorarioTestCase(Base):
         horario1 = Horario.objects.create(dia=1, hora_inicio=3, hora_final=4, asignatura=self.asignatura)
         horario2 = Horario.objects.create(dia=1, hora_inicio=1, hora_final=2, asignatura=self.asignatura)
         self.assertTrue(horario_valido([horario1, horario2]))
+
+class FormatoURL(Base):
+    
+    def setUp(self):
+        super(FormatoURL, self).setUp()
+        self.asignatura = Asignatura.objects.create(
+            creditos=4,
+            codasig='PS1111',
+            nombre='Modelos Lineales',
+            pertenece=self.coordinacion,
+            fecha_de_ejecucion=datetime.date.today(),
+            vista=False
+        )
+
+        self.data = {
+            'url': 'https://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf',
+            'asignatura': self.asignatura.id
+        }
+
+    def test_url_http(self):
+        self.data['url'] = 'http://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf'
+        form = ProgramaForm(self.data)
+        self.assertTrue(form.is_valid())
+
+    def test_url_https(self):
+        self.data['url'] = 'https://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf'
+        form = ProgramaForm(self.data)
+        self.assertTrue(form.is_valid())
+
+    def test_url_other(self):    
+        self.data['url'] = 'ssh://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf'
+        form = ProgramaForm(self.data)
+        self.assertFalse(form.is_valid())
+
+    def test_url_no_protocol(self):
+        self.data['url'] = 'www.bitcoin.org'
+        form = ProgramaForm(self.data)
+        self.assertFalse(form.is_valid())
+
+    def test_url_no_domain(self):
+        self.data['url'] = 'bitcoin'
+        form = ProgramaForm(self.data)
+        self.assertFalse(form.is_valid())
