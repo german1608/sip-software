@@ -98,6 +98,21 @@ class EliminarAsignaturaView(TemplateView):
         # Redirige al inicio por ahora
         return JsonResponse({'ok': True})
 
+def horario_valido(lista):
+    for i in lista:    
+        for x in lista:
+            if i!=x:
+                if i.dia==x.dia:
+                    if (i.hora_inicio>=x.hora_inicio and i.hora_inicio<=x.hora_final) or (i.hora_final>=x.hora_inicio and i.hora_final<=x.hora_final) or (i.hora_inicio>x.hora_inicio and i.hora_final<x.hora_final) or (i.hora_inicio<x.hora_inicio and i.hora_final>x.hora_final):
+                        return False
+    return True
+
+def horas_validas(lista):
+    for i in lista:
+        if i.hora_inicio >= i.hora_final:
+            return False
+    return True
+
 class AnadirAsignaturaView(View):
     def get(self, request, *args, **kwargs):
         _id = request.GET.get('id', '')
@@ -140,8 +155,8 @@ class AnadirAsignaturaView(View):
         horarios = [form1.instance for form1 in formset1]
 
         if form.is_valid() and formset1.is_valid()\
-         and formset2.is_valid() and self.horario_valido(horarios)\
-         and self.horas_validas(horarios):
+         and formset2.is_valid() and horario_valido(horarios)\
+         and horas_validas(horarios):
             form.save()
             for instance in formset1.save(commit=False):
                 instance.asignatura = form.instance
@@ -186,10 +201,10 @@ class AnadirAsignaturaView(View):
                     for err in form2.non_field_errors():
                         errors.append([str(err), '#hora-pan'])
 
-            if (not self.horario_valido(horarios)):
+            if (not horario_valido(horarios)):
                 errors.append(['Hay horarios solapados', '#hora-pan'])
 
-            if (not self.horas_validas(horarios)):
+            if (not horas_validas(horarios)):
                 errors.append(['Hay hora de inicio mayor a hora final', '#hora-pan'])
 
             rendered = render_to_string('asignaturas/asignatura_form.html', context=context, request=request)
@@ -199,20 +214,6 @@ class AnadirAsignaturaView(View):
                 'errors': errors
             })
 
-    def horario_valido(self,lista):
-        for i in lista:    
-            for x in lista:
-                if i!=x:
-                    if i.dia==x.dia:
-                        if (i.hora_inicio>=x.hora_inicio and i.hora_inicio<=x.hora_final) or (i.hora_final>=x.hora_inicio and i.hora_final<=x.hora_final) or (i.hora_inicio>x.hora_inicio and i.hora_final<x.hora_final) or (i.hora_inicio<x.hora_inicio and i.hora_final>x.hora_final):
-                            return False
-        return True
-
-    def horas_validas(self, lista):
-        for i in lista:
-            if i.hora_inicio >= i.hora_final:
-                return False
-        return True
 class EditarAsignaturaView(View):
     def get(self, request, *args, **kwargs):
         pk = request.GET.get('id', '')
