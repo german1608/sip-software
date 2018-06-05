@@ -4,6 +4,7 @@ from coordinacion.models import *
 from .models import *
 from .forms import AsignaturaForm, HorarioForm
 
+from datetime import date
 import datetime
 # Create your tests here.
 
@@ -27,7 +28,9 @@ class Base(TestCase):
             'profesores': [self.profesor.cedula],
             'pertenece': self.coordinacion.codigo,
             'fecha_de_ejecucion': datetime.date.today(),
-            'vista': True
+            'vista': True,
+            'url': 'http:/'
+
         }
 
 class CreditosTestCase(Base):
@@ -48,7 +51,7 @@ class CreditosTestCase(Base):
         self.assertFalse(form.is_valid())
 
 class CodigoAsignaturaTestCase(Base):
-
+    
     def test_codigos_minuscula(self):
         self.data['codasig'] = 'ci3715'
         form = AsignaturaForm(self.data)
@@ -147,3 +150,23 @@ class HoraInicioTestCase(Base):
         self.data['dia'] = 5
         form = HorarioForm(self.data)
         self.assertFalse(form.is_valid(), form.errors)
+
+class FechaDeEjecucion(Base):
+
+    def test_fecha_de_ejecucion_menor_a_hoy(self):
+        self.data['fecha_de_ejecucion'] = datetime.date.today() - datetime.timedelta(days=1)
+                                        #datetime.date(2000, 6, 4)
+        form = AsignaturaForm(self.data)
+        self.assertTrue(form.is_valid())
+
+    def test_fecha_de_ejecucion_igual_a_hoy(self):
+        self.data['fecha_de_ejecucion'] = datetime.date.today()
+        form = AsignaturaForm(self.data)
+        self.assertTrue(form.is_valid())
+
+    def test_fecha_de_ejecucion_mayor_a_hoy(self):
+        self.data['fecha_de_ejecucion'] = datetime.date.today() + datetime.timedelta(days=1)
+                                        #datetime.date(2030, 6, 4)
+        form = AsignaturaForm(self.data)
+        self.assertFalse(form.is_valid())
+

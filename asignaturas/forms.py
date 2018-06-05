@@ -2,6 +2,7 @@ from django import forms
 from django.forms import inlineformset_factory
 from .models import Asignatura, Horario, ProgramaAsignatura
 from django.core.exceptions import ValidationError
+import datetime
 
 class AsignaturaForm(forms.ModelForm):
     class Meta:
@@ -12,6 +13,12 @@ class AsignaturaForm(forms.ModelForm):
         if creditos <= 0 :
             raise ValidationError('Los créditos deben ser mayor a cero')
         return creditos
+
+    def clean_fecha_de_ejecucion(self):
+        fecha_de_ejecucion = self.cleaned_data['fecha_de_ejecucion']
+        if fecha_de_ejecucion > datetime.date.today() :
+            raise ValidationError('La fecha de ejecución debe ser hoy o antes de hoy')
+        return fecha_de_ejecucion
 
 class HorarioForm(forms.ModelForm):
 
