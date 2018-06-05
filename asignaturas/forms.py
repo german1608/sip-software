@@ -30,12 +30,5 @@ class ProgramaForm(forms.ModelForm):
         model = ProgramaAsignatura
         fields = '__all__'
 
-    def clean_url(self):
-        url = self.cleaned_data['url']
-        protocolo = url.split(":")[0]
-        if not (protocolo == 'https' or protocolo == 'http') :
-            raise ValidationError('El protocolo del programa no es válido')
-        return url
-
 ProgramaFormset = inlineformset_factory(Asignatura, ProgramaAsignatura, form=ProgramaForm, min_num=1, extra=0, can_delete=True)
 HorarioFormset = inlineformset_factory(Asignatura, Horario, form=HorarioForm, min_num=1, extra=0, can_delete=True)
