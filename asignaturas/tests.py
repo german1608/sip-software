@@ -2,7 +2,10 @@ from django.test import TestCase
 from profesores.models import *
 from coordinacion.models import *
 from .forms import AsignaturaForm
+from .forms import HorarioForm
+from .forms import ProgramaForm
 
+from datetime import date
 import datetime
 # Create your tests here.
 
@@ -26,7 +29,9 @@ class Base(TestCase):
             'profesores': [self.profesor.cedula],
             'pertenece': self.coordinacion.codigo,
             'fecha_de_ejecucion': datetime.date.today(),
-            'vista': True
+            'vista': True,
+            'url': 'http:/'
+
         }
 
 class CreditosTestCase(Base):
@@ -44,4 +49,45 @@ class CreditosTestCase(Base):
     def test_creditos_igual_cero(self):
         self.data['creditos'] = 0
         form = AsignaturaForm(self.data)
+        self.assertFalse(form.is_valid())
+
+class FechaDeEjecucion(Base):
+
+    def test_fecha_de_ejecucion_menor_a_hoy(self):
+        self.data['fecha_de_ejecucion'] = datetime.date.today() - datetime.timedelta(days=1)
+                                        #datetime.date(2000, 6, 4)
+        form = AsignaturaForm(self.data)
+        self.assertTrue(form.is_valid())
+
+    def test_fecha_de_ejecucion_igual_a_hoy(self):
+        self.data['fecha_de_ejecucion'] = datetime.date.today()
+        form = AsignaturaForm(self.data)
+        self.assertTrue(form.is_valid())
+
+    def test_fecha_de_ejecucion_mayor_a_hoy(self):
+        self.data['fecha_de_ejecucion'] = datetime.date.today() + datetime.timedelta(days=1)
+                                        #datetime.date(2030, 6, 4)
+        form = AsignaturaForm(self.data)
+        self.assertFalse(form.is_valid())
+
+class FormatoURL(Base):
+
+    def test_url_http(self):
+        self.data['url'] = 'http://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf'
+        form = ProgramaForm(self.data)
+        self.assertTrue(form.is_valid())
+
+    def test_url_https(self):
+        self.data['url'] = 'https://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf'
+        form = ProgramaForm(self.data)
+        self.assertTrue(form.is_valid())
+
+    def test_url_other(self):    
+        self.data['url'] = 'ssh://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf'
+        form = ProgramaForm(self.data)
+        self.assertFalse(form.is_valid())
+
+    def test_url_no_protocol(self):
+        self.data['url'] = 'bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf'
+        form = ProgramaForm(self.data)
         self.assertFalse(form.is_valid())
