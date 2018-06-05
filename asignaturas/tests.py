@@ -2,7 +2,8 @@ from django.test import TestCase
 from profesores.models import *
 from coordinacion.models import *
 from .models import *
-from .forms import AsignaturaForm, HorarioForm
+from .forms import AsignaturaForm, HorarioForm, HorarioFormset
+from .views import horario_valido
 
 import datetime
 # Create your tests here.
@@ -46,6 +47,7 @@ class CreditosTestCase(Base):
         self.data['creditos'] = 0
         form = AsignaturaForm(self.data)
         self.assertFalse(form.is_valid())
+        
 
 class CodigoAsignaturaTestCase(Base):
 
@@ -147,3 +149,27 @@ class HoraInicioTestCase(Base):
         self.data['dia'] = 5
         form = HorarioForm(self.data)
         self.assertFalse(form.is_valid(), form.errors)
+
+class HorarioTestCase(Base):
+    def setUp(self):
+        super(HorarioTestCase, self).setUp()
+        self.asignatura = Asignatura.objects.create(
+            nombre='compu',
+            codasig='CI1234',
+            creditos=1,
+            pertenece=self.coordinacion,
+            fecha_de_ejecucion=datetime.date.today(),
+            vista=True
+        )
+        self.asignatura.profesores.add(self.profesor)
+        self.asignatura.save()
+
+    def test_horarios_chocan(self):
+        horario1 = Horario.objects.create(dia=1, hora_inicio=2, hora_final=3, asignatura=self.asignatura)
+        horario2 = Horario.objects.create(dia=1, hora_inicio=1, hora_final=2, asignatura=self.asignatura)
+        self.assertFalse(horario_valido([horario1, horario2]))
+
+    def test_horarios_no_chocan(self):
+        horario1 = Horario.objects.create(dia=1, hora_inicio=3, hora_final=4, asignatura=self.asignatura)
+        horario2 = Horario.objects.create(dia=1, hora_inicio=1, hora_final=2, asignatura=self.asignatura)
+        self.assertTrue(horario_valido([horario1, horario2]))
