@@ -70,24 +70,3 @@ class FechaDeEjecucion(Base):
         form = AsignaturaForm(self.data)
         self.assertFalse(form.is_valid())
 
-class FormatoURL(Base):
-
-    def test_url_http(self):
-        self.data['url'] = 'http://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf'
-        form = ProgramaForm(self.data)
-        self.assertTrue(form.is_valid())
-
-    def test_url_https(self):
-        self.data['url'] = 'https://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf'
-        form = ProgramaForm(self.data)
-        self.assertTrue(form.is_valid())
-
-    def test_url_other(self):    
-        self.data['url'] = 'ssh://bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf'
-        form = ProgramaForm(self.data)
-        self.assertFalse(form.is_valid())
-
-    def test_url_no_protocol(self):
-        self.data['url'] = 'bitcoin.org/files/bitcoin-paper/bitcoin_es_latam.pdf'
-        form = ProgramaForm(self.data)
-        self.assertFalse(form.is_valid())
