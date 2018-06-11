@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'asignaturas',
     'profesores',
     'coordinacion',
+    'oferta',
     'widget_tweaks'
 ]
 
