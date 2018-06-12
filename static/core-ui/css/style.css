@@ -11644,8 +11644,8 @@ canvas {
 }
 
 .sidebar .nav-link.active {
-  color: #fff;
-  background: #3a4248;
+  color: black;
+  background: #FAD534;
 }
 
 .sidebar .nav-link.active .nav-icon {
@@ -11653,7 +11653,7 @@ canvas {
 }
 
 .sidebar .nav-link:hover {
-  color: #fff;
+  color: black;
   background: #FAD534;
 }
 
@@ -11662,7 +11662,7 @@ canvas {
 }
 
 .sidebar .nav-link:hover .nav-icon {
-  color: #fff;
+  color: black;
 }
 
 .sidebar .nav-link:hover.nav-dropdown-toggle::before {
