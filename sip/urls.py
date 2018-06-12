@@ -21,5 +21,6 @@ app_name = 'sip'
 urlpatterns = [
     path('', index, name="index"),
     path('admin/', admin.site.urls),
-    path('asignaturas/', include('asignaturas.urls'))
+    path('asignaturas/', include('asignaturas.urls')),
+    path('oferta/', include('oferta.urls'))
 ]

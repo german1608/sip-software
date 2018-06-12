@@ -36,26 +36,21 @@
                         </li>
                         <li class="nav-title">Coordinador</li>                            
                         <li class="nav-item">
-                            <a id="as" href="/asignaturas/" class="nav-link" onclick="changeColor('as'); return false;"> 
+                            <a id="as" href="{% url 'asignaturas:dashboard' %}" class="nav-link"> 
                             <i class="nav-icon icon-pencil"></i> 
                             ASIGNATURAS
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link" >
+                            <a href="{% url 'oferta:dashboard' %}" class="nav-link" >
                             <i class="nav-icon icon-pencil"></i> OFERTAS</a>
                         </li>
                     </ul>
                 </nav>
                 <button class="sidebar-minimizer brand-minimizer" type="button"></button>
                 
-                <!-funcion para cambiar color>
+                <!-- funcion para cambiar color -->
                 <script>
-                 function changeColor(id)
-                    {
-                        document.getElementById(id).style.color = "white"; // forecolor
-                        document.getElementById(id).style.backgroundColor = "#FAD534"; // backcolor
-                    } 
                 </script>
             </div>
             
