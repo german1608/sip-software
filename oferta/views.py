@@ -28,7 +28,7 @@ def oferta_json(request):
     for oferta in ofertas:
         oferta_detalle = {
             'id' : oferta.id,
-            'trimestre' : oferta.trimestre,
+            'trimestre' : oferta.get_trimestre_display(),
             'anio' : oferta.anio
         }
         lista_ofertas.append(oferta_detalle)
