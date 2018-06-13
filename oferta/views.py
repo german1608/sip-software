@@ -1,7 +1,11 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
 from .models import Oferta
 from .forms import OfertaForm
+
+from .models import Oferta
+
 
 # Create your views here.
 def index(request):
@@ -13,3 +17,20 @@ class OfertaAgregar(CreateView):
     form_class = OfertaForm
     # fields = ['trimestre', 'anio', 'coordinacion']
     success_url = 'success'
+
+def oferta_json(request):
+    """Envia informacion sobre las asignaturas como objeto JSON
+    """
+    ofertas = Oferta.objects.all()
+
+    lista_ofertas = list()
+
+    for oferta in ofertas:
+        oferta_detalle = {
+            'id' : oferta.id,
+            'trimestre' : oferta.trimestre,
+            'anio' : oferta.anio
+        }
+        lista_ofertas.append(oferta_detalle)
+
+    return JsonResponse({'data' : lista_ofertas})

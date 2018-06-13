@@ -1,6 +1,8 @@
+import datetime
 from django.db import models
+from django.core.exceptions import ValidationError
 from coordinacion.models import Coordinacion
-from django.urls import reverse 
+from django.urls import reverse
 
 # Create your models here.
 def anio_oferta_valido(anio_oferta):
@@ -21,11 +23,11 @@ class Oferta(models.Model):
 
     trimestre = models.PositiveIntegerField(choices=OFERTA_TRIMESTRE_CHOICES,
                                             verbose_name="Trimestre de la oferta")
-    anio = models.PositiveIntegerField(verbose_name="Año de la oferta", 
+    anio = models.PositiveIntegerField(verbose_name="Año de la oferta",
                                        validators=[anio_oferta_valido])
-    coordinacion = models.ForeignKey(Coordinacion, verbose_name='Coordinacion', 
+    coordinacion = models.ForeignKey(Coordinacion, verbose_name='Coordinacion',
                                     related_name='ofertas', on_delete=models.CASCADE)
 
-    # Se agrega la funcion get_absolute_url para usar el createView 
+    # Se agrega la funcion get_absolute_url para usar el createView
     def get_absolute_url(self):
         return reverse('detalle-oferta', kwargs={'pk': self.pk})
