@@ -268,3 +268,10 @@ class AsignaturaDetallesView(TemplateView):
         context['programas'] = asignatura.programas.all()
         context['horarios'] = asignatura.horarios.all()
         return context
+
+class Ofertas(TemplateView):
+    template_name = 'oferta/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context    

@@ -9,5 +9,6 @@ urlpatterns = [
     path('detalles/<int:pk>', AsignaturaDetallesView.as_view(), name='detalles'),
     path('eliminar/', EliminarAsignaturaView.as_view(), name='eliminar-asignatura'),
     path('editar/', EditarAsignaturaView.as_view(), name='editar-asignatura'),
-    path('anadir/', AnadirAsignaturaView.as_view(), name='anadir-asignatura')
+    path('anadir/', AnadirAsignaturaView.as_view(), name='anadir-asignatura'),
+    path('oferta/', Ofertas.as_view(), name='ofertas'),
 ]
