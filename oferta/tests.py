@@ -113,7 +113,7 @@ class TestModelOferta(TestCase):
         El dominio de esta debe ser {x| x >= anio_actual}, por tanto se probara
         para x = anio_actual, x = anio_actual + 1, x = anio_actual - 1.
 
-        Deberia lanzar un ValidationError con los anios_invalidos
+        Deberia lanzar un ValidationError con los anios_invalidos (anio_actual - 1)
         """
         anio_actual = datetime.date.today().year
 
@@ -129,9 +129,8 @@ class TestModelOferta(TestCase):
 
         # Una oferta con anio = anio_actual + 1
         oferta.anio = anio_actual + 1
-        with self.assertRaises(ValidationError):
-            oferta.save()
-        self.assertEqual(Oferta.objects.all().count(), 0)
+        oferta.save()
+        self.assertEqual(Oferta.objects.all().count(), 1)
 
         # Una oferta con anio = anio_actual
         oferta.anio = anio_actual
