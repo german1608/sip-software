@@ -1,6 +1,8 @@
 import datetime
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from coordinacion.models import Coordinacion
 from django.urls import reverse
 
@@ -10,6 +12,12 @@ def anio_oferta_valido(anio_oferta):
 
     if anio_oferta < anio_hoy:
         raise ValidationError('El año de la oferta no puede ser menor al %d' % anio_hoy)
+
+def trimestre_valido(trim):
+    """
+    Funcion que True ssi el trimestre es valido
+    """
+    return trim in [0, 1, 2]
 
 class Oferta(models.Model):
     TRIMESTRE_ENEMAR = 0
@@ -31,3 +39,13 @@ class Oferta(models.Model):
     # Se agrega la funcion get_absolute_url para usar el createView
     def get_absolute_url(self):
         return reverse('oferta:dashboard')
+
+@receiver(pre_save, sender=Oferta)
+def valida_modelo(sender, **kwargs):
+    """
+    Funcion que se llama antes de guardar un objeto en la base de datos
+    Funciona como los triggers de postgresql.
+    """
+    oferta = kwargs['instance']
+    if not trimestre_valido(oferta.trimestre):
+        raise ValidationError('El trimestre de la oferta debe estar entre 0 y 2')
