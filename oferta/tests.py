@@ -6,10 +6,16 @@ de nuestra aplicacion. Se prueban 3 cosas:
 * vistas
 * formularios
 """
-
+# imports de django
 from django.test import TestCase
+from django.core.exceptions import ValidationError
+from django.db import OperationalError
+# Modelos necesarios para las pruebas
 from oferta.forms import OfertaForm
 from coordinacion.models import Coordinacion
+from oferta.models import Oferta
+
+# Librerias nativas
 import datetime
 
 # Create your tests here.
@@ -53,3 +59,50 @@ class TestFormOferta(TestCase):
         self.initial['anio'] = today.year + 1
         form = OfertaForm(self.initial)
         self.assertTrue(form.is_valid())
+
+class TestModelOferta(TestCase):
+    """
+    A pesar de que con los formularios se pueden crear objetos,
+    no quita la posibilidad de crearlos via el ORM de django.
+    Estos tests verifican que los campos de cada atributo cumplan
+    con los criterios de nuestro ER.
+    """
+    def setUp(self):
+        self.coordinacion = Coordinacion.objects.create(codigo='CI', nombre='Coordinacion 1')
+
+    def test_trimestre_atribute(self):
+        """
+        El trimestre debe ser un numero del 0 al 2
+        0 -> Ene-Mar
+        1 -> Abr-Jul
+        2 -> Sep-Dic
+        Esta validacion pasa en los formularios, pero no en los modelos.
+        Estas pruebas van a probar solamente el 3 y el -1 (frontera y esquina, en este caso)
+        """
+        oferta = Oferta()
+        oferta.anio = 2018
+        oferta.trimestre = -1 # invalido
+        oferta.coordinacion = self.coordinacion
+        # deberia lanzar la excepcion OperationalError por que esto es del manejador
+        with self.assertRaises(ValidationError):
+            oferta.save()
+        # tampoco deberia guardarlo
+        self.assertEqual(Oferta.objects.all().count(), 0)
+
+        # probando con el 3
+        oferta.trimestre = 3
+        # deberia lanzar la excepcion ValidationError
+        with self.assertRaises(ValidationError):
+            oferta.save()
+        # tampoco deberia guardarlo
+        self.assertEqual(Oferta.objects.all().count(), 0)
+
+        # por supuesto, con cualqueir valor del 0 al 2 deberia guardarlo
+        for i in range(3):
+            oferta = Oferta()
+            oferta.anio = 2018
+            oferta.trimestre = -1 # invalido
+            oferta.coordinacion = self.coordinacion
+            oferta.trimestre = i
+            oferta.save() # no deberia lanzar error
+        self.assertEqual(Oferta.objects.all().count(), 3)
