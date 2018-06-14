@@ -115,3 +115,21 @@ option {
   background-color: transparent;
   font-size: 4rem;
 }
+
+.front {
+  position: relative;
+}
+
+.management-btns {
+  display: none;
+  padding: .5rem;
+  font-size: 1rem;
+  position: absolute;
+  text-align: left;
+  top: 0;
+  right: 0;
+}
+
+.front:hover .management-btns {
+  display: block;
+}

@@ -24,7 +24,6 @@ $(function() {
             success: function (json) {
                 // LLena el formulario
                 $('#create-oferta-form').html(json)
-                
                 // Voltea la carta
                 $('#create-oferta-box').parent().addClass('active')
             }
