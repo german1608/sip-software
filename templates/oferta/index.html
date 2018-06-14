@@ -1,118 +1,9 @@
 {% extends "base/base_coordinador.html" %}
 {% load static %}
 {% block customhead %}
+<link rel="stylesheet" href="{% static 'css/toastr.min.css' %}" type="text/css">
 
-<style type="text/css">
-	
-	.title{
-		font-size: 40px;
-		margin-top: 2%;
-		color: #494949;
-	}
-
-	.botonAgregar{
-		padding: 25px 18px;
-		background-color: #FAD534;
-		color: #494949;
-		border-radius: 50%;
-	}
-
-	.buscador{
-		padding: 12px 24px;
-		color: #575757;
-		font-size: 18px;
-		background-color: transparent;
-		background-image: url(http://mihaeltomic.com/codepen/input-search/ic_search_black_24px.svg);
-		background-repeat: no-repeat;
-	    background-size: 18px 18px;
-	    background-position: 95% center;
-	    border-radius: 50px;
-	    border: 1px solid rgb(66, 65, 61);
-	    transition: all 250ms ease-in-out;
-	    backface-visibility: hidden;
-	    transform-style: preserve-3d;
-	}
-
-
-	.flip3D > .front {
-		position: absolute;
-		width: 15em;
-		height: 18em;
-		background: #FAD534;
-		border-radius: 0.3em;
-		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-		-moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-		-webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-		transform: perspective(60em) rotateY(0deg);
-		backface-visibility: hidden;
-		transition: transform .5s linear 0s;
-	}
-
-	.flip3D > .back {
-		position: absolute;
-		width: 15em;
-		height: 18em;
-		background: #FAD534;
-		border-radius: 0.3em;
-		-webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-		-moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-		transform: perspective(60em) rotateY(180deg);
-		backface-visibility: hidden;
-		transition: transform .5s linear 0s;
-	}
-
-	.flip3D:hover > .front {
-		transform: perspective(60em) rotateY(-180deg);
-		display
-	}
-
-	.flip3D:hover > .back {
-		transform: perspective(60em) rotateY(0deg);
-	}
-
-	.front-text{
-		font-size: 30px;
-		color: #494949;
-		vertical-align: middle;
-		text-align: center;
-		margin-top: 35%;
-	}
-
-	.flip3D > .back > form{
-		margin-top:35%;
-		font-size: 1.3em;
-		margin-left: 20px;
-	}
-
-	input[type="number"]{
-		width: 70px;
-		border:none;
-		background-color: #FAD534;
-		border-bottom: 2px solid #494949;
-	}
-
-	form{
-		color: #494949;
-	}
-
-	select{
-		width: 80px;
-		border:none;
-		background-color: #FAD534;
-		border-bottom: 2px solid #494949;
-		box-shadow: none;
-		border-radius: 0%;
-		color: #494949;
-	}
-
-	option{
-		background-color: white;
-		
-	}
-
-</style>
-
+<link rel="stylesheet" href="{% static 'css/oferta/index.css' %}">
 {% endblock customhead %}
 {% block wrapper %}
 
@@ -138,7 +29,7 @@
 		<div class="col-md-1">
 		</div>	
 
-		<div class="col-md-2">
+		<div class="col-md-3">
 			<div class="flip3D">
 				<div class="back">
 					<form action="#" method="POST" id="">
@@ -165,6 +56,18 @@
 			</div>
 		</div>	
 		
+		<!--Anadir una oferta-->
+		<div class="col-md-3">
+			<div class="flip3D">
+				<div id="create-oferta-box" class="front">
+					<button id="oferta-add" data-url="{% url 'oferta:anadir-oferta' %}" class="btn btn-lg"><i class="fa fa-plus"></i></button>
+				</div>
+				<div id="create-oferta-form" class="back">
+
+				</div>
+			</div>
+		</div>	
+
 		<div class="col-md-1">
 		</div>	
 
@@ -173,6 +76,7 @@
 
 {% endblock wrapper %}
 {% block customscripts %}
-
+<script src="{% static 'js/toastr.min.js' %}" charset="utf8"></script>
+<script src="{% static 'js/oferta/index.js' %}"></script>
 
 {%  endblock customscripts %}

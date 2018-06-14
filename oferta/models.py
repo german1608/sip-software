@@ -22,8 +22,8 @@ class Oferta(models.Model):
     )
 
     trimestre = models.PositiveIntegerField(choices=OFERTA_TRIMESTRE_CHOICES,
-                                            verbose_name="Trimestre de la oferta")
-    anio = models.PositiveIntegerField(verbose_name="Año de la oferta",
+                                            verbose_name="Trimestre")
+    anio = models.PositiveIntegerField(verbose_name="Año",
                                        validators=[anio_oferta_valido])
     coordinacion = models.ForeignKey(Coordinacion, verbose_name='Coordinacion',
                                     related_name='ofertas', on_delete=models.CASCADE)

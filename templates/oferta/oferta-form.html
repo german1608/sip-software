@@ -1,27 +1,28 @@
 {% load widget_tweaks %}
 
-<form action="#" method="POST" id="form-modal">
+<form action="{% url 'oferta:anadir-oferta' %}" method="POST" id="form-oferta">
   {% csrf_token %}
 
       <input type="hidden" name="id" value="{{form.instance.id|default:''}}">
       <span class="text-danger">{{form.non_field_errors}}</span>
+      {% render_field form.coordinacion class="hide" %}
       <!-- {{form.errors}} -->
 
-
+      
       <div class="form-group">
         <label for="trimestre"><span class="glyphicon glyphicon-pencil"></span> {{ form.trimestre.label }}</label>
-        {% render_field form.trimestre class="form-control" id="trimestre" placeholder="Introduzca el Trimestre" %}
+        {% render_field form.trimestre id="trimestre" %}
         <span class="text-danger">{{form.trimestre.errors.as_text}}</span>
       </div>
       <div class="form-group">
         <label for="anio"><span class="glyphicon glyphicon-pencil"></span> {{ form.anio.label }}</label>
-        {% render_field form.anio class="form-control" id="anio" placeholder="Introduzca el Año" %}
+        {% render_field form.anio id="anio" %}
         <span class="text-danger">{{form.anio.errors.as_text}}</span>
       </div>
 
 
 
-    <button id="submit-btn" type="submit" class="d-none btn btn-primary btn-block"><span
+    <button type="submit" class="btn btn-primary btn-block"><span
       class="glyphicon glyphicon-ok"></span> Agregar
     </button>
   </div>
