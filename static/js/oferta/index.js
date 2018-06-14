@@ -15,7 +15,58 @@ toastr.options = {
     "hideMethod": "fadeOut"
 }
 
+function oferta_show(){
+    console.log("hola")
+    const $this = $(this)
+    const url_json = $('[name=json-url]').attr('value')
+    
+    $.ajax ({
+        dataType: "json",
+        url: url_json,
+        // 
+        success: function (json){
+            json.data.forEach(oferta => {
+                $('#oferta-box').prepend(`
+                <div class="col-md-3">
+                    <div class="flip3D">
+                        <div class="back">
+                            <form action="#" method="POST" id="">
+                
+                            <div class="form-group">
+                                <label for="trimestre"><span class=""></span> Trimestre: </label>
+                                <select>
+                                    <option>Ene-Mar</option>
+                                    <option>Abr-Jul</option>
+                                    <option>Sep-Dic</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="anio"><span class=""></span> Año: </label>
+                                <input type="number" name="">
+                
+                            </div>
+                
+                            </form>
+                        </div>
+                        <div class="front">
+                            <div class="management-btns">
+                                <span class="delete-btn"><i class="fa fa-window-close"></i></span>
+                                <span class="edit-btn"><i class="fa fa-pencil-alt"></i></span>
+                            </div>
+                            <p class="front-text">${oferta.trimestre} <br> ${oferta.anio}</p>
+                        </div>
+                    </div>
+                </div>`)
+            })
+        }
+    })
+
+    
+    
+}
+
 $(function() {
+    oferta_show()
     $('#oferta-add').on('click', function(e) {
         const $this = $(this)
         $.ajax({

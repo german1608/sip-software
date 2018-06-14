@@ -25,41 +25,8 @@
 		</div>
 	</div>
 
-	<div class="row" style="margin-top: 50px">
-		<div class="col-md-1">
-		</div>
-
-		<div class="col-md-3">
-			<div class="flip3D">
-				<div class="back">
-					<form action="#" method="POST" id="">
-
-				      <div class="form-group">
-				        <label for="trimestre"><span class=""></span> Trimestre: </label>
-				        <select>
-				        	<option>Ene-Mar</option>
-				        	<option>Abr-Jul</option>
-				        	<option>Sep-Dic</option>
-				        </select>
-				      </div>
-				      <div class="form-group">
-				        <label for="anio"><span class=""></span> Año: </label>
-				        <input type="number" name="">
-
-				      </div>
-
-					</form>
-				</div>
-				<div class="front">
-					<div class="management-btns">
-						<span class="delete-btn"><i class="fa fa-window-close"></i></span>
-						<span class="edit-btn"><i class="fa fa-pencil-alt"></i></span>
-					</div>
-					<p class="front-text">Abril-Julio <br> 2018</p>
-				</div>
-			</div>
-		</div>
-
+	<div class="row" id="oferta-box" style="margin-top: 50px">		
+		<input type="hidden" name="json-url" value="{% url 'oferta:oferta-json' %}">
 		<!--Anadir una oferta-->
 		<div class="col-md-3">
 			<div class="flip3D">
@@ -70,9 +37,6 @@
 
 				</div>
 			</div>
-		</div>
-
-		<div class="col-md-1">
 		</div>
 
 	</div>
