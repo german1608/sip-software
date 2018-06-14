@@ -49,3 +49,4 @@ def valida_modelo(sender, **kwargs):
     oferta = kwargs['instance']
     if not trimestre_valido(oferta.trimestre):
         raise ValidationError('El trimestre de la oferta debe estar entre 0 y 2')
+    anio_oferta_valido(oferta.anio)
