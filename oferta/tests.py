@@ -106,3 +106,34 @@ class TestModelOferta(TestCase):
             oferta.trimestre = i
             oferta.save() # no deberia lanzar error
         self.assertEqual(Oferta.objects.all().count(), 3)
+
+    def test_trimestre_anio(self):
+        """
+        El anio de una oferta debe ser mayor o igual al anio actual.
+        El dominio de esta debe ser {x| x >= anio_actual}, por tanto se probara
+        para x = anio_actual, x = anio_actual + 1, x = anio_actual - 1.
+
+        Deberia lanzar un ValidationError con los anios_invalidos
+        """
+        anio_actual = datetime.date.today().year
+
+        # Una oferta con anio = anio_actual - 1
+        oferta = Oferta()
+        oferta.trimestre = 0
+        oferta.coordinacion = self.coordinacion
+        oferta.anio = anio_actual - 1
+
+        with self.assertRaises(ValidationError):
+            oferta.save()
+        self.assertEqual(Oferta.objects.all().count(), 0)
+
+        # Una oferta con anio = anio_actual + 1
+        oferta.anio = anio_actual + 1
+        with self.assertRaises(ValidationError):
+            oferta.save()
+        self.assertEqual(Oferta.objects.all().count(), 0)
+
+        # Una oferta con anio = anio_actual
+        oferta.anio = anio_actual
+        oferta.save()
+        self.assertEqual(Oferta.objects.all().count(), 1)
