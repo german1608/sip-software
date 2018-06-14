@@ -1,28 +1,54 @@
 {% load widget_tweaks %}
 
-<form action="{% url 'asignaturas:anadir-asignatura' %}" method="POST" id="form-modal">
-  {% csrf_token %}
-  <div class="tab-content">
-    <div class="tab-pane active" id="informacion_basica">
-      <!-- Datos para la informacion basica -->
-      <input type="hidden" name="id" value="{{form.instance.id|default:''}}">
-      <span class="text-danger">{{form.non_field_errors}}</span>
-      <!-- {{form.errors}} -->
-      <div class="form-group">
-        <label for="nombre-asig"><span class="glyphicon glyphicon-pencil"></span> {{ form.nombre.label }}</label>
-        {% render_field form.nombre class="form-control" id="nombre-asig" placeholder="Introduzca el nombre" %}
-        <span class="text-danger">{{form.nombre.errors.as_text}}</span>
-      </div>
-      <div class="form-group">
-        <label for="creditos"><span class="glyphicon glyphicon-pencil"></span> {{ form.creditos.label }}</label>
-        {% render_field form.creditos class="form-control" id="creditos" placeholder="Introduzca el número de créditos" %}
-        <span class="text-danger">{{form.creditos.errors.as_text}}</span>
-      </div>
-      <div class="form-group">
-        <label for="codigo"><span class="glyphicon glyphicon-file"></span> {{ form.codasig.label }}</label>
-        {% render_field form.codasig class="form-control" id="codigo" placeholder="Formatos válidos LLLXXX, LLXXXX, LL-XXXX" pattern="[A-Z]{2}-[0-9]{4}|[A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{4}" %}
-        <span class="text-danger">{{form.codasig.errors.as_text}}</span>
-      </div>
+<!--Modal para agregar asignatura-->
+<input type="hidden" name="horario_formset_prefix" value="{{formset1.prefix}}">
+<input type="hidden" name="programa_formset_prefix" value="{{formset2.prefix}}">
+<div class="modal fade" id="agregar-modal" role="dialog">
+  <div class="modal-dialog" style="max-width: 75%;">
+      <!-- Modal content-->
+      <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal_title">Agregar asignatura</h4>
+            <div class="float-right">
+              <button class="editar_asignatura btn btn-success asignatura-btn" onclick="habilitar_edicion(this)">
+                <i class="far fa-edit"></i>
+              </button>
+              <button class="btn btn-danger asignatura-btn" data-toggle="modal"
+                  data-target="#confirmar-eliminar-modal" data-codasig="{{form.instance.codasig}}"
+                  onclick="show_eliminar_modal(this);">
+                  <i class="far fa-trash-alt"></i>
+              </button>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+          <div class="modal-body" >
+              <!-- La paginacion esta implementada a traves de tabs (Sujeto a cambios) -->
+              <ul class="nav nav-tabs" id="tabContent">
+                <li class="nav-item active"><a class="nav-link show active" href="#informacion_basica" data-toggle="tab">Información básica</a></li>
+                <li class="nav-item"><a class="nav-link" href="#horario" data-toggle="tab">Horarios</a></li>
+                <li class="nav-item"><a class="nav-link" href="#programa" data-toggle="tab">Programas</a></li>
+              </ul>
+              <form action="" method="POST" id="form-modal">
+                {% csrf_token %}
+                <div class="tab-content">
+                  <div class="tab-pane active" id="informacion_basica">
+                    <!-- Datos para la informacion basica -->
+                    <input type="hidden" name="id" value="{{form.instance.id}}">
+                    <div class="form-group">
+                      <label for="nombre-asig"><span class="glyphicon glyphicon-pencil"></span> {{ form.nombre.label }}</label>
+                      {% render_field form.nombre class="form-control mostrar-only" id="nombre-asig" placeholder="Introduzca el nombre" %}
+                    </div>
+                    <div class="form-group">
+                      <label for="creditos"><span class="glyphicon glyphicon-pencil"></span> {{ form.creditos.label }}</label>
+                      {% render_field form.creditos class="form-control mostrar-only" id="creditos" placeholder="Introduzca el número de créditos" %}
+                    </div>
+                    <div class="form-group">
+                      <label for="codigo"><span class="glyphicon glyphicon-file"></span> {{ form.codasig.label }}</label>
+                      {% render_field form.codasig class="form-control mostrar-only" id="codigo" placeholder="Introduzca el código" %}
+                    </div>
+
 
       <div class="form-group">
         <label for="profesores"><span class="glyphicon glyphicon-file"></span> {{ form.profesores.label }}</label>
