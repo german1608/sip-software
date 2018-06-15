@@ -11,6 +11,8 @@ from django.db.models import Max, Min
 
 from .render import Render
 
+from pprint import pprint
+
 # Create your views here.
 def index(request):
     return render(request, 'oferta/index.html')
@@ -83,16 +85,20 @@ class DescargarOfertasView(View):
         anio_inicio = request.GET.get('anio_inicio', min_anio_oferta())
         anio_final = request.GET.get('anio_final', max_anio_oferta())
 
-        print('\n\n{} {} {} {}\n\n'.format(trim_inicio, trim_final, anio_inicio, anio_final))
-
         # Conjunto de ofertas que cumplen con los criterios especificados
         ofertas = Oferta.objects.filter(trimestre__gte=trim_inicio) \
             .filter(trimestre__lte=trim_final).filter(anio__gte=anio_inicio) \
-            .filter(anio__lte=anio_final)
+            .filter(anio__lte=anio_final).order_by('anio').order_by('trimestre')
 
         context = {
-            'ofertas': ofertas
+            'ofertas': ofertas,
+            'trim_inicio': ofertas.first().get_trimestre_display(),
+            'trim_final': ofertas.last().get_trimestre_display(),
+            'anio_inicio': anio_inicio,
+            'anio_final': anio_final
         }
+
+        pprint(context)
 
         return Render.render('oferta/ofertas.pdf.html', context)
 
