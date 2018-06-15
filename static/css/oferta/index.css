@@ -107,6 +107,7 @@ form {
 }
 
 select {
+  width: 100%;
   box-shadow: none;
   color: #494949;
   background-color: transparent;
@@ -118,6 +119,16 @@ select {
 
 option {
   background-color: white;
+}
+
+#descargar_form label {
+  margin-top: 15px;
+}
+
+#filtrar_btn {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  align-self: center;
 }
 
 #create-oferta-box {
