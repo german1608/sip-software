@@ -20,6 +20,7 @@ toastr.options = {
 // base de datos. Esto lo hace cuando se carga la vista de las ofertas o 
 // cuando se agrega una nueva oferta. 
 function oferta_show(data){
+    console.log(data)
     $(".oferta").remove()
     const $this = $(this)
 

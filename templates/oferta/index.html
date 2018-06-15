@@ -6,77 +6,85 @@
 <link rel="stylesheet" href="{% static 'css/oferta/index.css' %}">
 {% endblock customhead %}
 {% block wrapper %}
-
-	<div class="row">
-		<div class="col-12">
-			<p class="title">Ofertas</p>
+	<!--Form para descargar las asignaturas que cumplen con el criterio de aceptación del filtro-->
+	<form action="{% url 'oferta:descargar' %}" method="GET">
+		<!-- Título -->
+		<div class="row">
+			<div class="col-12">
+				<p class="title">Ofertas</p>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-12 col-sm-4">
-			<label for="trim_inicio">Trimestre inicio</label>
-			<select id="trim_inicio" name="trim_inicio">
-				{% for choice, display in choices %}
-				<option value="{{choice}}">{{display}}</option>
+		<div class="row">
+			<!--Campos para el inicio:-->
+			<div class="col-12 col-sm-4">
+				<!-- Trimestre inicial-->
+				<label for="trim_inicio">Trimestre inicio</label>
+				<select id="trim_inicio" name="trim_inicio">
+					{% for choice, display in choices %}
+					<option value="{{choice}}">{{display}}</option>
+					{% endfor %}
+				</select>
+				<br/>
+				<!--Y año inicial-->
+				<label for="anio_inicio">Año inicio</label>
+				<select id="anio_inicio" name="ano_inicio">
+					<option disabled selected value> sin especificar </option>
+				{% for y in anos %}
+					<option value="{{ y }}">{{ y }}</option>
 				{% endfor %}
-			</select>
-			<br/>
-			<label for="anio_inicio">Año inicio</label>
-			<select id="anio_inicio" name="ano_inicio">
-			{% for y in anos %}
-				{% if y == 2018 %}
-			    <option value="{{ y }}" selected>{{ y }}</option>
-			    {% else %}
-			    <option value="{{ y }}">{{ y }}</option>
-			    {% endif %}
-			{% endfor %}
-			</select>
-		</div>
-
-		<div class="col-12 col-sm-4">
-			<label for="trim_final">Trimestre final</label>
-			<select id="trim_final" name="trim_final">
-				{% for choice, display in choices %}
-				<option value="{{choice}}">{{display}}</option>
+				</select>
+			</div>
+	
+			<!-- Campos para el final-->
+			<div class="col-12 col-sm-4">
+				<!--Trimestre final-->
+				<label for="trim_final">Trimestre final</label>
+				<select id="trim_final" name="trim_final">
+					{% for choice, display in choices %}
+					<option value="{{choice}}" selected>{{display}}</option>
+					{% endfor %}
+				</select>
+				<br/>
+				<!--Año final-->
+				<label for="anio_final">Año final</label>
+				<select id="anio_final" name="anio_final">
+					<option disabled selected value> sin especificar </option>
+				{% for y in anos %}
+					<option value="{{ y }}">{{ y }}</option>
 				{% endfor %}
-			</select>
-			<br/>
-			<label for="anio_final">Año final</label>
-			<select id="anio_final" name="anio_final">
-			{% for y in anos %}
-			    {% if y == 2018 %}
-			    <option value="{{ y }}" selected>{{ y }}</option>
-			    {% else %}
-			    <option value="{{ y }}">{{ y }}</option>
-			    {% endif %}
-			{% endfor %}
-			</select>
+				</select>
+			</div>
+	
+			<!-- Botón para activar los filtros-->
+			<div class="col-12 col-sm-4">
+				<button type="button" class="btn btn-lg" onclick="actualizar();" style="background-color: yellow;">Filtrar</button>
+			</div>
 		</div>
+		<!-- Botón para Descargar -->
+		<div class="row">
+			<div class="col-12" id="placeDownload">
+				<div class="mt-5">
+					<button type="submit" class="botonDescargar">
+						<span class="fas fa-download fa-2x" id="botonDescargar" 
+							style="color: #b5b5b5; vertical-align: middle;">
+						</span>
+					</button>
+				</div>'
+			</div>
+		</div>
+	
+	</form>
 
 
-		<div class="col-12 col-sm-4">
-			<button type="button" class="btn btn-lg" onclick="actualizar();" style="background-color: yellow;">Filtrar</button>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-12" id="placeDownload">
-			<div class="mt-5">
-				<a class="botonDescargar" href='{% url "oferta:descargar" %}' download><span class="fas fa-download fa-2x" id="botonDescargar" style="color: #b5b5b5; vertical-align: middle;"></span></a>
-			</div>'
-		</div>
-	</div>
-
+	<!--Anadir una oferta-->
 	<div class="row" id="oferta-box" style="margin-top: 50px">		
 		<input type="hidden" name="json-url" value="{% url 'oferta:oferta-json' %}">
-		<!--Anadir una oferta-->
 		<div class="col-3 oferta-child ">
 			<div class="flip3D">
 				<div id="create-oferta-box" class="front">
 					<button id="oferta-add" data-url="{% url 'oferta:anadir-oferta' %}" class="btn btn-lg"><i class="fa fa-plus"></i></button>
 				</div>
-				<div id="create-oferta-form" class="back">
-
-				</div>
+				<div id="create-oferta-form" class="back"></div>
 			</div>
 		</div>
 

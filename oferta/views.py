@@ -75,8 +75,14 @@ def oferta_json(request):
     if request.method == 'GET':
         trim_inicio = request.GET.get('trim_inicio', Oferta.TRIMESTRE_ENEMAR)
         trim_final = request.GET.get('trim_final', Oferta.TRIMESTRE_SEPDIC)
+
         anio_inicio = request.GET.get('anio_inicio', min_anio_oferta())
+        # Checkeamos si no es null
+        anio_inicio = anio_inicio if anio_inicio else min_anio_oferta()
+
         anio_final = request.GET.get('anio_final', max_anio_oferta())
+        # checkeamos si no es null
+        anio_final = anio_final if anio_final else max_anio_oferta()
 
         ofertas = Oferta.objects.filter(trimestre__gte=trim_inicio) \
                 .filter(trimestre__lte=trim_final).filter(anio__gte=anio_inicio) \
@@ -95,21 +101,31 @@ class DescargarOfertasView(View):
     def get(self, request, *args, **kwargs):
         trim_inicio = request.GET.get('trim_inicio', Oferta.TRIMESTRE_ENEMAR)
         trim_final = request.GET.get('trim_final', Oferta.TRIMESTRE_SEPDIC)
+        
         anio_inicio = request.GET.get('anio_inicio', min_anio_oferta())
+        # Checkeamos si no es null
+        anio_inicio = anio_inicio if anio_inicio else min_anio_oferta()
+
         anio_final = request.GET.get('anio_final', max_anio_oferta())
+        # checkeamos si no es null
+        anio_final = anio_final if anio_final else max_anio_oferta()
+
+        pprint(request.GET)
 
         # Conjunto de ofertas que cumplen con los criterios especificados
         ofertas = Oferta.objects.filter(trimestre__gte=trim_inicio) \
             .filter(trimestre__lte=trim_final).filter(anio__gte=anio_inicio) \
             .filter(anio__lte=anio_final).order_by('anio').order_by('trimestre')
-
-        context = {
-            'ofertas': ofertas,
-            'trim_inicio': ofertas.first().get_trimestre_display(),
-            'trim_final': ofertas.last().get_trimestre_display(),
-            'anio_inicio': anio_inicio,
-            'anio_final': anio_final
-        }
+        if ofertas:
+            context = {
+                'ofertas': ofertas,
+                'trim_inicio': ofertas.first().get_trimestre_display(),
+                'trim_final': ofertas.last().get_trimestre_display(),
+                'anio_inicio': anio_inicio,
+                'anio_final': anio_final
+            }
+        else:
+            context = {}
 
         pprint(context)
 
