@@ -36,6 +36,9 @@ class Oferta(models.Model):
     coordinacion = models.ForeignKey(Coordinacion, verbose_name='Coordinacion',
                                     related_name='ofertas', on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ('trimestre', 'anio', 'coordinacion')
+
     # Se agrega la funcion get_absolute_url para usar el createView
     def get_absolute_url(self):
         return reverse('oferta:dashboard')
