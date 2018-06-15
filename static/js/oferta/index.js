@@ -63,6 +63,12 @@ function oferta_show(data){
                     $('#oferta-box').append('<div class="w-100 oferta"></div>')
                 }
             })
+        },
+        error: function(jqXHR, ...args) {
+            // En esta parte del codigo se maneja los errores que se 
+            // obtuvo y se muestran por pantalla 
+            const err = jqXHR.responseJSON
+            toastr.error('', err.error)
         }
     })
 }

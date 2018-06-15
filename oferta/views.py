@@ -88,6 +88,9 @@ def oferta_json(request):
     """Envia informacion sobre las asignaturas como objeto JSON
     """
     if request.method == 'GET':
+        if not Oferta.objects.all():
+            return JsonResponse({'error': 'No hay ofertas en la BD'}, status=500)
+
         trim_inicio = request.GET.get('trim_inicio', Oferta.TRIMESTRE_ENEMAR)
         trim_final = request.GET.get('trim_final', Oferta.TRIMESTRE_SEPDIC)
 
@@ -152,6 +155,9 @@ class EliminarOferta(DeleteView):
 # Vista para descargar las ofertas como PDF
 class DescargarOfertasView(View):
     def get(self, request, *args, **kwargs):
+        if not Oferta.objects.all():
+            return Render.render('oferta/ofertas.pdf.html', {})
+
         trim_inicio = request.GET.get('trim_inicio', Oferta.TRIMESTRE_ENEMAR)
         trim_final = request.GET.get('trim_final', Oferta.TRIMESTRE_SEPDIC)
         
