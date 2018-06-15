@@ -14,6 +14,10 @@ toastr.options = {
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
 }
+// Función que es inicializada al cargar la página de asignaturas
+// para renderizar la tabla con la lista de todas las asignaturas
+// y activar el selector que detecta la acción de agregar una
+// asignatura o editarla.
 const asigIdContainer = '#asig-container'
 var tablaAsignaturas
 $(document).ready( function () {
@@ -23,6 +27,14 @@ $(document).ready( function () {
         'ajax': tablaUrl
     });
 
+    // Selector que desencadena una llamada AJAX al hacer clic
+    // en el botón de agregar una asignatura verificando
+    // si los campos introducidos son válidos. En caso de ser
+    // validos dichos datos la asignatura es añadida a la base
+    // de datos y el modal se cierra y se muestra un 
+    // mensaje de exito. En caso contrario, se muestra un 
+    // mensaje de error para que el usuario verifique los datos
+    // introducidos.
     $(asigIdContainer).on('submit', '#form-modal', function (e) {
         const $form = $(this)
         e.preventDefault()
@@ -56,6 +68,9 @@ $(document).ready( function () {
         })
     })
 
+    // Selector para enviar mediante AJAX la solicitud de eliminación de 
+    // una asignatura al pulsar el botón de eliminar. En éxito, se 
+    // recarga la lista de asignaturas 
     $('#form-eliminar').on('submit', function (e) {
         e.preventDefault()
         const form = $(this)
@@ -77,6 +92,9 @@ $(document).ready( function () {
 } );
 
 var edit_mode = false;
+// Activa los plugins necesarios para la selección múltiple
+// de horarios, programas y profesores en el formulario de
+// asignaturas.
 function activarPlugins() {
     const horarioPrefix = $('[name=horario_formset_prefix]').val()
     const programaPrefix = $('[name=programa_formset_prefix]').val()
