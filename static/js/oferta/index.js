@@ -16,7 +16,7 @@ toastr.options = {
 }
 
 function oferta_show(){
-    console.log("hola")
+    $(".oferta").remove()
     const $this = $(this)
     const url_json = $('[name=json-url]').attr('value')
     
@@ -26,8 +26,8 @@ function oferta_show(){
         // 
         success: function (json){
             json.data.forEach(oferta => {
-                $('#oferta-box').prepend(`
-                <div class="col-md-3">
+                $('#oferta-box').append(`
+                <div class="col oferta oferta-child">
                     <div class="flip3D">
                         <div class="back">
                             <form action="#" method="POST" id="">
@@ -57,6 +57,10 @@ function oferta_show(){
                         </div>
                     </div>
                 </div>`)
+                console.log($('.oferta-child').length)
+                if ($('.oferta-child').length % 4 === 0){
+                    $('#oferta-box').append('<div class="w-100"></div>')
+                }
             })
         }
     })
@@ -94,6 +98,7 @@ $(function() {
                 // Voltea la carta
                 $('#create-oferta-box').parent().removeClass('active')
                 toastr.success('Oferta añadida con éxito', '')
+                oferta_show()
             },
             error: function(jqXHR, ...args) {
                 const err = jqXHR.responseJSON

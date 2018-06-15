@@ -133,3 +133,11 @@ option {
 .front:hover .management-btns {
   display: block;
 }
+
+.oferta-child{
+  height: auto;
+}
+
+.flip3D{
+  height: auto;
+}
