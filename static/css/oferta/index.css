@@ -93,12 +93,13 @@ form {
 
 select {
   width: 80px;
-  border:none;
-  background-color: #FAD534;
-  border-bottom: 2px solid #494949;
   box-shadow: none;
-  border-radius: 0%;
   color: #494949;
+  background-color: transparent;
+  background-position: 95% center;
+  border-radius: 50px;
+  border: 1px solid rgb(66, 65, 61);
+  transition: all 250ms ease-in-out;
 }
 
 option {
