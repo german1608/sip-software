@@ -140,3 +140,33 @@ class TestModelOferta(TestCase):
         self.oferta.anio = anio_actual
         self.oferta.save()
         self.assertEqual(Oferta.objects.all().count(), 1)
+
+    """
+    Pruebas esquinas usando ambos atributos
+    """
+
+    def helper_test_mixed_to_fail(self, trimestre, anio):
+        """
+        Funcion de utilidad, como cada test de esquina mixto es basicamente lo mismo se crea esta
+        funcion para que varie usando los parametros
+
+        @param trimestre entero que representa el anio (puede ser valido o no)
+        @param anio entero que representa el anio (puede ser valido o no)
+        """
+        self.oferta.trimestre = trimestre
+        self.oferta.anio = anio
+        with self.assertRaises(ValidationError):
+            self.oferta.save()
+        self.assertEquals(Oferta.objects.all().count(), 0)
+
+    def test_oferta_anio_pasado_trim_menos_1(self):
+        self.helper_test_mixed_to_fail(-1, self.oferta.anio - 1)
+
+    def test_oferta_anio_pasado_trim_tres(self):
+        self.helper_test_mixed_to_fail(3, self.oferta.anio - 1)
+
+    def test_oferta_anio_que_viene_trim_menos_1(self):
+        self.helper_test_mixed_to_fail(-1, self.oferta.anio + 1)
+
+    def test_oferta_anio_que_viene_trim_tres(self):
+        self.helper_test_mixed_to_fail(3, self.oferta.anio + 1)
