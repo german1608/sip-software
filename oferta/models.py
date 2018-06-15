@@ -30,4 +30,4 @@ class Oferta(models.Model):
 
     # Se agrega la funcion get_absolute_url para usar el createView
     def get_absolute_url(self):
-        return reverse('detalle-oferta', kwargs={'pk': self.pk})
+        return reverse('oferta:dashboard')

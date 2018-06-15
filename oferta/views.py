@@ -6,7 +6,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic.edit import CreateView, DeleteView
-
+from .models import Oferta
+from .forms import OfertaForm
 from coordinacion.models import Coordinacion
 
 from .forms import OfertaForm
@@ -60,6 +61,16 @@ class OfertaAgregar(AjaxableResponseMixin, CreateView):
         initial['coordinacion'] = Coordinacion.objects.all().first()
         # etc...
         return initial
+
+# Se crea la vista para editar una oferta de la lista 
+class OfertaEditar(AjaxableResponseMixin, UpdateView):
+    # Esto realiza la conexion con el html 
+    model = Oferta
+    template_name = 'oferta/oferta-form.html'
+    form_class = OfertaForm
+    
+
+
 
 # Esta funcion esta encargada de enviar con formato json la informacion de
 # todas las ofertas que se han anadido a la base de datos

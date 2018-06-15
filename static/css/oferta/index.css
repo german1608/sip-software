@@ -148,3 +148,8 @@ option {
 .front:hover .management-btns {
   display: block;
 }
+
+.editar-oferta{
+  background-color: #FAD534;
+  border: none;
+}

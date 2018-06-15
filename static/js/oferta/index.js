@@ -43,31 +43,15 @@ function oferta_show(){
                 $('#oferta-box').prepend(`
                 <div class="col-3 oferta oferta-child">
                     <div class="flip3D">
-                        <div class="back">
-                            <form action="#" method="POST" id="">
-                
-                            <div class="form-group">
-                                <label for="trimestre"><span class=""></span> Trimestre: </label>
-                                <select>
-                                    <option>Ene-Mar</option>
-                                    <option>Abr-Jul</option>
-                                    <option>Sep-Dic</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="anio"><span class=""></span> Año: </label>
-                                <input type="number" name="">
-                
-                            </div>
-                
-                            </form>
+                        <div class="back" id="editar-oferta-form-${oferta.id}">
+                            
                         </div>
-                        <div class="front">
+                        <div class="front" id="editar-oferta-box-${oferta.id}">
                             <div class="management-btns">
                                 <a class="oferta-elim" data-url="${url_elim.replace('0', oferta.id)}">
                                     <span class="delete-btn"><i class="fa fa-window-close"></i></span>
                                 </a>
-                                <span class="edit-btn"><i class="fa fa-pencil-alt"></i></span>
+                                <span class="edit-btn" id="oferta-editar-${oferta.id}" data-url="/oferta/editar/${oferta.id}/" onclick="editar_oferta(${oferta.id})"><i class="fa fa-pencil-alt"></i></span>
                             </div>
                             <p class="front-text">${oferta.trimestre} <br> ${oferta.anio}</p>
                         </div>
@@ -81,9 +65,30 @@ function oferta_show(){
             })
         }
     })
+}
 
-    
-    
+// Esta funcion esta encargada en manejar la edicion de una oferta 
+function editar_oferta(id){
+    // Se selecciona el div que contiene la oferta a editar
+    const selector = "#oferta-editar-" + id
+    const $this = $(selector)
+    const url = $(selector).attr('data-url')
+
+    // Aqui se ejecuta el ajax para hacer la modificacion de la oferta 
+    // con los nuevos datos introducidos por el usuario.
+    $.ajax({
+        url: $this.attr('data-url'),
+        method: 'GET',
+        success: function (json) {
+            // LLena el formulario
+            $('#editar-oferta-form-' + id).html(json)
+            $('#editar-oferta-form-' + id + ' form').attr('action', url)
+            // Voltea la carta
+            $('#editar-oferta-box-' + id).parent().addClass('active')
+            $('#boton-agregar').attr("hidden", true)
+            $('#boton-editar').attr("hidden", false)
+        }
+    })
 }
 
 $(function() {
@@ -109,6 +114,7 @@ $(function() {
         })
     })
 
+
     // Selector que maneja el evento de cuando el usuario anade una nueva 
     // oferta
     $(document).on('submit', '#form-oferta', function(e) {
@@ -124,7 +130,12 @@ $(function() {
                 // LLena el formulario
                 // Voltea la carta
                 $('#create-oferta-box').parent().removeClass('active')
-                toastr.success('Oferta añadida con éxito', '')
+                if ($('[name=id]').attr('value') === ''){
+                    toastr.success('Oferta añadida con éxito', '')
+                }
+                else {
+                    toastr.success('Oferta editada con éxito', '')
+                }
                 oferta_show()
             },
             error: function(jqXHR, ...args) {
@@ -138,6 +149,7 @@ $(function() {
                 }
             }
         })
+                
     })
 })
 
