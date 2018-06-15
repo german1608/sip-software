@@ -110,17 +110,28 @@ form {
 }
 
 select {
-  width: 80px;
-  border:none;
-  background-color: #FAD534;
-  border-bottom: 2px solid #494949;
+  width: 100%;
   box-shadow: none;
-  border-radius: 0%;
   color: #494949;
+  background-color: transparent;
+  background-position: 95% center;
+  border-radius: 50px;
+  border: 1px solid rgb(66, 65, 61);
+  transition: all 250ms ease-in-out;
 }
 
 option {
   background-color: white;
+}
+
+#descargar_form label {
+  margin-top: 15px;
+}
+
+#filtrar_btn {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  align-self: center;
 }
 
 #create-oferta-box {

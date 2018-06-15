@@ -30,7 +30,13 @@
     <div>
         <div align="center">
             <h1 style="margin-bottom: 0;">Oferta de Asignaturas</h1>
+            {% if ofertas %}
             <h3 style="margin-top: 0;">{{trim_inicio}}, {{anio_inicio}} - {{trim_final}}, {{anio_final}}</h3>
+            {% endif %}
+
+            {% if not ofertas %}
+            <h3 style="margin-top: 0">No se encontraron ofertas.</h3>
+            {% endif %}
         </div>
     </div>
     

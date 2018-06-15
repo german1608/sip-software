@@ -9,6 +9,9 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from .models import Oferta
 from .forms import OfertaForm
 from coordinacion.models import Coordinacion
+import datetime
+
+from django.core import serializers
 
 from .forms import OfertaForm
 from .models import Oferta
@@ -19,7 +22,14 @@ from pprint import pprint
 
 # Create your views here.
 def index(request):
-    return render(request, 'oferta/index.html')
+    anos = [x for x in reversed(range(2000, (datetime.datetime.now().year)+20))]
+    choices = Oferta.OFERTA_TRIMESTRE_CHOICES
+    context = {
+        'anos': anos,
+        'choices': choices,
+        'pagename': 'Ofertas'
+    }
+    return render(request, 'oferta/index.html', context)
 
 class AjaxableResponseMixin:
     """
@@ -77,19 +87,29 @@ class OfertaEditar(AjaxableResponseMixin, UpdateView):
 def oferta_json(request):
     """Envia informacion sobre las asignaturas como objeto JSON
     """
-    ofertas = Oferta.objects.all()
+    if request.method == 'GET':
+        trim_inicio = request.GET.get('trim_inicio', Oferta.TRIMESTRE_ENEMAR)
+        trim_final = request.GET.get('trim_final', Oferta.TRIMESTRE_SEPDIC)
 
-    lista_ofertas = list()
+        anio_inicio = request.GET.get('anio_inicio', min_anio_oferta())
+        # Checkeamos si no es null
+        anio_inicio = anio_inicio if anio_inicio else min_anio_oferta()
 
-    for oferta in ofertas:
-        oferta_detalle = {
-            'id' : oferta.id,
-            'trimestre' : oferta.get_trimestre_display(),
-            'anio' : oferta.anio
-        }
-        lista_ofertas.append(oferta_detalle)
+        anio_final = request.GET.get('anio_final', max_anio_oferta())
+        # checkeamos si no es null
+        anio_final = anio_final if anio_final else max_anio_oferta()
 
-    return JsonResponse({'data' : lista_ofertas})
+        ofertas = Oferta.objects.filter(trimestre__gte=trim_inicio) \
+                .filter(trimestre__lte=trim_final).filter(anio__gte=anio_inicio) \
+                .filter(anio__lte=anio_final).order_by('anio').order_by('trimestre')
+
+    mapper = (lambda obj: {
+        'trimestre': obj.get_trimestre_display(), 
+        'anio': obj.anio,
+        'id': obj.pk
+    })
+
+    return JsonResponse({'data' : list(map(mapper, ofertas)) })
 
 class EliminarOferta(DeleteView):
     """
@@ -134,21 +154,31 @@ class DescargarOfertasView(View):
     def get(self, request, *args, **kwargs):
         trim_inicio = request.GET.get('trim_inicio', Oferta.TRIMESTRE_ENEMAR)
         trim_final = request.GET.get('trim_final', Oferta.TRIMESTRE_SEPDIC)
+        
         anio_inicio = request.GET.get('anio_inicio', min_anio_oferta())
+        # Checkeamos si no es null
+        anio_inicio = anio_inicio if anio_inicio else min_anio_oferta()
+
         anio_final = request.GET.get('anio_final', max_anio_oferta())
+        # checkeamos si no es null
+        anio_final = anio_final if anio_final else max_anio_oferta()
+
+        pprint(request.GET)
 
         # Conjunto de ofertas que cumplen con los criterios especificados
         ofertas = Oferta.objects.filter(trimestre__gte=trim_inicio) \
             .filter(trimestre__lte=trim_final).filter(anio__gte=anio_inicio) \
             .filter(anio__lte=anio_final).order_by('anio').order_by('trimestre')
-
-        context = {
-            'ofertas': ofertas,
-            'trim_inicio': ofertas.first().get_trimestre_display(),
-            'trim_final': ofertas.last().get_trimestre_display(),
-            'anio_inicio': anio_inicio,
-            'anio_final': anio_final
-        }
+        if ofertas:
+            context = {
+                'ofertas': ofertas,
+                'trim_inicio': ofertas.first().get_trimestre_display(),
+                'trim_final': ofertas.last().get_trimestre_display(),
+                'anio_inicio': anio_inicio,
+                'anio_final': anio_final
+            }
+        else:
+            context = {}
 
         pprint(context)
 

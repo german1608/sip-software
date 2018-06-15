@@ -6,74 +6,128 @@
 <link rel="stylesheet" href="{% static 'css/oferta/index.css' %}">
 {% endblock customhead %}
 {% block wrapper %}
-
-	<div class="row">
-		<div class="col-md-1">
-		</div>
-		<div class="col-md-6">
-			<p class="title">Ofertas</p>
-		</div>
-		
-		<div class="col-md-2">
-			<input type="search" class="buscador" placeholder="" aria-controls="t_asignaturas">
-		</div>
-		<div class="col-md-1" id="placeDownload">
-			<div class="text-center pagination-centered">
-				<a class="botonDescargar" href='{% url "oferta:descargar" %}'><span class="fas fa-download fa-2x" id="botonDescargar" style="color: #b5b5b5; vertical-align: middle;"></span></a>
-			</div>'
-		</div>
-		
-	</div>
-
-	<div class="row" id="oferta-box" style="margin-top: 50px">		
-		<input type="hidden" name="json-url" value="{% url 'oferta:oferta-json' %}">
-		<input type="hidden" name="eliminar-url" value="{% url 'oferta:eliminar-oferta' 0 %}">
-		<!--Anadir una oferta-->
-		<div class="col-3 oferta-child ">
-			<div class="flip3D">
-				<div id="create-oferta-box" class="front">
-					<button id="oferta-add" data-url="{% url 'oferta:anadir-oferta' %}" class="btn btn-lg"><i class="fa fa-plus"></i></button>
-				</div>
-				<div id="create-oferta-form" class="back">
-
+	<div class="container-fluid">
+		<!--Form para descargar las asignaturas que cumplen con el criterio de aceptación del filtro-->
+		<form action="{% url 'oferta:descargar' %}" method="GET" id="descargar_form" target="_blank">
+			<!-- Título -->
+			<div class="row">
+				<div class="col-12">
+					<p class="title">Ofertas</p>
 				</div>
 			</div>
-		</div>
-
-	</div>
+			<div class="row">
+				<!--Campos para el inicio:-->
+				<div class="col-12 col-sm-5 mt-2">
+					<!-- Trimestre inicial-->
+					<label for="trim_inicio">Trimestre inicio</label>
+					<select id="trim_inicio" name="trim_inicio">
+						{% for choice, display in choices %}
+						<option value="{{choice}}">{{display}}</option>
+						{% endfor %}
+					</select>
+					<br/>
+					<!--Y año inicial-->
+					<label for="anio_inicio">Año inicio</label>
+					<select id="anio_inicio" name="ano_inicio">
+						<option disabled selected value> sin especificar </option>
+					{% for y in anos %}
+						<option value="{{ y }}">{{ y }}</option>
+					{% endfor %}
+					</select>
+				</div>
+		
+				<!-- Campos para el final-->
+				<div class="col-12 col-sm-5 mt-2">
+					<!--Trimestre final-->
+					<label for="trim_final">Trimestre final</label>
+					<select id="trim_final" name="trim_final">
+						{% for choice, display in choices %}
+						<option value="{{choice}}" selected>{{display}}</option>
+						{% endfor %}
+					</select>
+					<br/>
+					<!--Año final-->
+					<label for="anio_final">Año final</label>
+					<select id="anio_final" name="anio_final">
+						<option disabled selected value> sin especificar </option>
+					{% for y in anos %}
+						<option value="{{ y }}">{{ y }}</option>
+					{% endfor %}
+					</select>
+				</div>
+		
+				<!-- Botón para activar los filtros-->
+				<div class="col-12 col-sm-2 d-flex">
+					<button id="filtrar_btn" type="button" class="btn btn-lg btn-primary text-dark" onclick="actualizar();">
+						Filtrar
+					</button>
+				</div>
+			</div>
+			<!-- Botón para Descargar -->
+			<div class="row">
+				<div class="col" id="placeDownload">
+					<div class="mt-2">
+						<button type="submit" class="botonDescargar">
+							<span class="fas fa-download fa-2x" id="botonDescargar" 
+								style="color: #b5b5b5; vertical-align: middle;">
+							</span>
+						</button>
+					</div>'
+				</div>
+			</div>
+		
+		</form>
 	
-	<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-primary" role="document">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h4 class="modal-title">¿Está seguro que desea eliminar esta oferta?</h4>
-			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			  </button>
+	
+		<!--Anadir una oferta-->
+		<div class="row mt-2" id="oferta-box">		
+			<input type="hidden" name="json-url" value="{% url 'oferta:oferta-json' %}">
+			<input type="hidden" name="eliminar-url" value="{% url 'oferta:eliminar-oferta' 0 %}">
+			<!--Anadir una oferta-->
+			<div class="col-3 oferta-child">
+				<div class="flip3D">
+					<div id="create-oferta-box" class="front">
+						<button id="oferta-add" data-url="{% url 'oferta:anadir-oferta' %}" class="btn btn-lg"><i class="fa fa-plus"></i></button>
+					</div>
+					<div id="create-oferta-form" class="back"></div>
+				</div>
 			</div>
-			<div class="modal-body">
-			  <p>Está eliminando la oferta con los siguientes atributos:</p> 
-			  <p><b>Trimestre:</b> <span id="oferta-modal-trimestre"></span></p>
-			  <p><b>Año:</b> <span id="oferta-modal-anio"></span></p>
-			  <p><b>Coordinación:</b> <span id="oferta-modal-coordinacion"></span></p>
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-			  <form action="{% url 'oferta:eliminar-oferta' 0 %}" method="POST" id="form-eliminar-oferta">
-				{% csrf_token %}
-				<button type="submit" 
-						class="btn btn-primary" 
-						id="eliminar_oferta_button">
-					Eliminar
-			  	</button>
-			  </form>
-			</div>
-		  </div>
-		  <!-- /.modal-content -->
+	
 		</div>
-		<!-- /.modal-dialog -->
-	  </div>
-	  <!-- /.modal -->
+		
+		<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-primary" role="document">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h4 class="modal-title">¿Está seguro que desea eliminar esta oferta?</h4>
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+				<div class="modal-body">
+				  <p>Está eliminando la oferta con los siguientes atributos:</p> 
+				  <p><b>Trimestre:</b> <span id="oferta-modal-trimestre"></span></p>
+				  <p><b>Año:</b> <span id="oferta-modal-anio"></span></p>
+				  <p><b>Coordinación:</b> <span id="oferta-modal-coordinacion"></span></p>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				  <form action="{% url 'oferta:eliminar-oferta' 0 %}" method="POST" id="form-eliminar-oferta">
+					{% csrf_token %}
+					<button type="submit" 
+							class="btn btn-primary" 
+							id="eliminar_oferta_button">
+						Eliminar
+					  </button>
+				  </form>
+				</div>
+			  </div>
+			  <!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+	</div>
 {% endblock wrapper %}
 {% block customscripts %}
 <script src="{% static 'js/toastr.min.js' %}" charset="utf8"></script>

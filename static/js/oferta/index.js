@@ -15,15 +15,15 @@ toastr.options = {
     "hideMethod": "fadeOut"
 }
 
+
 // Esta funcion sirve para mostrar las ofertas que estan presentes en la 
 // base de datos. Esto lo hace cuando se carga la vista de las ofertas o 
 // cuando se agrega una nueva oferta. 
-function oferta_show(){
-    // Primero se borran las ofertas que estan en la pagina en ese momento 
-    // si no se acumulan porque cuando se agregan las nuevas se vuelven agregar
-    // las anteriores
+function oferta_show(data){
+    console.log(data)
     $(".oferta").remove()
     const $this = $(this)
+
     // Se obtiene el json que contiene la informacion de las ofertas que estan 
     // en la base de datos.
     const url_json = $('[name=json-url]').attr('value')
@@ -35,13 +35,13 @@ function oferta_show(){
     $.ajax ({
         dataType: "json",
         url: url_json,
-        // 
+        data: data,
         success: function (json){
             // Aqui se recorren todas las ofertas y se van agregando 
             // al html para que se muestren por pantalla 
             json.data.forEach(oferta => {
-                $('#oferta-box').prepend(`
-                <div class="col-3 oferta oferta-child">
+                $('#oferta-box').append(`
+                <div class="col-12 col-sm-3 oferta oferta-child">
                     <div class="flip3D">
                         <div class="back" id="editar-oferta-form-${oferta.id}">
                             
@@ -91,7 +91,19 @@ function editar_oferta(id){
     })
 }
 
+function actualizar(){
+    // $( "#mes_inicio" ).val(), $( "#ano_inicio" ).val(), $( "#mes_final" ).val(), $( "#ano_final" ).val()
+    oferta_show({
+        'trim_inicio': $('#trim_inicio').val(),
+        'anio_inicio': $('#anio_inicio').val(),
+        'trim_final': $('#trim_final').val(),
+        'anio_final': $('#anio_final').val()
+    });    
+}
+
+
 $(function() {
+
     // Se llama a la funcion oferta_show() para 
     // mostrar todas las ofertas por pantalla 
     oferta_show()
