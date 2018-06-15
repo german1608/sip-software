@@ -8,6 +8,7 @@ de nuestra aplicacion. Se prueban 3 cosas:
 """
 # imports de django
 from django.test import TestCase, Client, RequestFactory
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.db import OperationalError
@@ -22,6 +23,7 @@ import json
 from io import StringIO
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 
 # Create your tests here.
 class TestFormOferta(TestCase):
@@ -258,3 +260,64 @@ class TestViewsOferta(TestCase):
         """
         response = self.client.get(reverse('oferta:anadir-oferta'))
         self.assertEqual(response.status_code, 200)
+
+class TestInterfaceOferta(StaticLiveServerTestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.selenium = WebDriver()
+        cls.selenium.implicitly_wait(10)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.selenium.quit()
+        super().tearDownClass()
+
+    def setUp(self):
+        anio_actual = datetime.date.today().year
+        self.coordinacion = Coordinacion.objects.create(
+            codigo='CI', nombre='Coordinacion 1'
+        )
+        self.ofertas = [
+            Oferta(trimestre=i, anio=j, coordinacion=self.coordinacion)
+            for i in range(3) for j in range(anio_actual, anio_actual + 1)
+        ]
+
+        for oferta in self.ofertas: oferta.save()
+
+    def test_agregar_oferta_valida(self):
+        """
+        Test para probar la interfaz con la accion de usuario de crear ofertas.
+        La data de este test es valida, y se deberia de cumplir las siguientes condiciones:
+
+        * El numero de ofertas luego de agregar via el form aumenta en 1 tanto en la BD como en la interfaz
+        * Deberia mostrar el toastr en la interfaz de color verde
+        """
+        num_ofertas = Oferta.objects.all().count() # anadimos uno por que el boton de agregar cuenta como cartica
+
+        # Iniciamos el tests haciendo una peticion al url index
+        self.selenium.get('%s%s' % (self.live_server_url, reverse('oferta:dashboard')))
+
+        # Verificamos que el numero de contenedores sea num_ofertas + 1
+        self.assertEqual(len(self.selenium.find_elements_by_class_name('oferta')), num_ofertas + 1)
+
+        # El flujo de la creacion es:
+        # 1) Clickear el boton de anadir ofertas
+        add_btn = self.selenium.find_element_by_id('oferta-add')
+        add_btn.click()
+
+        # 2) Llenar los campos solicitados
+        form = self.selenium.find_element_by_id('form-oferta')
+        trimestre_input = Select(form.find_element_by_name('trimestre'))
+        trimestre_input.select_by_value('0')
+        anio_input = form.find_element_by_name('anio')
+        anio_input.clear()
+        anio_input.send_keys('2018')
+
+        # 3) Hacer submit
+        form.find_element_by_css_selector('[type=submit]').click()
+
+        # Como es exitosa, debe aparecer las ofertas nuevas en index incluyendo un popup de exito
+        self.selenium.find_element_by_id('toast-container')
+        self.assertEqual(len(self.selenium.find_elements_by_class_name('oferta')), num_ofertas + 2)
+        self.assertEqual(Oferta.objects.all().count(), num_ofertas + 1)
