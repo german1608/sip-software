@@ -285,7 +285,7 @@ class TestInterfaceOferta(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def setUp(self):
-        anio_actual = datetime.date.today().year
+        anio_actual = datetime.date.today().year + 1
         self.coordinacion = Coordinacion.objects.create(
             codigo='CI', nombre='Coordinacion 1'
         )
