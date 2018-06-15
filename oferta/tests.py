@@ -7,8 +7,9 @@ de nuestra aplicacion. Se prueban 3 cosas:
 * formularios
 """
 # imports de django
-from django.test import TestCase
+from django.test import TestCase, Client, RequestFactory
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 from django.db import OperationalError
 # Modelos necesarios para las pruebas
 from oferta.forms import OfertaForm
@@ -17,6 +18,10 @@ from oferta.models import Oferta
 
 # Librerias nativas
 import datetime
+import json
+from io import StringIO
+from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium.webdriver.common.keys import Keys
 
 # Create your tests here.
 class TestFormOferta(TestCase):
@@ -80,14 +85,14 @@ class TestModelOferta(TestCase):
         oferta.coordinacion = self.coordinacion
         self.oferta = oferta
 
-        """
-        El trimestre debe ser un numero del 0 al 2
-        0 -> Ene-Mar
-        1 -> Abr-Jul
-        2 -> Sep-Dic
-        Esta validacion pasa en los formularios, pero no en los modelos.
-        Estas pruebas van a probar solamente el 3 y el -1 (frontera y esquina, en este caso)
-        """
+    """
+    El trimestre debe ser un numero del 0 al 2
+    0 -> Ene-Mar
+    1 -> Abr-Jul
+    2 -> Sep-Dic
+    Esta validacion pasa en los formularios, pero no en los modelos.
+    Estas pruebas van a probar solamente el 3 y el -1 (frontera y esquina, en este caso)
+    """
     def test_trimestre_attribute_menos_1(self):
         # caso esquina: trimestre = -1
         self.oferta.trimestre = -1
@@ -112,13 +117,13 @@ class TestModelOferta(TestCase):
             oferta.save() # no deberia lanzar error
         self.assertEqual(Oferta.objects.all().count(), 3)
 
-        """
-        El anio de una oferta debe ser mayor o igual al anio actual.
-        El dominio de esta debe ser {x| x >= anio_actual}, por tanto se probara
-        para x = anio_actual, x = anio_actual + 1, x = anio_actual - 1.
+    """
+    El anio de una oferta debe ser mayor o igual al anio actual.
+    El dominio de esta debe ser {x| x >= anio_actual}, por tanto se probara
+    para x = anio_actual, x = anio_actual + 1, x = anio_actual - 1.
 
-        Deberia lanzar un ValidationError con los anios_invalidos (anio_actual - 1)
-        """
+    Deberia lanzar un ValidationError con los anios_invalidos (anio_actual - 1)
+    """
     def test_trimestre_anio_pasado(self):
         # caso esquina: anio pasado
         anio_actual = self.oferta.anio
@@ -170,3 +175,86 @@ class TestModelOferta(TestCase):
 
     def test_oferta_anio_que_viene_trim_tres(self):
         self.helper_test_mixed_to_fail(3, self.oferta.anio + 1)
+
+class TestViewsOferta(TestCase):
+    """
+    Suite de pruebas para las vistas de el modulo de ofertas. Se usa el cliente integrado
+    de django para poder probar cada vista. Recordemos que casi todo es ajax, asi que debe
+    probarse con los requests necesarios. El tipo de cosas que se prueban en este Suite son:
+
+    * Existencia de urls vitales del modulo
+    * Pruebas de dominio para las vistas que hagan operaciones CRUD sobre la base de datos.
+
+    El modulo de ofertas tiene 3 controladores:
+    * anadir (tambien es usado para editar)
+    * index
+    * json
+    """
+    def setUp(self):
+        """
+        Igual que las otras, esta funcion se ejecuta antes de cada test.
+        """
+        self.coordinacion = Coordinacion.objects.create(nombre='Coordinacion 1', codigo='CI')
+
+    def test_ofertas_index(self):
+        """
+        Prueba la existencia del index, haciendo un get request
+        """
+        response = self.client.get(reverse('oferta:dashboard'))
+        self.assertEqual(response.status_code, 200)
+
+    def compara_json_realidad(self, ofertas_list):
+        """
+        Funcion de utilidad para no escribir el mismo test varias veces.
+
+        @param ofertas_list lista de ofertas cuyo tipo de dato es:
+        [dict]
+
+        cada dict es
+
+        {
+            'id': oferta.id,
+            'trimestre': oferta.get_trimestre_display(),
+            'anio': oferta.anio,
+        }
+        """
+        expected_list = list(map(
+            lambda x: {
+                'id': x.id,
+                'trimestre': x.get_trimestre_display(),
+                'anio': x.anio
+            },
+            Oferta.objects.all()
+        ))
+        order_function = lambda x: (x['id'], x['trimestre'], x['anio'])
+        ofertas_list.sort(key=order_function)
+        expected_list.sort(key=order_function)
+        self.assertEqual(ofertas_list, expected_list)
+
+    def test_ofertas_json_empty(self):
+        """
+        Prueba que el controlador de json funcione de manera adecuada cuando
+        no hay ofertas agregadas a la base de datos
+        """
+        # Realizamos una peticion al url para las ofertas en formato json
+        response = self.client.get(reverse('oferta:oferta-json'))
+        self.assertEqual(response.status_code, 200)
+        ofertas_list = json.loads(response.content.decode('utf-8'))['data']
+        self.compara_json_realidad(ofertas_list)
+        for i in range(3):
+            Oferta(trimestre=i, anio=2018, coordinacion=self.coordinacion).save()
+
+    def test_ofertas_json_non_empty(self):
+        for i in range(3):
+            Oferta(trimestre=i, anio=2018, coordinacion=self.coordinacion).save()
+        response = self.client.get(reverse('oferta:oferta-json'))
+        self.assertEqual(response.status_code, 200)
+        ofertas_list = json.loads(response.content.decode('utf-8'))['data']
+        self.compara_json_realidad(ofertas_list)
+
+    def test_anadir_exists(self):
+        """
+        Test para probar la existencia del url para la creacion de ofertas.
+        """
+        response = self.client.get(reverse('oferta:anadir-oferta'))
+        self.assertEqual(response.status_code, 200)
