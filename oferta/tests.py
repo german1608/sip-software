@@ -20,6 +20,7 @@ from oferta.models import Oferta
 # Librerias nativas
 import datetime
 import json
+import time
 from io import StringIO
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
@@ -66,6 +67,16 @@ class TestFormOferta(TestCase):
         self.initial['anio'] = today.year + 1
         form = OfertaForm(self.initial)
         self.assertTrue(form.is_valid())
+
+    def test_form_unique(self):
+        # Prueba para probar la unicidad de las ofertas respecto a:
+        # (anio, trimestre, coordinacio)
+        today = datetime.date.today()
+        Oferta(trimestre=0, anio=today.year, coordinacion=self.coordinacion).save()
+        self.initial['anio'] = today.year
+        self.initial['trimestre'] = 0
+        form = OfertaForm(self.initial)
+        self.assertFalse(form.is_valid())
 
 class TestModelOferta(TestCase):
     """
@@ -306,6 +317,9 @@ class TestInterfaceOferta(StaticLiveServerTestCase):
         add_btn = self.selenium.find_element_by_id('oferta-add')
         add_btn.click()
 
+        # Aqui hay una animacion de 0.5 segundos, asi que para hacer que se tarde
+        # selenium esperemos 1 segundo
+        time.sleep(1)
         # 2) Llenar los campos solicitados
         form = self.selenium.find_element_by_id('form-oferta')
         trimestre_input = Select(form.find_element_by_name('trimestre'))
