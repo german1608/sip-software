@@ -308,7 +308,15 @@ table.dataTable td {
   background-size: 18px 18px;
   background-position: 95% center;
   border-radius: 50px;
+<<<<<<< 79836f3eb323be9efc888e90cdf53ef69cd4d1cb
   border: 1px solid #FAD534;
+=======
+<<<<<<< HEAD
+  border: 1px solid #FAD534;
+=======
+  border: 1px solid rgb(66, 65, 61);
+>>>>>>> 517d20d0b07590781e42a39b835939dc46127236
+>>>>>>> Feat -> boton de descarga
   transition: all 250ms ease-in-out;
   backface-visibility: hidden;
   transform-style: preserve-3d;

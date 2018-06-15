@@ -10,8 +10,20 @@
   background-color: #FAD534;
   color: #494949;
   border-radius: 50%;
+  margin-left: -150px;
 }
+.botonDescargar{
+    padding: 20px 18px;
+    background-color: #FAD534; 
+    color: #494949;
+    border-radius: 50%;
 
+  }
+#placeDownload{
+  margin-left: 2%;
+  margin-top: 1%;
+
+  }
 .buscador{
   padding: 12px 24px;
   color: #575757;
@@ -28,6 +40,9 @@
     transform-style: preserve-3d;
 }
 
+.flip3D {
+  height: 18rem;
+}
 
 .flip3D > .front {
   position: absolute;
@@ -133,12 +148,4 @@ option {
 
 .front:hover .management-btns {
   display: block;
-}
-
-.oferta-child{
-  height: auto;
-}
-
-.flip3D{
-  height: auto;
 }
