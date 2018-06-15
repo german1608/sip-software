@@ -10,8 +10,20 @@
   background-color: #FAD534;
   color: #494949;
   border-radius: 50%;
+  margin-left: -150px;
 }
+.botonDescargar{
+    padding: 20px 18px;
+    background-color: #FAD534; 
+    color: #494949;
+    border-radius: 50%;
 
+  }
+#placeDownload{
+  margin-left: 2%;
+  margin-top: 1%;
+
+  }
 .buscador{
   padding: 12px 24px;
   color: #575757;
