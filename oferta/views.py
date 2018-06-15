@@ -89,7 +89,7 @@ def oferta_json(request):
     """
     if request.method == 'GET':
         if not Oferta.objects.all():
-            return JsonResponse({'error': 'No hay ofertas en la BD'}, status=500)
+            return JsonResponse({'data': []})
 
         trim_inicio = request.GET.get('trim_inicio', Oferta.TRIMESTRE_ENEMAR)
         trim_final = request.GET.get('trim_final', Oferta.TRIMESTRE_SEPDIC)
