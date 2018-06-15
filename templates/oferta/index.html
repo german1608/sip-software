@@ -27,6 +27,7 @@
 
 	<div class="row" id="oferta-box" style="margin-top: 50px">		
 		<input type="hidden" name="json-url" value="{% url 'oferta:oferta-json' %}">
+		<input type="hidden" name="eliminar-url" value="{% url 'oferta:eliminar-oferta' 0 %}">
 		<!--Anadir una oferta-->
 		<div class="col-3 oferta-child ">
 			<div class="flip3D">
@@ -40,7 +41,39 @@
 		</div>
 
 	</div>
-
+	
+	<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-primary" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h4 class="modal-title">¿Está seguro que desea eliminar esta oferta?</h4>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-body">
+			  <p>Está eliminando la oferta con los siguientes atributos:</p> 
+			  <p><b>Trimestre:</b> <span id="oferta-modal-trimestre"></span></p>
+			  <p><b>Año:</b> <span id="oferta-modal-anio"></span></p>
+			  <p><b>Coordinación:</b> <span id="oferta-modal-coordinacion"></span></p>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			  <form action="{% url 'oferta:eliminar-oferta' 0 %}" method="POST" id="form-eliminar-oferta">
+				{% csrf_token %}
+				<button type="submit" 
+						class="btn btn-primary" 
+						id="eliminar_oferta_button">
+					Eliminar
+			  	</button>
+			  </form>
+			</div>
+		  </div>
+		  <!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	  </div>
+	  <!-- /.modal -->
 {% endblock wrapper %}
 {% block customscripts %}
 <script src="{% static 'js/toastr.min.js' %}" charset="utf8"></script>

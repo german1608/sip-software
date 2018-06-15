@@ -27,7 +27,8 @@ function oferta_show(){
     // Se obtiene el json que contiene la informacion de las ofertas que estan 
     // en la base de datos.
     const url_json = $('[name=json-url]').attr('value')
-    
+    var url_elim = $('[name=eliminar-url]').attr('value')
+
     // Este es el ajax para anadir las nuevas ofertas 
     $.ajax ({
         dataType: "json",
@@ -61,7 +62,9 @@ function oferta_show(){
                         </div>
                         <div class="front">
                             <div class="management-btns">
-                                <span class="delete-btn"><i class="fa fa-window-close"></i></span>
+                                <a class="oferta-elim" data-url="${url_elim.replace('0', oferta.id)}">
+                                    <span class="delete-btn"><i class="fa fa-window-close"></i></span>
+                                </a>
                                 <span class="edit-btn"><i class="fa fa-pencil-alt"></i></span>
                             </div>
                             <p class="front-text">${oferta.trimestre} <br> ${oferta.anio}</p>
@@ -134,4 +137,43 @@ $(function() {
             }
         })
     })
+})
+
+$(document).on('click', '.oferta-elim', function(e) {
+    const url_elim = $(this).attr('data-url');
+    $.ajax({
+        url: url_elim,
+        method: 'GET',
+        success: function (json) {
+            $("#oferta-modal-trimestre").html(json.trimestre);
+            $("#oferta-modal-anio").html(json.anio);
+            $("#oferta-modal-coordinacion").html(json.coordinacion);
+            $("#form-eliminar-oferta").attr('action', url_elim);
+            $("#dangerModal").modal('show');
+        }
+    })    
+})
+
+$(document).on('submit', '#form-eliminar-oferta', function(e) {
+    e.preventDefault();
+    const $form = $(this)
+
+    $.ajax({
+        url: $form.attr('action'),
+        method: $form.attr('method'),
+        data: $form.serialize(),
+        success: function (json) {
+            $("#dangerModal").modal('hide');
+            console.log(json.ok)
+            if(json.ok){
+                toastr.success('Oferta eliminada con éxito', '');
+                oferta_show();
+            }
+            else{
+                toastr.error('Se produjo un error al eliminar la oferta', '');
+                oferta_show();
+            }
+            
+        }
+    })    
 })

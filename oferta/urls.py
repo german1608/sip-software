@@ -8,5 +8,6 @@ urlpatterns = [
     path('', index, name='dashboard'),
     path('anadir/', OfertaAgregar.as_view(), name='anadir-oferta'),
     path('json', oferta_json, name='oferta-json'),
+    path('eliminar/<pk>', EliminarOferta.as_view(), name='eliminar-oferta'),
     path('descargar/', DescargarOfertasView.as_view(), name='descargar')
 ]
