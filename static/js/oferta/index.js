@@ -27,7 +27,7 @@ function oferta_show(){
         success: function (json){
             json.data.forEach(oferta => {
                 $('#oferta-box').append(`
-                <div class="col oferta oferta-child">
+                <div class="col-3 oferta oferta-child">
                     <div class="flip3D">
                         <div class="back">
                             <form action="#" method="POST" id="">
