@@ -27,6 +27,8 @@ function oferta_show(){
     // Se obtiene el json que contiene la informacion de las ofertas que estan 
     // en la base de datos.
     const url_json = $('[name=json-url]').attr('value')
+    // Se obtiene la url generica que servira para asignarle una url
+    // especifica de eliminacion a cada oferta segun su id.
     var url_elim = $('[name=eliminar-url]').attr('value')
 
     // Este es el ajax para anadir las nuevas ofertas 
@@ -139,8 +141,14 @@ $(function() {
     })
 })
 
+// Selector que desencadena una llamada a AJAX al click en
+// cualquier boton con la marca 'x' de las tarjetas de
+// eliminacion de ofertas
 $(document).on('click', '.oferta-elim', function(e) {
     const url_elim = $(this).attr('data-url');
+    // Se realiza una llamada al controlador para renderizar
+    // el modal de la oferta con los datos especificos de
+    // esa oferta.
     $.ajax({
         url: url_elim,
         method: 'GET',
@@ -154,17 +162,24 @@ $(document).on('click', '.oferta-elim', function(e) {
     })    
 })
 
+// Selector que desencadena una llamada a AJAX al hacer submit
+// sobre botón de eliminar en el modal de eliminación de una oferta.
 $(document).on('submit', '#form-eliminar-oferta', function(e) {
     e.preventDefault();
     const $form = $(this)
 
+    // La llamada solicita al controlador la eliminacion de
+    // la oferta seleccionada y devuelve una respuesta de
+    // exito o fracaso.
     $.ajax({
         url: $form.attr('action'),
         method: $form.attr('method'),
         data: $form.serialize(),
         success: function (json) {
+            // Al recibir una respuesta de la llamada, se 
+            // cierra el modal y se muestra el mensaje
+            // con el estado de la solicitud de eliminacion
             $("#dangerModal").modal('hide');
-            console.log(json.ok)
             if(json.ok){
                 toastr.success('Oferta eliminada con éxito', '');
                 oferta_show();

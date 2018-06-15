@@ -84,11 +84,14 @@ class EliminarOferta(DeleteView):
     """
     Elimina una oferta utilizando como apoyo la vista generica de eliminacion de Django.
     
-    El metodo get se sobreescribe para que la pagina no se recargue al solicitar
-    la eliminacion, si no que una llamada ajax a esta vista retorne informacion
-    del objeto que se quiere eliminar y haga apertura de un modal.
+    El metodo get se sobreescribe para que la pagina no redirija al template por defecto
+    de la vista genérica de Django cuando se solicita la eliminación de una oferta. En este caso, 
+    la llamada mediante AJAX con método GET a esta vista retornará informacion del objeto que se 
+    quiere eliminar.
 
-    El metodo delete se sobreescribe para evadir la redireccion del success_url.
+    El metodo delete se sobreescribe para evadir la redireccion que hace DeleteView 
+    hacia success_url. Así, se devuelve una respuesta JSON indicando el estado de la
+    operacion.
     """
     model = Oferta
     success_url = reverse_lazy('oferta:oferta-eliminacion-exitosa')
@@ -108,8 +111,8 @@ class EliminarOferta(DeleteView):
     
     def delete(self, request, *args, **kwargs):
         """
-        Call the delete() method on the fetched object and then redirect to the
-        success URL.
+        Llama al metodo delete() en el objeto buscado y luego devuelve
+        una respuesta JSON indicando el estado de la operacion.
         """
         self.object = self.get_object()
         self.object.delete()
