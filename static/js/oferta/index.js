@@ -26,7 +26,7 @@ function oferta_show(){
         // 
         success: function (json){
             json.data.forEach(oferta => {
-                $('#oferta-box').append(`
+                $('#oferta-box').prepend(`
                 <div class="col-3 oferta oferta-child">
                     <div class="flip3D">
                         <div class="back">
@@ -59,7 +59,7 @@ function oferta_show(){
                 </div>`)
                 console.log($('.oferta-child').length)
                 if ($('.oferta-child').length % 4 === 0){
-                    $('#oferta-box').append('<div class="w-100"></div>')
+                    $('#oferta-box').append('<div class="w-100 oferta"></div>')
                 }
             })
         }
