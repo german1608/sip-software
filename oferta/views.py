@@ -7,6 +7,7 @@ from .forms import OfertaForm
 from coordinacion.models import Coordinacion
 import datetime
 
+from django.core import serializers
 
 from .models import Oferta
 from django.db.models import Max, Min
@@ -63,44 +64,26 @@ class OfertaAgregar(AjaxableResponseMixin, CreateView):
 
 # Esta funcion esta encargada de enviar con formato json la informacion de
 # todas las ofertas que se han anadido a la base de datos
-def oferta_json(request, mesi=0, anoi=0, mesf=0, anof=0):
+def oferta_json(request):
     """Envia informacion sobre las asignaturas como objeto JSON
     """
+    if request.method == 'GET':
+        trim_inicio = request.GET.get('trim_inicio', Oferta.TRIMESTRE_ENEMAR)
+        trim_final = request.GET.get('trim_final', Oferta.TRIMESTRE_SEPDIC)
+        anio_inicio = request.GET.get('anio_inicio', min_anio_oferta())
+        anio_final = request.GET.get('anio_final', max_anio_oferta())
 
-    def mes_a_trimestre(mes):
-        if (1 < mes) and (mes <= 3):
-            return 0
-        if (4 < mes ) and (mes <=8):
-            return 1
-        return 2
+        ofertas = Oferta.objects.filter(trimestre__gte=trim_inicio) \
+                .filter(trimestre__lte=trim_final).filter(anio__gte=anio_inicio) \
+                .filter(anio__lte=anio_final).order_by('anio').order_by('trimestre')
 
-    ofertas = Oferta.objects.all()
+    mapper = (lambda obj: {
+        'trimestre': obj.get_trimestre_display(), 
+        'anio': obj.anio,
+        'pk': obj.pk
+    })
 
-    lista_ofertas = list()
-
-    if (mesi != 0 and anoi != 0 and mesf != 0 and anof != 0):
-        for oferta in ofertas:
-            if (anoi <= oferta.anio) and (oferta.anio <= anof):
-                if (anoi == oferta.anio and oferta.trimestre < mes_a_trimestre(mesi)):
-                    continue
-                if (anof == oferta.anio and oferta.trimestre > mes_a_trimestre(mesf)):
-                    continue    
-                oferta_detalle = {
-                    'id' : oferta.id,
-                    'trimestre' : oferta.get_trimestre_display(),
-                    'anio' : oferta.anio
-                }
-                lista_ofertas.append(oferta_detalle)
-    else:     
-        for oferta in ofertas:
-            oferta_detalle = {
-                'id' : oferta.id,
-                'trimestre' : oferta.get_trimestre_display(),
-                'anio' : oferta.anio
-            }
-            lista_ofertas.append(oferta_detalle)
-
-    return JsonResponse({'data' : lista_ofertas})
+    return JsonResponse({'data' : list(map(mapper, ofertas)) })
 
 # Vista para descargar las ofertas como PDF
 class DescargarOfertasView(View):

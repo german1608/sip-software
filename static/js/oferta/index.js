@@ -25,7 +25,7 @@ function oferta_show(mesi, anoi, mesf, anof){
 
     // Se obtiene el json que contiene la informacion de las ofertas que estan 
     // en la base de datos.
-    const url_json = $('[name=json-url]').attr('value') + mesi.toString() + "/" + anoi.toString() + "/" + mesf.toString() + "/" + anof.toString() + "/"              
+    const url_json = $('[name=json-url]').attr('value')
 
     $.ajax ({
         dataType: "json",
@@ -88,7 +88,7 @@ $(function() {
 
     // Se llama a la funcion oferta_show() para 
     // mostrar todas las ofertas por pantalla 
-    oferta_show(0, 0, 0, 0)
+    oferta_show()
 
     // Este selector implementa la funcionalidad de la carta 
     // anadir 
