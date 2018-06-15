@@ -1,0 +1,26 @@
+<table>
+    <tr>
+        <th>
+            Trimestre
+        </th>
+        <th>
+            A&ntilde;o
+        </th>
+        <th>
+            Coordinaci&oacute;n
+        </th>
+    </tr>
+    {% for oferta in ofertas %}
+    <tr>
+        <td>
+            {{oferta.trimestre}}
+        </td>
+        <td>
+            {{oferta.anio}}
+        </td>
+        <td>
+            {{oferta.coordinacion}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>

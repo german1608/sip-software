@@ -1,12 +1,15 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
+from django.views import View
 from .models import Oferta
 from .forms import OfertaForm
 from coordinacion.models import Coordinacion
 
 from .models import Oferta
+from django.db.models import Max, Min
 
+from .render import Render
 
 # Create your views here.
 def index(request):
@@ -71,3 +74,32 @@ def oferta_json(request):
         lista_ofertas.append(oferta_detalle)
 
     return JsonResponse({'data' : lista_ofertas})
+
+# Vista para descargar las ofertas como PDF
+class DescargarOfertasView(View):
+    def get(self, request, *args, **kwargs):
+        trim_inicio = request.GET.get('trim_inicio', Oferta.TRIMESTRE_ENEMAR)
+        trim_final = request.GET.get('trim_final', Oferta.TRIMESTRE_SEPDIC)
+        anio_inicio = request.GET.get('anio_inicio', min_anio_oferta())
+        anio_final = request.GET.get('anio_final', max_anio_oferta())
+
+        print('\n\n{} {} {} {}\n\n'.format(trim_inicio, trim_final, anio_inicio, anio_final))
+
+        # Conjunto de ofertas que cumplen con los criterios especificados
+        ofertas = Oferta.objects.filter(trimestre__gte=trim_inicio) \
+            .filter(trimestre__lte=trim_final).filter(anio__gte=anio_inicio) \
+            .filter(anio__lte=anio_final)
+
+        context = {
+            'ofertas': ofertas
+        }
+
+        return Render.render('oferta/ofertas.pdf.html', context)
+
+# Función que retorna el mayor de los años de las ofertas guardadas
+def max_anio_oferta():
+    return Oferta.objects.all().aggregate(Max('anio')).get('anio__max')
+
+# Función que retorna el menor de los años de las ofertas guardadas
+def min_anio_oferta():
+    return Oferta.objects.all().aggregate(Min('anio')).get('anio__min')
