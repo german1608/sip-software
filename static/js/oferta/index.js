@@ -15,11 +15,11 @@ toastr.options = {
     "hideMethod": "fadeOut"
 }
 
-function oferta_show(){
+function oferta_show(mesi, anoi, mesf, anof){
     $(".oferta").remove()
     const $this = $(this)
-    const url_json = $('[name=json-url]').attr('value')
-    
+    const url_json = $('[name=json-url]').attr('value') + mesi.toString() + "/" + anoi.toString() + "/" + mesf.toString() + "/" + anof.toString() + "/"              
+
     $.ajax ({
         dataType: "json",
         url: url_json,
@@ -69,8 +69,13 @@ function oferta_show(){
     
 }
 
+function actualizar(){
+    oferta_show($( "#mes_inicio" ).val(), $( "#ano_inicio" ).val(), $( "#mes_final" ).val(), $( "#ano_final" ).val());    
+}
+
+
 $(function() {
-    oferta_show()
+    oferta_show(0, 0, 0, 0)
     $('#oferta-add').on('click', function(e) {
         const $this = $(this)
         $.ajax({
@@ -98,7 +103,7 @@ $(function() {
                 // Voltea la carta
                 $('#create-oferta-box').parent().removeClass('active')
                 toastr.success('Oferta añadida con éxito', '')
-                oferta_show()
+                oferta_show(0, 0, 0, 0)
             },
             error: function(jqXHR, ...args) {
                 const err = jqXHR.responseJSON

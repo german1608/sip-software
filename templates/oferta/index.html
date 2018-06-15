@@ -13,16 +13,77 @@
 		<div class="col-md-1">
 			<p class="title">Ofertas</p>
 		</div>
-		<div class="col-md-2">
+
+		<div class="col-md-3">
 			<div class="text-center pagination-centered">
 				<a class="botonAgregar"><span class="fa fa-plus fa-3x" style="color: #b5b5b5; vertical-align: middle;"></span></a>
 			</div>
 		</div>
-		<div class="col-md-3">
+
+		<div class="col-md-2">
+			<label for="mes_inicio">Mes inicio</label>
+			<select id="mes_inicio" name="mes_inicio">
+			    <option value="1">Enero</option>
+			    <option value="2">Febrero</option>
+			    <option value="3">Marzo</option>
+			    <option value="4">Abril</option>
+			    <option value="5">Mayo</option>
+			    <option value="6">Junio</option>
+			    <option value="7">Julio</option>
+			    <option value="8">Agosto</option>
+			    <option value="9">Septiembre</option>
+			    <option value="10">Octubre</option>
+			    <option value="11">Noviembre</option>
+			    <option value="12">Diciembre</option>
+			</select>
+			<br/>
+			<label for="ano_inicio">Año inicio</label>
+			<select id="ano_inicio" name="ano_inicio">
+			{% for y in anos %}
+				{% if y == 2018 %}
+			    <option value="{{ y }}" selected>{{ y }}</option>
+			    {% else %}
+			    <option value="{{ y }}">{{ y }}</option>
+			    {% endif %}
+			{% endfor %}
+			</select>
 		</div>
-		<div class="col-md-5">
-			<input type="search" class="buscador" placeholder="" aria-controls="t_asignaturas">
+
+		<div class="col-md-2">
+			<label for="mes_final">Mes final</label>
+			<select id="mes_final" name="mes_final">
+			    <option value="1">Enero</option>
+			    <option value="2">Febrero</option>
+			    <option value="3">Marzo</option>
+			    <option value="4">Abril</option>
+			    <option value="5">Mayo</option>
+			    <option value="6">Junio</option>
+			    <option value="7">Julio</option>
+			    <option value="8">Agosto</option>
+			    <option value="9">Septiembre</option>
+			    <option value="10">Octubre</option>
+			    <option value="11">Noviembre</option>
+			    <option value="12">Diciembre</option>
+			</select>
+			<br/>
+			<label for="ano_final">Año final</label>
+			<select id="ano_final" name="ano_final">
+			{% for y in anos %}
+			    {% if y == 2018 %}
+			    <option value="{{ y }}" selected>{{ y }}</option>
+			    {% else %}
+			    <option value="{{ y }}">{{ y }}</option>
+			    {% endif %}
+			{% endfor %}
+			</select>
 		</div>
+
+		<div class="col-md-1">
+			<button type="submit" class="btn btn-lg" onclick="actualizar();">Filtrar</button>
+		</div>
+		<div class="col-md-1">
+		</div>
+
 	</div>
 
 	<div class="row" id="oferta-box" style="margin-top: 50px">		

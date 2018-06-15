@@ -4,13 +4,16 @@ from django.views.generic.edit import CreateView
 from .models import Oferta
 from .forms import OfertaForm
 from coordinacion.models import Coordinacion
+import datetime
+
 
 from .models import Oferta
 
 
 # Create your views here.
 def index(request):
-    return render(request, 'oferta/index.html')
+    anos = [x for x in reversed(range(2000, (datetime.datetime.now().year)+20))]
+    return render(request, 'oferta/index.html', {'anos': anos})
 
 class AjaxableResponseMixin:
     """
@@ -53,19 +56,41 @@ class OfertaAgregar(AjaxableResponseMixin, CreateView):
         # etc...
         return initial
 
-def oferta_json(request):
+def oferta_json(request, mesi=0, anoi=0, mesf=0, anof=0):
     """Envia informacion sobre las asignaturas como objeto JSON
     """
+
+    def mes_a_trimestre(mes):
+        if (1 < mes) and (mes <= 3):
+            return 0
+        if (4 < mes ) and (mes <=8):
+            return 1
+        return 2
+
     ofertas = Oferta.objects.all()
 
     lista_ofertas = list()
 
-    for oferta in ofertas:
-        oferta_detalle = {
-            'id' : oferta.id,
-            'trimestre' : oferta.get_trimestre_display(),
-            'anio' : oferta.anio
-        }
-        lista_ofertas.append(oferta_detalle)
+    if (mesi != 0 and anoi != 0 and mesf != 0 and anof != 0):
+        for oferta in ofertas:
+            if (anoi <= oferta.anio) and (oferta.anio <= anof):
+                if (anoi == oferta.anio and oferta.trimestre < mes_a_trimestre(mesi)):
+                    continue
+                if (anof == oferta.anio and oferta.trimestre > mes_a_trimestre(mesf)):
+                    continue    
+                oferta_detalle = {
+                    'id' : oferta.id,
+                    'trimestre' : oferta.get_trimestre_display(),
+                    'anio' : oferta.anio
+                }
+                lista_ofertas.append(oferta_detalle)
+    else:     
+        for oferta in ofertas:
+            oferta_detalle = {
+                'id' : oferta.id,
+                'trimestre' : oferta.get_trimestre_display(),
+                'anio' : oferta.anio
+            }
+            lista_ofertas.append(oferta_detalle)
 
     return JsonResponse({'data' : lista_ofertas})
