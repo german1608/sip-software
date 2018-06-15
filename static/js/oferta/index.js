@@ -38,7 +38,7 @@ function oferta_show(data){
             // Aqui se recorren todas las ofertas y se van agregando 
             // al html para que se muestren por pantalla 
             json.data.forEach(oferta => {
-                $('#oferta-box').prepend(`
+                $('#oferta-box').append(`
                 <div class="col-12 col-sm-3 oferta oferta-child">
                     <div class="flip3D">
                         <div class="back">
