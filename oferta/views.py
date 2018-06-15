@@ -95,7 +95,7 @@ def oferta_json(request):
     mapper = (lambda obj: {
         'trimestre': obj.get_trimestre_display(), 
         'anio': obj.anio,
-        'pk': obj.pk
+        'id': obj.pk
     })
 
     return JsonResponse({'data' : list(map(mapper, ofertas)) })

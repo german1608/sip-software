@@ -79,8 +79,6 @@ function oferta_show(data){
             })
         }
     })
-
-    
     
 }
 
