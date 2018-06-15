@@ -1,3 +1,6 @@
+.main {
+  overflow-x: hidden;
+}
 
 .title{
   font-size: 40px;
