@@ -19,7 +19,7 @@ toastr.options = {
 // Esta funcion sirve para mostrar las ofertas que estan presentes en la 
 // base de datos. Esto lo hace cuando se carga la vista de las ofertas o 
 // cuando se agrega una nueva oferta. 
-function oferta_show(mesi, anoi, mesf, anof){
+function oferta_show(data){
     $(".oferta").remove()
     const $this = $(this)
 
@@ -30,7 +30,7 @@ function oferta_show(mesi, anoi, mesf, anof){
     $.ajax ({
         dataType: "json",
         url: url_json,
-        // 
+        data: data,
         success: function (json){
             // Aqui se recorren todas las ofertas y se van agregando 
             // al html para que se muestren por pantalla 
@@ -80,7 +80,13 @@ function oferta_show(mesi, anoi, mesf, anof){
 }
 
 function actualizar(){
-    oferta_show($( "#mes_inicio" ).val(), $( "#ano_inicio" ).val(), $( "#mes_final" ).val(), $( "#ano_final" ).val());    
+    // $( "#mes_inicio" ).val(), $( "#ano_inicio" ).val(), $( "#mes_final" ).val(), $( "#ano_final" ).val()
+    oferta_show({
+        'trim_inicio': $('#trim_inicio').val(),
+        'anio_inicio': $('#anio_inicio').val(),
+        'trim_final': $('#trim_final').val(),
+        'anio_final': $('#anio_final').val()
+    });    
 }
 
 
@@ -124,7 +130,7 @@ $(function() {
                 // Voltea la carta
                 $('#create-oferta-box').parent().removeClass('active')
                 toastr.success('Oferta añadida con éxito', '')
-                oferta_show(0, 0, 0, 0)
+                oferta_show()
             },
             error: function(jqXHR, ...args) {
                 // En esta parte del codigo se maneja los errores que se 

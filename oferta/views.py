@@ -19,7 +19,12 @@ from pprint import pprint
 # Create your views here.
 def index(request):
     anos = [x for x in reversed(range(2000, (datetime.datetime.now().year)+20))]
-    return render(request, 'oferta/index.html', {'anos': anos})
+    choices = Oferta.OFERTA_TRIMESTRE_CHOICES
+    context = {
+        'anos': anos,
+        'choices': choices
+    }
+    return render(request, 'oferta/index.html', context)
 
 class AjaxableResponseMixin:
     """

@@ -14,24 +14,15 @@
 	</div>
 	<div class="row">
 		<div class="col-12 col-sm-4">
-			<label for="mes_inicio">Mes inicio</label>
-			<select id="mes_inicio" name="mes_inicio">
-			    <option value="1">Enero</option>
-			    <option value="2">Febrero</option>
-			    <option value="3">Marzo</option>
-			    <option value="4">Abril</option>
-			    <option value="5">Mayo</option>
-			    <option value="6">Junio</option>
-			    <option value="7">Julio</option>
-			    <option value="8">Agosto</option>
-			    <option value="9">Septiembre</option>
-			    <option value="10">Octubre</option>
-			    <option value="11">Noviembre</option>
-			    <option value="12">Diciembre</option>
+			<label for="trim_inicio">Trimestre inicio</label>
+			<select id="trim_inicio" name="trim_inicio">
+				{% for choice, display in choices %}
+				<option value="{{choice}}">{{display}}</option>
+				{% endfor %}
 			</select>
 			<br/>
-			<label for="ano_inicio">Año inicio</label>
-			<select id="ano_inicio" name="ano_inicio">
+			<label for="anio_inicio">Año inicio</label>
+			<select id="anio_inicio" name="ano_inicio">
 			{% for y in anos %}
 				{% if y == 2018 %}
 			    <option value="{{ y }}" selected>{{ y }}</option>
@@ -43,24 +34,15 @@
 		</div>
 
 		<div class="col-12 col-sm-4">
-			<label for="mes_final">Mes final</label>
-			<select id="mes_final" name="mes_final">
-			    <option value="1">Enero</option>
-			    <option value="2">Febrero</option>
-			    <option value="3">Marzo</option>
-			    <option value="4">Abril</option>
-			    <option value="5">Mayo</option>
-			    <option value="6">Junio</option>
-			    <option value="7">Julio</option>
-			    <option value="8">Agosto</option>
-			    <option value="9">Septiembre</option>
-			    <option value="10">Octubre</option>
-			    <option value="11">Noviembre</option>
-			    <option value="12">Diciembre</option>
+			<label for="trim_final">Trimestre final</label>
+			<select id="trim_final" name="trim_final">
+				{% for choice, display in choices %}
+				<option value="{{choice}}">{{display}}</option>
+				{% endfor %}
 			</select>
 			<br/>
-			<label for="ano_final">Año final</label>
-			<select id="ano_final" name="ano_final">
+			<label for="anio_final">Año final</label>
+			<select id="anio_final" name="anio_final">
 			{% for y in anos %}
 			    {% if y == 2018 %}
 			    <option value="{{ y }}" selected>{{ y }}</option>
@@ -73,7 +55,7 @@
 
 
 		<div class="col-12 col-sm-4">
-			<button type="submit" class="btn btn-lg" onclick="actualizar();" style="background-color: yellow;">Filtrar</button>
+			<button type="button" class="btn btn-lg" onclick="actualizar();" style="background-color: yellow;">Filtrar</button>
 		</div>
 	</div>
 	<div class="row">
