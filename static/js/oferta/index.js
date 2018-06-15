@@ -15,16 +15,27 @@ toastr.options = {
     "hideMethod": "fadeOut"
 }
 
+// Esta funcion sirve para mostrar las ofertas que estan presentes en la 
+// base de datos. Esto lo hace cuando se carga la vista de las ofertas o 
+// cuando se agrega una nueva oferta. 
 function oferta_show(){
+    // Primero se borran las ofertas que estan en la pagina en ese momento 
+    // si no se acumulan porque cuando se agregan las nuevas se vuelven agregar
+    // las anteriores
     $(".oferta").remove()
     const $this = $(this)
+    // Se obtiene el json que contiene la informacion de las ofertas que estan 
+    // en la base de datos.
     const url_json = $('[name=json-url]').attr('value')
     
+    // Este es el ajax para anadir las nuevas ofertas 
     $.ajax ({
         dataType: "json",
         url: url_json,
         // 
         success: function (json){
+            // Aqui se recorren todas las ofertas y se van agregando 
+            // al html para que se muestren por pantalla 
             json.data.forEach(oferta => {
                 $('#oferta-box').prepend(`
                 <div class="col-3 oferta oferta-child">
@@ -57,7 +68,8 @@ function oferta_show(){
                         </div>
                     </div>
                 </div>`)
-                console.log($('.oferta-child').length)
+                // En este if se verifica que la cantidas de ofertas que se tienen es multiplo de 4
+                // si lo son se agrega un nuevo div que permite agrupar las ofertas en filas de 4
                 if ($('.oferta-child').length % 4 === 0){
                     $('#oferta-box').append('<div class="w-100 oferta"></div>')
                 }
@@ -70,9 +82,16 @@ function oferta_show(){
 }
 
 $(function() {
+    // Se llama a la funcion oferta_show() para 
+    // mostrar todas las ofertas por pantalla 
     oferta_show()
+
+    // Este selector implementa la funcionalidad de la carta 
+    // anadir 
     $('#oferta-add').on('click', function(e) {
         const $this = $(this)
+        // Este ajax se encarga de crear el formulario y agregarlo a la cartica 
+        // de agregar 
         $.ajax({
             url: $this.attr('data-url'),
             method: 'GET',
@@ -85,10 +104,13 @@ $(function() {
         })
     })
 
+    // Selector que maneja el evento de cuando el usuario anade una nueva 
+    // oferta
     $(document).on('submit', '#form-oferta', function(e) {
         e.preventDefault()
         const $form = $(this)
-
+        // Este ajax se encarga de mostrar si el proceso de anadir una nueva 
+        // oferta ha sido realizado con exito si no se muestra un error 
         $.ajax({
             url: $form.attr('action'),
             method: $form.attr('method'),
@@ -101,6 +123,8 @@ $(function() {
                 oferta_show()
             },
             error: function(jqXHR, ...args) {
+                // En esta parte del codigo se maneja los errores que se 
+                // obtuvo y se muestran por pantalla 
                 const err = jqXHR.responseJSON
                 for (let k in err){
                     err[k].forEach(error => {

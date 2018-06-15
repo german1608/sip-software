@@ -53,6 +53,8 @@ class OfertaAgregar(AjaxableResponseMixin, CreateView):
         # etc...
         return initial
 
+# Esta funcion esta encargada de enviar con formato json la informacion de
+# todas las ofertas que se han anadido a la base de datos
 def oferta_json(request):
     """Envia informacion sobre las asignaturas como objeto JSON
     """
