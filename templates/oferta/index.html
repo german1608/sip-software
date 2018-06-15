@@ -7,7 +7,7 @@
 {% endblock customhead %}
 {% block wrapper %}
 	<!--Form para descargar las asignaturas que cumplen con el criterio de aceptación del filtro-->
-	<form action="{% url 'oferta:descargar' %}" method="GET">
+	<form action="{% url 'oferta:descargar' %}" method="GET" id="descargar_form" target="_blank">
 		<!-- Título -->
 		<div class="row">
 			<div class="col-12">
@@ -16,7 +16,7 @@
 		</div>
 		<div class="row">
 			<!--Campos para el inicio:-->
-			<div class="col-12 col-sm-4">
+			<div class="col-12 col-sm-5 mt-2">
 				<!-- Trimestre inicial-->
 				<label for="trim_inicio">Trimestre inicio</label>
 				<select id="trim_inicio" name="trim_inicio">
@@ -36,7 +36,7 @@
 			</div>
 	
 			<!-- Campos para el final-->
-			<div class="col-12 col-sm-4">
+			<div class="col-12 col-sm-5 mt-2">
 				<!--Trimestre final-->
 				<label for="trim_final">Trimestre final</label>
 				<select id="trim_final" name="trim_final">
@@ -56,14 +56,17 @@
 			</div>
 	
 			<!-- Botón para activar los filtros-->
-			<div class="col-12 col-sm-4">
-				<button type="button" class="btn btn-lg" onclick="actualizar();" style="background-color: yellow;">Filtrar</button>
+			<div class="col-12 col-sm-2 d-flex">
+				<button id="filtrar_btn" type="button" class="btn btn-lg" onclick="actualizar();" 
+					style="background-color: yellow;">
+					Filtrar
+				</button>
 			</div>
 		</div>
 		<!-- Botón para Descargar -->
 		<div class="row">
 			<div class="col-12" id="placeDownload">
-				<div class="mt-5">
+				<div class="mt-2">
 					<button type="submit" class="botonDescargar">
 						<span class="fas fa-download fa-2x" id="botonDescargar" 
 							style="color: #b5b5b5; vertical-align: middle;">
@@ -77,7 +80,7 @@
 
 
 	<!--Anadir una oferta-->
-	<div class="row" id="oferta-box" style="margin-top: 50px">		
+	<div class="row mt-2" id="oferta-box">		
 		<input type="hidden" name="json-url" value="{% url 'oferta:oferta-json' %}">
 		<div class="col-3 oferta-child ">
 			<div class="flip3D">
