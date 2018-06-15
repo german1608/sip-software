@@ -68,9 +68,18 @@ class TestModelOferta(TestCase):
     con los criterios de nuestro ER.
     """
     def setUp(self):
+        """
+        Esto se ejecuta antes de iniciar cada prueba, lo que permite evitar repeticion de
+        codigo innecesaria (DRY!).
+        """
         self.coordinacion = Coordinacion.objects.create(codigo='CI', nombre='Coordinacion 1')
+        Oferta.objects.all().delete()
+        oferta = Oferta()
+        oferta.trimestre = 0
+        oferta.anio = datetime.date.today().year
+        oferta.coordinacion = self.coordinacion
+        self.oferta = oferta
 
-    def test_trimestre_atribute(self):
         """
         El trimestre debe ser un numero del 0 al 2
         0 -> Ene-Mar
@@ -79,35 +88,30 @@ class TestModelOferta(TestCase):
         Esta validacion pasa en los formularios, pero no en los modelos.
         Estas pruebas van a probar solamente el 3 y el -1 (frontera y esquina, en este caso)
         """
-        oferta = Oferta()
-        oferta.anio = 2018
-        oferta.trimestre = -1 # invalido
-        oferta.coordinacion = self.coordinacion
-        # deberia lanzar la excepcion OperationalError por que esto es del manejador
+    def test_trimestre_attribute_menos_1(self):
+        # caso esquina: trimestre = -1
+        self.oferta.trimestre = -1
         with self.assertRaises(ValidationError):
-            oferta.save()
-        # tampoco deberia guardarlo
+            self.oferta.save()
         self.assertEqual(Oferta.objects.all().count(), 0)
 
-        # probando con el 3
-        oferta.trimestre = 3
-        # deberia lanzar la excepcion ValidationError
+    def test_trimestre_attribute_tres(self):
+        # caso esquina: trimestre = 3
+        self.oferta.trimestre = 3
         with self.assertRaises(ValidationError):
-            oferta.save()
-        # tampoco deberia guardarlo
+            self.oferta.save()
         self.assertEqual(Oferta.objects.all().count(), 0)
 
-        # por supuesto, con cualqueir valor del 0 al 2 deberia guardarlo
+    def test_trimestre_attribute_validos(self):
+        # caso frontera = 0,1,2
         for i in range(3):
             oferta = Oferta()
             oferta.anio = 2018
-            oferta.trimestre = -1 # invalido
             oferta.coordinacion = self.coordinacion
             oferta.trimestre = i
             oferta.save() # no deberia lanzar error
         self.assertEqual(Oferta.objects.all().count(), 3)
 
-    def test_trimestre_anio(self):
         """
         El anio de una oferta debe ser mayor o igual al anio actual.
         El dominio de esta debe ser {x| x >= anio_actual}, por tanto se probara
@@ -115,24 +119,24 @@ class TestModelOferta(TestCase):
 
         Deberia lanzar un ValidationError con los anios_invalidos (anio_actual - 1)
         """
-        anio_actual = datetime.date.today().year
-
-        # Una oferta con anio = anio_actual - 1
-        oferta = Oferta()
-        oferta.trimestre = 0
-        oferta.coordinacion = self.coordinacion
-        oferta.anio = anio_actual - 1
-
+    def test_trimestre_anio_pasado(self):
+        # caso esquina: anio pasado
+        anio_actual = self.oferta.anio
+        self.oferta.anio = anio_actual - 1
         with self.assertRaises(ValidationError):
-            oferta.save()
+            self.oferta.save()
         self.assertEqual(Oferta.objects.all().count(), 0)
 
-        # Una oferta con anio = anio_actual + 1
-        oferta.anio = anio_actual + 1
-        oferta.save()
+    def test_trimestre_anio_actual(self):
+        # caso frontera: anio actual
+        anio_actual = self.oferta.anio
+        self.oferta.anio = anio_actual
+        self.oferta.save()
         self.assertEqual(Oferta.objects.all().count(), 1)
 
-        # Una oferta con anio = anio_actual
-        oferta.anio = anio_actual
-        oferta.save()
+    def test_trimestre_anio_que_viene(self):
+        # caso frontera: anio actual
+        anio_actual = self.oferta.anio
+        self.oferta.anio = anio_actual
+        self.oferta.save()
         self.assertEqual(Oferta.objects.all().count(), 1)
