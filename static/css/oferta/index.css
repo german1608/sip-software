@@ -93,9 +93,8 @@
 }
 
 .flip3D > .back > form{
-  margin-top:35%;
+  margin:20% 0 0;
   font-size: 1.3em;
-  margin-left: 20px;
 }
 
 input[type="number"]{
