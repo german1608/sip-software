@@ -8,19 +8,12 @@
 {% block wrapper %}
 
 	<div class="row">
-		<div class="col-md-1">
-		</div>
-		<div class="col-md-6">
+		<div class="col-12">
 			<p class="title">Ofertas</p>
 		</div>
-
-		<div class="col-md-3">
-			<div class="text-center pagination-centered">
-				<a class="botonAgregar"><span class="fa fa-plus fa-3x" style="color: #b5b5b5; vertical-align: middle;"></span></a>
-			</div>
-		</div>
-
-		<div class="col-md-2">
+	</div>
+	<div class="row">
+		<div class="col-12 col-sm-4">
 			<label for="mes_inicio">Mes inicio</label>
 			<select id="mes_inicio" name="mes_inicio">
 			    <option value="1">Enero</option>
@@ -49,7 +42,7 @@
 			</select>
 		</div>
 
-		<div class="col-md-2">
+		<div class="col-12 col-sm-4">
 			<label for="mes_final">Mes final</label>
 			<select id="mes_final" name="mes_final">
 			    <option value="1">Enero</option>
@@ -78,22 +71,17 @@
 			</select>
 		</div>
 
-		<div class="col-md-1">
+
+		<div class="col-12 col-sm-4">
 			<button type="submit" class="btn btn-lg" onclick="actualizar();" style="background-color: yellow;">Filtrar</button>
 		</div>
-		<div class="col-md-1">
-		</div>
-
-		
-		<div class="col-md-2">
-			<input type="search" class="buscador" placeholder="" aria-controls="t_asignaturas">
-		</div>
-		<div class="col-md-1" id="placeDownload">
-			<div class="text-center pagination-centered">
-				<a class="botonDescargar" href='{% url "oferta:descargar" %}'><span class="fas fa-download fa-2x" id="botonDescargar" style="color: #b5b5b5; vertical-align: middle;"></span></a>
+	</div>
+	<div class="row">
+		<div class="col-12" id="placeDownload">
+			<div class="mt-5">
+				<a class="botonDescargar" href='{% url "oferta:descargar" %}' download><span class="fas fa-download fa-2x" id="botonDescargar" style="color: #b5b5b5; vertical-align: middle;"></span></a>
 			</div>'
 		</div>
-		
 	</div>
 
 	<div class="row" id="oferta-box" style="margin-top: 50px">		
