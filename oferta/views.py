@@ -25,7 +25,8 @@ def index(request):
     choices = Oferta.OFERTA_TRIMESTRE_CHOICES
     context = {
         'anos': anos,
-        'choices': choices
+        'choices': choices,
+        'pagename': 'Ofertas'
     }
     return render(request, 'oferta/index.html', context)
 
