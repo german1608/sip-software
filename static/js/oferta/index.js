@@ -39,7 +39,7 @@ function oferta_show(data){
             // al html para que se muestren por pantalla 
             json.data.forEach(oferta => {
                 $('#oferta-box').prepend(`
-                <div class="col-3 oferta oferta-child">
+                <div class="col-12 col-sm-3 oferta oferta-child">
                     <div class="flip3D">
                         <div class="back">
                             <form action="#" method="POST" id="">
