@@ -1,16 +1,19 @@
-from django.http import JsonResponse, HttpResponse
+from pprint import pprint
+
+from django.db.models import Max, Min
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 from django.views import View
-from .models import Oferta
-from .forms import OfertaForm
+from django.views.generic.edit import CreateView, DeleteView
+
 from coordinacion.models import Coordinacion
 import datetime
 
 from django.core import serializers
 
+from .forms import OfertaForm
 from .models import Oferta
-from django.db.models import Max, Min
 
 from .render import Render
 
@@ -95,6 +98,41 @@ def oferta_json(request):
     })
 
     return JsonResponse({'data' : list(map(mapper, ofertas)) })
+
+class EliminarOferta(DeleteView):
+    """
+    Elimina una oferta utilizando como apoyo la vista generica de eliminacion de Django.
+    
+    El metodo get se sobreescribe para que la pagina no se recargue al solicitar
+    la eliminacion, si no que una llamada ajax a esta vista retorne informacion
+    del objeto que se quiere eliminar y haga apertura de un modal.
+
+    El metodo delete se sobreescribe para evadir la redireccion del success_url.
+    """
+    model = Oferta
+    success_url = reverse_lazy('oferta:oferta-eliminacion-exitosa')
+
+    def get(self, request, *args, **kwargs):
+        # Obtenemos la oferta mediante el metodo get_object provisto
+        # por la vista de django
+        oferta = self.get_object()
+
+        # Retornamos informacion para llenar el modal de eliminacion
+        # con la informacion de la oferta que estamos eliminando.
+        return JsonResponse({
+            'trimestre' : oferta.get_trimestre_display(),
+            'anio' : oferta.anio,
+            'coordinacion' : oferta.coordinacion.nombre,
+        })
+    
+    def delete(self, request, *args, **kwargs):
+        """
+        Call the delete() method on the fetched object and then redirect to the
+        success URL.
+        """
+        self.object = self.get_object()
+        self.object.delete()
+        return JsonResponse({'ok': True})
 
 # Vista para descargar las ofertas como PDF
 class DescargarOfertasView(View):
