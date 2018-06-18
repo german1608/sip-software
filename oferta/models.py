@@ -15,7 +15,7 @@ def anio_oferta_valido(anio_oferta):
 
 def trimestre_valido(trim):
     """
-    Funcion que True ssi el trimestre es valido
+    Funcion que retorna True ssi el trimestre es valido
     """
     return trim in [0, 1, 2]
 
@@ -31,8 +31,7 @@ class Oferta(models.Model):
 
     trimestre = models.PositiveIntegerField(choices=OFERTA_TRIMESTRE_CHOICES,
                                             verbose_name="Trimestre")
-    anio = models.PositiveIntegerField(verbose_name="Año",
-                                       validators=[anio_oferta_valido])
+    anio = models.PositiveIntegerField(verbose_name="Año")
     coordinacion = models.ForeignKey(Coordinacion, verbose_name='Coordinacion',
                                     related_name='ofertas', on_delete=models.CASCADE)
 
@@ -52,4 +51,3 @@ def valida_modelo(sender, **kwargs):
     oferta = kwargs['instance']
     if not trimestre_valido(oferta.trimestre):
         raise ValidationError('El trimestre de la oferta debe estar entre 0 y 2')
-    anio_oferta_valido(oferta.anio)

@@ -11,7 +11,7 @@ from django.test import TestCase, Client, RequestFactory
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.exceptions import ValidationError
 from django.urls import reverse
-from django.db import OperationalError
+from django.db.utils import IntegrityError
 # Modelos necesarios para las pruebas
 from oferta.forms import OfertaForm
 from coordinacion.models import Coordinacion
@@ -46,27 +46,6 @@ class TestFormOferta(TestCase):
             'trimestre': 0,
             'anio': 2018 # anio actual
         }
-
-    def test_form_anio_actual(self):
-        # esta data inicial es válida, deberia de ser valido el formulario
-        today = datetime.date.today()
-        self.initial['anio'] = today.year
-        form = OfertaForm(self.initial)
-        self.assertTrue(form.is_valid())
-
-    def test_form_anio_menor(self):
-        # El formulario no deberia de aceptar anios anteriores al actual
-        today = datetime.date.today()
-        self.initial['anio'] = today.year - 1
-        form = OfertaForm(self.initial)
-        self.assertFalse(form.is_valid())
-
-    def test_form_anio_mayor(self):
-        # El formulario deberia de aceptar anios posteriores al actual
-        today = datetime.date.today()
-        self.initial['anio'] = today.year + 1
-        form = OfertaForm(self.initial)
-        self.assertTrue(form.is_valid())
 
     def test_form_unique(self):
         # Prueba para probar la unicidad de las ofertas respecto a:
@@ -131,35 +110,6 @@ class TestModelOferta(TestCase):
         self.assertEqual(Oferta.objects.all().count(), 3)
 
     """
-    El anio de una oferta debe ser mayor o igual al anio actual.
-    El dominio de esta debe ser {x| x >= anio_actual}, por tanto se probara
-    para x = anio_actual, x = anio_actual + 1, x = anio_actual - 1.
-
-    Deberia lanzar un ValidationError con los anios_invalidos (anio_actual - 1)
-    """
-    def test_trimestre_anio_pasado(self):
-        # caso esquina: anio pasado
-        anio_actual = self.oferta.anio
-        self.oferta.anio = anio_actual - 1
-        with self.assertRaises(ValidationError):
-            self.oferta.save()
-        self.assertEqual(Oferta.objects.all().count(), 0)
-
-    def test_trimestre_anio_actual(self):
-        # caso frontera: anio actual
-        anio_actual = self.oferta.anio
-        self.oferta.anio = anio_actual
-        self.oferta.save()
-        self.assertEqual(Oferta.objects.all().count(), 1)
-
-    def test_trimestre_anio_que_viene(self):
-        # caso frontera: anio actual
-        anio_actual = self.oferta.anio
-        self.oferta.anio = anio_actual
-        self.oferta.save()
-        self.assertEqual(Oferta.objects.all().count(), 1)
-
-    """
     Pruebas esquinas usando ambos atributos
     """
 
@@ -178,16 +128,30 @@ class TestModelOferta(TestCase):
         self.assertEquals(Oferta.objects.all().count(), 0)
 
     def test_oferta_anio_pasado_trim_menos_1(self):
-        self.helper_test_mixed_to_fail(-1, self.oferta.anio - 1)
+        self.helper_test_mixed_to_fail(-1, self.oferta.anio)
 
     def test_oferta_anio_pasado_trim_tres(self):
-        self.helper_test_mixed_to_fail(3, self.oferta.anio - 1)
+        self.helper_test_mixed_to_fail(3, self.oferta.anio)
 
     def test_oferta_anio_que_viene_trim_menos_1(self):
-        self.helper_test_mixed_to_fail(-1, self.oferta.anio + 1)
+        self.helper_test_mixed_to_fail(-1, self.oferta.anio)
 
     def test_oferta_anio_que_viene_trim_tres(self):
-        self.helper_test_mixed_to_fail(3, self.oferta.anio + 1)
+        self.helper_test_mixed_to_fail(3, self.oferta.anio)
+
+    """
+    Pruebas para la unicidad de la oferta
+    """
+    def test_oferta_unicity(self):
+        # guardamos la oferta en la base de datos
+        self.oferta.save()
+        with self.assertRaises(IntegrityError):
+            # intentamos guardar una identica
+            Oferta(
+                trimestre=self.oferta.trimestre,
+                anio=self.oferta.anio,
+                coordinacion=self.oferta.coordinacion,
+            ).save()
 
 class TestViewsOferta(TestCase):
     """
