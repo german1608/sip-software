@@ -11,5 +11,5 @@ urlpatterns = [
     path('json', oferta_json, name='oferta-json'),
     path('eliminar/<pk>', EliminarOferta.as_view(), name='eliminar-oferta'),
     path('descargar/', DescargarOfertasView.as_view(), name='descargar'),
-    path('detalles-oferta/<int:pk>/', DetailView.as_view(), name="detalle-oferta")
+    path('detalle/', detallesOferta, name='detalles-oferta')
 ]

@@ -21,6 +21,8 @@ from .render import Render
 
 from pprint import pprint
 
+from django.views.generic.detail import DetailView
+
 # Create your views here.
 def index(request):
     anos = [x for x in reversed(range(2000, (datetime.datetime.now().year)+20))]
@@ -210,3 +212,10 @@ def max_anio_oferta():
 # Función que retorna el menor de los años de las ofertas guardadas
 def min_anio_oferta():
     return Oferta.objects.all().aggregate(Min('anio')).get('anio__min')
+
+
+
+def detallesOferta(request):
+
+    return render(request, 'oferta/detalle.html', {})
+
