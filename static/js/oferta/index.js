@@ -55,9 +55,8 @@ function oferta_show(data){
                                         <a class="oferta-elim" data-url="${url_elim.replace('0', oferta.id)}">
                                             <span class="delete-btn"><i class="fa fa-window-close"></i></span>
                                         </a>
-                                        <span class="edit-btn" id="oferta-editar-${oferta.id}" data-url="/oferta/editar/${oferta.id}/" onclick="editar_oferta(${oferta.id})"><i class="fa fa-pencil-alt"></i></span>
                                     </div>
-                                    <a href="{% url 'oferta:detalles-oferta' ${oferta.id} %}"> <p class="front-text">${oferta.trimestre} <br> ${oferta.anio}</p></a>
+                                    <a href="detalle/${oferta.id}"> <p class="front-text">${oferta.trimestre} <br> ${oferta.anio}</p></a>
                                     
                                 </div>
                                 

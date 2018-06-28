@@ -3,7 +3,7 @@ from pprint import pprint
 from django.db.models import Max, Min
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views import generic
@@ -85,12 +85,12 @@ class OfertaEditar(AjaxableResponseMixin, UpdateView):
     
 
 '''
-    Esta funcion es una vista que va a mostrar los detalles de una oferta, 
+    Esta clase es una vista que va a mostrar los detalles de una oferta, 
     esto incluye las asignaturas, los horarios, etc
 '''
-class DetailView(generic.DetailView):
+class DetallesOferta(generic.DetailView):
     model = Oferta
-    template_name = 'oferta/detalles-oferta.html'
+    template_name = 'oferta/detalle.html'
 # def detalles_ofertas(request, oferta_id):
 #     print(oferta_id)
 #     oferta = Oferta.objects.get(pk=oferta_id)
@@ -215,7 +215,7 @@ def min_anio_oferta():
 
 
 
-def detallesOferta(request):
+# def detallesOferta(request):
 
-    return render(request, 'oferta/detalle.html', {})
+#     return render(request, 'oferta/detalle.html', {})
 
