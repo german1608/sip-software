@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views import generic
 from .models import Oferta
 from .forms import OfertaForm
 from coordinacion.models import Coordinacion
@@ -30,6 +31,7 @@ def index(request):
         'pagename': 'Ofertas'
     }
     return render(request, 'oferta/index.html', context)
+
 
 class AjaxableResponseMixin:
     """
@@ -80,6 +82,17 @@ class OfertaEditar(AjaxableResponseMixin, UpdateView):
     form_class = OfertaForm
     
 
+'''
+    Esta funcion es una vista que va a mostrar los detalles de una oferta, 
+    esto incluye las asignaturas, los horarios, etc
+'''
+class DetailView(generic.DetailView):
+    model = Oferta
+    template_name = 'oferta/detalles-oferta.html'
+# def detalles_ofertas(request, oferta_id):
+#     print(oferta_id)
+#     oferta = Oferta.objects.get(pk=oferta_id)
+#     return render(request, 'oferta/detalles-oferta.html', {'oferta': oferta})
 
 
 # Esta funcion esta encargada de enviar con formato json la informacion de

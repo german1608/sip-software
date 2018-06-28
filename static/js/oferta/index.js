@@ -53,7 +53,9 @@ function oferta_show(data){
                                 </a>
                                 <span class="edit-btn" id="oferta-editar-${oferta.id}" data-url="/oferta/editar/${oferta.id}/" onclick="editar_oferta(${oferta.id})"><i class="fa fa-pencil-alt"></i></span>
                             </div>
+                            <a href="detalles-oferta/${oferta.id}/">
                             <p class="front-text">${oferta.trimestre} <br> ${oferta.anio}</p>
+                            </a>
                         </div>
                     </div>
                 </div>`)
