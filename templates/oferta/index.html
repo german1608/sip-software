@@ -72,15 +72,22 @@
 								style="color: #b5b5b5; vertical-align: middle;">
 							</span>
 						</button>
+						
 					</div>'
 				</div>
 			</div>
 		
 		</form>
 	
+		<a class="botonDescargar" href="{% url 'oferta:detalles-oferta' %}">
+			<span class="fas fa-list fa-2x" id="botonDetalle" 
+				style="color: #b5b5b5; vertical-align: middle;">
+			</span>
+		</a>
 	
 		<!--Anadir una oferta-->
-		<div class="row mt-2" id="oferta-box">		
+		<div class="row mt-2" id="oferta-box">
+
 			<input type="hidden" name="json-url" value="{% url 'oferta:oferta-json' %}">
 			<input type="hidden" name="eliminar-url" value="{% url 'oferta:eliminar-oferta' 0 %}">
 			<!--Anadir una oferta-->
