@@ -4,6 +4,7 @@ Archivo que tiene los modelos correspondientes a este modulo.
 
 from django.db import models
 
+
 class Coordinacion(models.Model):
     """
     Entidad Coordinacion que se almacena en la base de datos

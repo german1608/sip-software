@@ -8,14 +8,15 @@ Modelos del modulo de asignaturas. Tiene solamente 3
 Horario y ProgramaAsignatura no deben existir sin estar relacionados a una Asignatura
 """
 
-from django.db import models
+import datetime
+
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator, URLValidator
+from django.db import models
 
 from coordinacion.models import Coordinacion
 from profesores.models import Profesor
 
-import datetime
 # Create your models here.
 
 class Asignatura(models.Model):
@@ -107,4 +108,3 @@ class Horario(models.Model):
 
     class Meta:
         unique_together = ('asignatura', 'hora_inicio', 'hora_final', 'dia')
-

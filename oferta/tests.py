@@ -6,26 +6,27 @@ de nuestra aplicacion. Se prueban 3 cosas:
 * vistas
 * formularios
 """
-# imports de django
-from django.test import TestCase, Client, RequestFactory, SimpleTestCase, tag
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.core.exceptions import ValidationError
-from django.urls import reverse
-from django.urls.exceptions import NoReverseMatch
-from django.db.utils import IntegrityError
-# Modelos necesarios para las pruebas
-from oferta.forms import OfertaForm
-from coordinacion.models import Coordinacion
-from oferta.models import Oferta
-
 # Librerias nativas
 import datetime
 import json
 import time
 from io import StringIO
-from selenium.webdriver.firefox.webdriver import WebDriver
+
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.core.exceptions import ValidationError
+from django.db.utils import IntegrityError
+# imports de django
+from django.test import Client, RequestFactory, SimpleTestCase, TestCase, tag
+from django.urls import reverse
+from django.urls.exceptions import NoReverseMatch
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.ui import Select
+
+from coordinacion.models import Coordinacion
+# Modelos necesarios para las pruebas
+from oferta.forms import OfertaForm
+from oferta.models import Oferta
 
 # Create your tests here.
 

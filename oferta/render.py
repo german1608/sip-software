@@ -3,9 +3,11 @@ Archivo que contiene las funciones y clases necesarias para la generacion
 de pdf usando html.
 """
 from io import BytesIO
+
+import xhtml2pdf.pisa as pisa
 from django.http import HttpResponse
 from django.template.loader import get_template
-import xhtml2pdf.pisa as pisa
+
 
 class Render:
     @staticmethod
@@ -18,5 +20,3 @@ class Render:
             return HttpResponse(response.getvalue(), content_type='application/pdf')
         else:
             return HttpResponse("Error renderizando PDF", status=400)
-
-        

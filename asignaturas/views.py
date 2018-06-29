@@ -3,16 +3,16 @@ Vistas del modulo de asignaturas. Aqui se hace la interaccion
 usuario-sistema.
 """
 
-from django.shortcuts import render, redirect
+from django.core import serializers
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse
 from django.views.generic import View
 from django.views.generic.base import TemplateView
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.urls import reverse
-from .models import Asignatura
-from .forms import AsignaturaForm, HorarioFormset, ProgramaFormset
 
-from django.core import serializers
-from django.template.loader import render_to_string
+from .forms import AsignaturaForm, HorarioFormset, ProgramaFormset
+from .models import Asignatura
 
 HORARIOS_PREFIX = 'horarios'
 PROGRAMAS_PREFIX = 'programas'

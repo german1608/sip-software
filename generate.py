@@ -1,9 +1,11 @@
 # Script para generar algunos objetos que perteneceran a la base de datos 
 
-import datetime 
+import datetime
+
 from asignaturas.models import Asignatura, Horario, ProgramaAsignatura
-from profesores.models import Profesor
 from coordinacion.models import Coordinacion
+from profesores.models import Profesor
+
 
 def is_empty(model):
     return (model.objects.all().count() == 0)
@@ -91,4 +93,3 @@ if is_empty(ProgramaAsignatura):
     for asignatura in coordinacion.asignaturas.all():
         asignatura.programas.create(url=programas[iteradorProgramas].url)
         print("Se asocio exitosamente los programas de la asignatura: " + asignatura.codasig)
-        

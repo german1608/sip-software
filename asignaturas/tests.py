@@ -1,13 +1,16 @@
-from django.test import TestCase, SimpleTestCase
+import datetime
+from datetime import date
+
+from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
-from profesores.models import *
+
 from coordinacion.models import *
-from .models import *
+from profesores.models import *
+
 from .forms import AsignaturaForm, HorarioForm, HorarioFormset, ProgramaForm
+from .models import *
 from .views import horario_valido
 
-from datetime import date
-import datetime
 # Create your tests here.
 
 class Base(TestCase):

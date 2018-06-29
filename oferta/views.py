@@ -3,28 +3,24 @@ Vistas del modulo de Ofertas de SIP. Permite la interaccion
 del usuario con el servidor.
 """
 
-from django.db.models import Max, Min
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
-from django.urls import reverse_lazy, reverse
-from django.views import View
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.views import generic
-from .models import Oferta
-from .forms import OfertaForm
-from coordinacion.models import Coordinacion
-from asignaturas.models import Asignatura
 import datetime
 
 from django.core import serializers
+from django.db.models import Max, Min
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.urls import reverse, reverse_lazy
+from django.views import View, generic
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from .forms import OfertaForm, AsignaturaFormset
+from asignaturas.models import Asignatura
+from coordinacion.models import Coordinacion
+
+from .forms import AsignaturaFormset, OfertaForm
 from .models import Oferta
-
 from .render import Render
 
-
-from django.views.generic.detail import DetailView
 
 # Create your views here.
 def index(request):
@@ -258,4 +254,3 @@ def max_anio_oferta():
 # Función que retorna el menor de los años de las ofertas guardadas
 def min_anio_oferta():
     return Oferta.objects.all().aggregate(Min('anio')).get('anio__min')
-

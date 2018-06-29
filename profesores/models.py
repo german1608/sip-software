@@ -4,9 +4,11 @@ Modelo del modulo de profesores del SIP. Contiene una sola entidad
 - Profesor
 """
 
-from django.db import models
-from django.core.exceptions import ValidationError
 import datetime
+
+from django.core.exceptions import ValidationError
+from django.db import models
+
 
 def fecha_nacimiento_valida(fecha):
     hoy = datetime.date.today()
