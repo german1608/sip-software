@@ -28,6 +28,56 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 
 # Create your tests here.
+
+class TestUrls(SimpleTestCase):
+    """
+    Clase que prueba la existencia de los url's vitales para el funcionamiento del sistema
+    de ofertas del SIP.
+    """
+
+    def test_oferta_url_dasboard(self):
+        """
+        Verifica la existencia del url 'dashboard'
+        """
+        reverse('oferta:dashboard')
+
+    def test_oferta_url_anadir(self):
+        """
+        Verifica la existencia del url 'anadir'
+        """
+        reverse('oferta:anadir-oferta')
+
+    def test_oferta_url_editar(self):
+        """
+        Verifica la existencia del url 'editar'
+        """
+        reverse('oferta:editar-oferta', kwargs={'pk': 1})
+
+    def test_oferta_url_json(self):
+        """
+        Verifica la existencia del url 'json'
+        """
+        reverse('oferta:oferta-json')
+
+    def test_oferta_url_eliminar(self):
+        """
+        Verifica la existencia del url 'eliminar'
+        """
+        reverse('oferta:eliminar-oferta', kwargs={'pk': 1})
+
+    def test_oferta_url_descargar(self):
+        """
+        Verifica la existencia del url 'descargar'
+        """
+        reverse('oferta:descargar')
+
+    def test_oferta_url_detalle(self):
+        """
+        Verifica la existencia del url 'detalles'
+        """
+        reverse('oferta:detalles-oferta', kwargs={'pk': 1})
+
+
 class TestFormOferta(TestCase):
     """
     Clase que tendra nuestra Suite de pruebas para el formulario.
