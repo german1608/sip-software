@@ -6,8 +6,8 @@
 <style type="text/css">
 	*{margin:0;padding:0}
 	
-	.container{
-	  margin: 20px auto 0 auto;
+	.margin-left{
+		margin-left: 37px;
 	  font-family: 'Montserrat', sans-serif;
 	}
 
@@ -45,6 +45,10 @@
 	  font-size: 20px;
 	  margin-right: 20px;
 	}
+
+	.tabla-asignaturas-oferta{
+		margin-left: 0px;
+	}
 </style>
 <link rel="stylesheet" href="{% static 'css/oferta/index.css' %}">
 
@@ -54,27 +58,25 @@
 <div class="row">
 
 	<div class="col-12">
-		<p class="title" style="font-size: 28px; margin-left: 5%;">Detalle de la Oferta</p>
+		<p class="title" style="font-size: 28px; margin-left: 5%;">Detalle de la Oferta: {{oferta.get_trimestre_display}} {{oferta.anio}}</p>
 	</div>
 </div>
-
-<div class="container">
+<div class="container-fluid margin-left">
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-md-6 tabla-asignaturas-oferta">
+			<div class="category">Asignaturas de la Oferta</div>
+		    <ul class="sortable">
+					{% for asignatura in asignaturas %}
+		      <li>{{asignatura.codasig}} - {{asignatura.nombre}}<i class="handle fa fa-bars"></i></li>
+					{% endfor %}					
+		    </ul>
+		</div>
+		<div class="col-md-6 invisible">
 		    <div class="category">Todas las Asignaturas</div>
 		    <ul class="sortable">
 		      <li>Ingenieria del Software<i class="handle fa fa-bars"></i></li>
 		      <li>Traductores e Interpretadores<i class="handle fa fa-bars"></i></li>
-		      <li>Sistemas de Informacion<i class="handle fa fa-bars"></i></li>
-		    </ul>
-		</div>
-		<div class="col-md-6">
-			<div class="category">Asignaturas de la Oferta</div>
-		    <ul class="sortable">
-		      <li>Redes de Computadoras<i class="handle fa fa-bars"></i></li>
-		      <li>Lenguajes de Programacion<i class="handle fa fa-bars"></i></li>
-		      <li>Modelos Lineales<i class="handle fa fa-bars"></i></li>
-		      <li>Interfaces con el Usuario<i class="handle fa fa-bars"></i></li>
+					<li>Sistemas de Informacion<i class="handle fa fa-bars"></i></li>
 		    </ul>
 		</div>	
 	</div>

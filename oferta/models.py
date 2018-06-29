@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from coordinacion.models import Coordinacion
+from asignaturas.models import Asignatura
 from django.urls import reverse
 
 # Create your models here.
@@ -35,6 +36,7 @@ class Oferta(models.Model):
     coordinacion = models.ForeignKey(Coordinacion, verbose_name='Coordinacion',
                                     related_name='ofertas', on_delete=models.CASCADE)
 
+    asignatura = models.ManyToManyField(Asignatura, verbose_name='Asignatura', related_name='ofertas')
     class Meta:
         unique_together = ('trimestre', 'anio', 'coordinacion')
 
