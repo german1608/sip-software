@@ -3,34 +3,7 @@
 <!--Modal para agregar asignatura-->
 <input type="hidden" name="horario_formset_prefix" value="{{formset1.prefix}}">
 <input type="hidden" name="programa_formset_prefix" value="{{formset2.prefix}}">
-<div class="modal fade" id="agregar-modal" role="dialog">
-  <div class="modal-dialog" style="max-width: 75%;">
-      <!-- Modal content-->
-      <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="modal_title">Agregar asignatura</h4>
-            <div class="float-right">
-              <button class="editar_asignatura btn btn-success asignatura-btn" onclick="habilitar_edicion(this)">
-                <i class="far fa-edit"></i>
-              </button>
-              <button class="btn btn-danger asignatura-btn" data-toggle="modal"
-                  data-target="#confirmar-eliminar-modal" data-codasig="{{form.instance.codasig}}"
-                  onclick="show_eliminar_modal(this);">
-                  <i class="far fa-trash-alt"></i>
-              </button>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </div>
-          <div class="modal-body" >
-              <!-- La paginacion esta implementada a traves de tabs (Sujeto a cambios) -->
-              <ul class="nav nav-tabs" id="tabContent">
-                <li class="nav-item active"><a class="nav-link show active" href="#informacion_basica" data-toggle="tab">Información básica</a></li>
-                <li class="nav-item"><a class="nav-link" href="#horario" data-toggle="tab">Horarios</a></li>
-                <li class="nav-item"><a class="nav-link" href="#programa" data-toggle="tab">Programas</a></li>
-              </ul>
-              <form action="" method="POST" id="form-modal">
+            <form action="{% url 'asignaturas:anadir-asignatura' %}" method="POST" id="form-modal">
                 {% csrf_token %}
                 <div class="tab-content">
                   <div class="tab-pane active" id="informacion_basica">
