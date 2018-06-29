@@ -7,10 +7,11 @@ de nuestra aplicacion. Se prueban 3 cosas:
 * formularios
 """
 # imports de django
-from django.test import TestCase, Client, RequestFactory
+from django.test import TestCase, Client, RequestFactory, SimpleTestCase, tag
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.urls.exceptions import NoReverseMatch
 from django.db.utils import IntegrityError
 # Modelos necesarios para las pruebas
 from oferta.forms import OfertaForm
@@ -153,6 +154,7 @@ class TestModelOferta(TestCase):
                 coordinacion=self.oferta.coordinacion,
             ).save()
 
+
 class TestViewsOferta(TestCase):
     """
     Suite de pruebas para las vistas de el modulo de ofertas. Se usa el cliente integrado
@@ -237,6 +239,7 @@ class TestViewsOferta(TestCase):
         response = self.client.get(reverse('oferta:anadir-oferta'))
         self.assertEqual(response.status_code, 200)
 
+@tag('selenium')
 class TestInterfaceOferta(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
