@@ -45,6 +45,7 @@ class Oferta(models.Model):
     coordinacion = models.ForeignKey(Coordinacion, verbose_name='Coordinacion',
                                     related_name='ofertas', on_delete=models.CASCADE)
 
+    # Se agrega un nuevo atributo que tiene las asignaturas que estan dentro de una oferta
     asignatura = models.ManyToManyField(Asignatura, verbose_name='Asignatura', related_name='ofertas')
     class Meta:
         unique_together = ('trimestre', 'anio', 'coordinacion')

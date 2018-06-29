@@ -1,11 +1,12 @@
 {% extends "base/base_coordinador.html" %}
 {% load static %}
 {% block customhead %}
+{% load widget_tweaks %}
+
 <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}" type="text/css">
 
 <style type="text/css">
-	*{margin:0;padding:0}
-	
+
 	.margin-left{
 		margin-left: 37px;
 	  font-family: 'Montserrat', sans-serif;
@@ -36,11 +37,14 @@
 	  line-height: 40px;
 	  height: 40px;
 	  padding: 1px 15px 11px 15px;
-	  margin-bottom: 2px;
+		margin-bottom: 2px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 
 	li i.handle{
-	  float:right;
+	  float:left;
 	  line-height: 40px;
 	  font-size: 20px;
 	  margin-right: 20px;
@@ -48,6 +52,10 @@
 
 	.tabla-asignaturas-oferta{
 		margin-left: 0px;
+	}
+
+	.tabla-asignaturas-oferta ul, #todas-asignaturas ul {
+		padding-left: 0;
 	}
 	#myInput {
     background-image: url("{% static 'css/oferta/searchicon.png' %}"); /* Add a search icon to input */
@@ -62,124 +70,104 @@
 	.hide{
 		display:none !important;
 	}
+	#editar{
+		background: #FAD534;
+		color: white;
+		margin-left: 600px;
+		margin-bottom: 5%;
+		margin-left: 5%;
+	}
+	#editar:hover {
+    	background-color: #FAD534;
+    	color: black;
+
+	}
+	#id_trimestre {
+		font-size: 28px;
+	}
+
+	#id_trimestre[disabled="disabled"] {
+		color: black;
+		border: 0px;
+	}
+
+	#id_anio {
+		background-color: #C9C6BB;
+		font-size: 28px;
+		width: 5rem;
+	}
+
+	#id_anio[disabled="disabled"] {
+		color: black;
+		-webkit-appearance: none;
+		border: none;
+		margin: 0;
+	}
+
+
 </style>
 <link rel="stylesheet" href="{% static 'css/oferta/index.css' %}">
 
 {% endblock customhead %}
 {% block wrapper %}
-
-<div class="row">
-
-	<div class="col-12">
-		<p class="title" style="font-size: 28px; margin-left: 5%;">Detalle de la Oferta: {{oferta.get_trimestre_display}} {{oferta.anio}}</p>
-	</div>
-</div>
-<div class="container-fluid margin-left">
-	<div class="row">
-		<div class="col-md-6">
-				<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar..">
+<div class="container-fluid">
+	<form action="{% url 'oferta:detalles-oferta' oferta.pk %}" method="POST" >
+		{% csrf_token %}
+		<div class="row">
+			<div class="col-11">
+				<h4>Trimestre: </h4>
+				{% render_field form.trimestre disabled="disabled" class="editable thing-1" %}
+				<h4>Año: </h4>
+				{% render_field form.anio class="editable thing-2" disabled="disabled" %}
+				{{form.coordinacion.as_hidden}}
+				{{formset.management_form}}
+				<div id="input-container">
+				</div>
+			</div>
+			<div class="col-1">
+				<button id="editar" type="button" class="btn btn--edit">
+						<span class="fa fa-edit"></span>
+				</button>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-6 tabla-asignaturas-oferta">
-			<div class="category">Asignaturas de la Oferta</div>
-		    <ul class="sortable" id="myUL">
-					{% for asignatura in asignaturas %}
-		      <li>{{asignatura.codasig}} - {{asignatura.nombre}}<i class="handle fa fa-bars hide"></i></li>
-					{% endfor %}					
-		    </ul>
+		<!--Fin del boton-->
+		<div class="container-fluid margin-left">
+			<div class="row" id="input-container">
+				<div id="helper" class="col-md-6 d-none"></div>
+				<div class="col-md-6">
+						<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar...">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 tabla-asignaturas-oferta">
+					<div class="category">Asignaturas de la Oferta</div>
+						<ul class="sortable">
+							{% for asignatura in asignaturas %}
+							<li data-id="{{asignatura.id}}"><i class="handle fa fa-bars hide"></i><a href="{% url 'asignaturas:dashboard' %}?codasig={{asignatura.codasig}}">{{asignatura.codasig}} - {{asignatura.nombre}}</a></li>
+							{% endfor %}
+						</ul>
+				</div>
+				<div class="col-md-6 invisible" id="todas-asignaturas">
+						<div class="category">Todas las Asignaturas</div>
+						<ul class="sortable">
+							{% for asignatura in lista_asignaturas %}
+							<li data-id="{{asignatura.id}}"><i class="handle fa fa-bars"></i><a href="{% url 'asignaturas:dashboard' %}?codasig={{asignatura.codasig}}">{{asignatura.codasig}} - {{asignatura.nombre}}</a></li>
+							{% endfor %}
+						</ul>
+				</div>
+			</div>
+	
+	
+	
+	
+	
+	
 		</div>
-		<div class="col-md-6 invisible" id="todas-asignaturas">
-		    <div class="category">Todas las Asignaturas</div>
-		    <ul class="sortable">
-					{% for asignatura in lista_asignaturas %}
-					<li>{{asignatura.codasig}} - {{asignatura.nombre}}<i class="handle fa fa-bars"></i></li>
-					{% endfor %}
-		    </ul>
-		</div>	
-	</div>
-
-
-
-    
-  
-
+	</form>
 </div>
-
-
-
-
-
-
 
 {% endblock wrapper %}
 {% block customscripts %}
-
-<script type="text/javascript">
-	$(function() {
-    $(".sortable").sortable({
-      connectWith: ".sortable",
-      handle: '.handle' 
-    }).disableSelection();
-  
-});
-</script>
-
-<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
-
-<script>
-$(function() {
-	// Declare variables
-	var ul, li, icon, i, is_invisible;
-	is_invisible = $('#todas-asignaturas').hasClass('invisible');
-	if (!is_invisible){
-		// Loop through all list items, and show hamburguers to drag if 
-		// below list is not hidden
-		ul = document.getElementById("myUL");
-		li = ul.getElementsByTagName('li');
-		for (i = 0; i < li.length; i++) {
-			icon = li[i].getElementsByTagName("i")[0];
-			icon.classList.remove("hide");
-		}
-	}
-
-});
-</script>
-
-<script>
-function removeAccents(str) {
-	let accents = 'ÀÁÂÃÄÅàáâãäåßÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
-	let accentsOut = "AAAAAAaaaaaaBOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
-	str = str.split('');
-	str.forEach((letter, index) => {
-		let i = accents.indexOf(letter);
-		if (i != -1) {
-			str[index] = accentsOut[i];
-		}
-	})
-	return str.join('');
-}	
-</script>
-
-<script>
-function myFunction() {
-		// Declare variables
-		var input, filter, ul, li, a, i;
-		input = document.getElementById('myInput');
-		filter = removeAccents(input.value.toUpperCase());
-		ul = document.getElementById("myUL");
-		li = ul.getElementsByTagName('li');
-
-		// Loop through all list items, and hide those who don't match the search query
-		for (i = 0; i < li.length; i++) {
-				if (removeAccents(li[i].innerHTML.toUpperCase()).indexOf(filter) > -1) {
-						li[i].style.display = "";
-				} else {
-						li[i].style.display = "none";
-				}
-		}
-}
-</script>
-
+<script src="{% static 'js/oferta/detalles.js' %}"></script>
 {%  endblock customscripts %}

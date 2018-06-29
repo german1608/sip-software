@@ -16,7 +16,7 @@
     <h1>Asignaturas</h1>
     <div class="text-center">
         <button style="color:black" type="button"
-        class="btn btn-primary" id="new" onclick="obtenerAsignatura(this, '{% url 'asignaturas:anadir-asignatura' %}', true);">
+        class="btn btn-primary" id="new" onclick="obtenerAsignatura(this, '{% url 'asignaturas:anadir-asignatura' %}', true);" data-activar="{{activar_modal}}"  data-id="{{asignatura.id}}">
           Agregar
         </button>
     </div>

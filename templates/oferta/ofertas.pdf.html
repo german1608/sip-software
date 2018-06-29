@@ -29,10 +29,7 @@
     <!--Título-->
     <div>
         <div align="center">
-            <h1 style="margin-bottom: 0;">Oferta de Asignaturas</h1>
-            {% if ofertas %}
-            <h3 style="margin-top: 0;">{{trim_inicio}}, {{anio_inicio}} - {{trim_final}}, {{anio_final}}</h3>
-            {% endif %}
+            <h1 style="margin-bottom: 0;">OFERTAS</h1>
 
             {% if not ofertas %}
             <h3 style="margin-top: 0">No se encontraron ofertas.</h3>
@@ -41,31 +38,51 @@
     </div>
     
     <!--Tabla de las ofertas-->
-    <table style="border: 1px solid black; padding: 2px;">
-        <tr>
-            <th style="background-color: rgb(208, 208, 208);">
-                Trimestre
-            </th>
-            <th style="background-color: rgb(208, 208, 208);">
-                A&ntilde;o
-            </th>
-            <th style="background-color: rgb(208, 208, 208);">
-                Coordinaci&oacute;n
-            </th>
-        </tr>
+    <div>
         {% for oferta in ofertas %}
-        <tr>
-            <td>
-                {{oferta.get_trimestre_display}}
-            </td>
-            <td>
-                {{oferta.anio}}
-            </td>
-            <td>
-                {{oferta.coordinacion}}
-            </td>
-        </tr>
+        <!--Head de las tablas-->
+        <div align="center">
+            <h2>{{oferta.get_trimestre_display}} {{oferta.anio}}</h2>
+        </div>
+        <table style="border: 1px solid black; padding: 2px;">
+            <tr>
+                <th style="background-color: rgb(208, 208, 208);">
+                    Asignatura
+                </th>
+                {% if oferta.asignatura.all %}
+                <th style="background-color: rgb(208, 208, 208);">
+                    Nombre
+                </th>
+                <th style="background-color: rgb(208, 208, 208);">
+                    Profesores
+                </th>
+                {% endif %}
+            </tr>
+
+            <tr>
+                {% if oferta.asignatura.all %}
+                    {% for asignatura in oferta.asignatura.all %}
+                    <td>
+                        {{asignatura.codasig}}
+                    </td>
+                    <td>
+                        {{asignatura.nombre}}
+                    </td>
+                    <td>
+                        {{ asignatura.profesores.all|join:', ' }}
+                    </td>
+                    {% endfor %}
+                {% endif %}
+                {% if not oferta.asignatura.all %}
+                <td align="center">
+                    Esta oferta no tiene asignaturas
+                </td>
+                {% endif %}
+
+            </tr>
+
+        </table>
         {% endfor %}
-    </table>
+    </div>
   </body>
 </html>

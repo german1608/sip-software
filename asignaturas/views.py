@@ -33,12 +33,19 @@ class Index(TemplateView):
         la lista de asignaturas y el formulario de una asignatura
         de modo que no haya que recargar la pagina.
         """
-        context = super().get_context_data(**kwargs)
+        asignatura = self.request.GET.get('codasig')
+        context = super(Index, self).get_context_data(**kwargs)
         context['asignaturas'] = Asignatura.objects.all()
         context['pagename'] = 'Asignaturas'
         context['form'] = AsignaturaForm()
         context['formset1'] = HorarioFormset(prefix=HORARIOS_PREFIX)
         context['formset2'] = ProgramaFormset(prefix=PROGRAMAS_PREFIX)
+        context['asignatura'] = Asignatura.objects.filter(codasig=asignatura)
+        if len(context['asignatura']) == 0:
+            context['activar_modal'] = False
+        else:
+            context['asignatura'] = Asignatura.objects.get(codasig=asignatura)
+            context['activar_modal'] = True
         return context
 
     def post(self, request, *args, **kwargs):
