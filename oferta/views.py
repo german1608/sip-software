@@ -134,7 +134,8 @@ class DetallesOferta(generic.DetailView):
             for form1 in formset:
                 oferta.asignatura.add(form1.cleaned_data['id'])
             form.save()
-        return JsonResponse({})
+            return JsonResponse({'errors': '', 'valid': True})
+        return JsonResponse({'errors': form.errors, 'valid': False})      
 
 # Esta funcion esta encargada de enviar con formato json la informacion de
 # todas las ofertas que se han anadido a la base de datos

@@ -32,21 +32,30 @@ function submitForm() {
         method: method,
         data: data,
         url: url,
-        success: function() {
-            const $btn = $('#editar')
-            const trimestre = $('#id_trimestre')
-            const anio = $('#id_anio')
-            const otrasAsignaturas = $('#todas-asignaturas')
-            otrasAsignaturas.addClass('invisible')
-            trimestre.attr('disabled', 'true')
-            anio.attr('disabled', 'true')
-            $('.tabla-asignaturas-oferta span').addClass('hide')
-            $('#helper').addClass('d-none')
-            $('#myInput').attr('onkeyup', 'myFunction()')
-            $('#myInput').val('')
-            $btn.find('span').removeClass('fa-save')
-            $btn.find('span').addClass('fa-edit')
-            toastr.success("Operación exitosa",'' )
+        success: function(json) {
+            const valid = json.valid,
+            errors = json.errors.__all__
+
+            if (!valid) {
+                toastr['error']('', 'Oferta con este Trimestre, Año y Coordinacion ya existe')
+            } else {
+                const $btn = $('#editar')
+                const trimestre = $('#id_trimestre')
+                const anio = $('#id_anio')
+                const otrasAsignaturas = $('#todas-asignaturas')
+                otrasAsignaturas.addClass('invisible')
+                trimestre.attr('disabled', 'true')
+                anio.attr('disabled', 'true')
+                $('.tabla-asignaturas-oferta span').addClass('hide')
+                $('#helper').addClass('d-none')
+                $('#myInput').attr('onkeyup', 'myFunction()')
+                $('#myInput').val('')
+                $btn.find('span').removeClass('fa-save')
+                $btn.find('span').addClass('fa-edit')
+                toastr.success("Operación exitosa",'' )
+                editable = !editable
+            }
+
 
         }
     })
@@ -74,10 +83,10 @@ $(function() {
             $('#myInput').attr('onkeyup', 'myFunction2()')
             $(this).find('span').removeClass('fa-edit')
             $(this).find('span').addClass('fa-save')
+            editable = !editable
         } else {
             submitForm()
         }
-        editable = !editable
     })
 })
 
