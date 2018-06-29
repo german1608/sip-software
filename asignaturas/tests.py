@@ -238,3 +238,42 @@ class FormatoURL(Base):
         self.data['url'] = 'bitcoin'
         form = ProgramaForm(self.data)
         self.assertFalse(form.is_valid())
+    def test_url_no_domain(self):
+        self.data['url'] = 'bitcoin'
+        form = ProgramaForm(self.data)
+        self.assertFalse(form.is_valid())
+
+class TestUrls(SimpleTestCase):
+    """
+    Suite de pruebas para probar la existencia de los urls
+    vitales del modulo de asignaturas de SIP
+    """
+    def test_asig_url_dashboard(self):
+        """
+        Prueba para la exitencia del url 'dashboard'
+        """
+        reverse('asignaturas:dashboard')
+
+    def test_asig_url_all_json(self):
+        """
+        Prueba para la existencia del url 'all-json'
+        """
+        reverse('asignaturas:all-json')
+
+    def test_asig_url_detalles(self):
+        """
+        Prueba para la existencia del url 'detalles'
+        """
+        reverse('asignaturas:detalles', kwargs={'pk': 1})
+
+    def test_asig_url_eliminar(self):
+        """
+        Prueba para la existencia del url 'eliminar'
+        """
+        reverse('asignaturas:eliminar-asignatura')
+
+    def test_asig_url_anadir(self):
+        """
+        Prueba para la existencia del url 'anadir'
+        """
+        reverse('asignaturas:anadir-asignatura')
