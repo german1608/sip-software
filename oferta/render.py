@@ -1,4 +1,7 @@
-
+"""
+Archivo que contiene las funciones y clases necesarias para la generacion
+de pdf usando html.
+"""
 from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template

@@ -1,3 +1,9 @@
+"""
+Modelo del modulo de profesores del SIP. Contiene una sola entidad
+
+- Profesor
+"""
+
 from django.db import models
 from django.core.exceptions import ValidationError
 import datetime
@@ -7,8 +13,19 @@ def fecha_nacimiento_valida(fecha):
     if fecha > hoy:
         raise ValidationError('La fecha de nacimiento no puede ser despues de hoy')
 
-# Create your models here.
 class Profesor(models.Model):
+    """
+    Entidad Profesor. Contiene los datos necesarios para representar
+    un profesor en la vida real.
+
+    - primer nombre
+    - segundo nombre
+    - primer apellido
+    - segundo apellido
+    - cedula
+    - carnet
+    - fecha nacimiento
+    """
     primer_nombre = models.CharField(max_length=100, verbose_name='Primer Nombre')
     segundo_nombre = models.CharField(max_length=100, null=True, blank=True,
         verbose_name='Segundo Nombre')

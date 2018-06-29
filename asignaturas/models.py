@@ -1,3 +1,13 @@
+"""
+Modelos del modulo de asignaturas. Tiene solamente 3
+
+- Asignatura
+- Horario
+- ProgramaAsignatura
+
+Horario y ProgramaAsignatura no deben existir sin estar relacionados a una Asignatura
+"""
+
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator, URLValidator
@@ -9,6 +19,18 @@ import datetime
 # Create your models here.
 
 class Asignatura(models.Model):
+    """
+    Entidad Asignatura. Tiene los atributos necesarios para representar
+    una asignatura en la vida real.
+
+    - codasig
+    - nombre
+    - creditos
+    - profesores (relacion de muchos a muchos con Profesor)
+    - pertenece (relacion de muchos a muchos con Coordinacion)
+    - fecha_de_ejecucion
+    - vista
+    """
     nombre = models.CharField(max_length=100, verbose_name='Nombre')
     codasig = models.CharField(max_length=10, unique=True,
         verbose_name='Código de Asignatura', validators=[
@@ -31,6 +53,12 @@ class Asignatura(models.Model):
         return self.codasig + ": " + self.nombre
 
 class ProgramaAsignatura(models.Model):
+    """
+    Entidad ProgramaAsignatura. Tiene los atributos necesarios para modelar
+    un programa de una asignatura de la vida real.
+    - url (por los momentos)
+    - asignatura (foranea a la asignatura)
+    """
     url = models.CharField(max_length=500, validators=[URLValidator()], verbose_name='Código de Programa')
     asignatura = models.ForeignKey(Asignatura,
         related_name='programas', on_delete=models.CASCADE, verbose_name='Asignatura')
@@ -45,6 +73,14 @@ def hora_valida(x):
         raise ValidationError('{} no está entre 1 y 12'.format(x))
 
 class Horario(models.Model):
+    """
+    Entidad Horario. Permite representar un horario vinculado a una oferta.
+    - dia (como entero, luego se hace el mapeo)
+    - hora_inicio y hora_final (entre 1 y 12)
+    - asignatura (foranea a una Asignatura)
+
+    Para evitar desperdicios en la bd, la tupla completa de atributos debe ser unica.
+    """
     HORARIO_LUNES = 0
     HORARIO_MARTES = 1
     HORARIO_MIERCOLES = 2
@@ -67,20 +103,8 @@ class Horario(models.Model):
         related_name='horarios', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.determinarFecha(self.dia) + ": " + str(self.hora_inicio) + "-" + str(self.hora_final)
+        return self.get_dia_display() + ": " + str(self.hora_inicio) + "-" + str(self.hora_final)
 
-    def determinarFecha(self, numero):
-        if numero == 0:
-            return 'Lunes'
-        elif numero == 1:
-            return 'Martes' 
-        elif numero == 2:
-            return 'Miercoles'
-        elif numero == 3:
-            return 'Jueves'
-        elif numero == 4:
-            return 'Viernes'
-        return ''
     class Meta:
         unique_together = ('asignatura', 'hora_inicio', 'hora_final', 'dia')
 

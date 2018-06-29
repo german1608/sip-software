@@ -1,3 +1,7 @@
+"""
+URLConf del modulo de asignaturas
+"""
+
 from django.contrib import admin
 from django.urls import path
 from .views import *

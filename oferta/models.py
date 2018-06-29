@@ -1,3 +1,12 @@
+"""
+Modelos del modulo de Ofertas del SIP. Por los momentos solamente
+contiene la entidad Oferta, pues es la necesaria para el modulo.
+
+Este archivo tambien implementa las senales de django, que permite
+escuchar a eventos de interaccion con la bd y asi facilitar la integridad
+y correctitud de datos.
+"""
+
 import datetime
 from django.db import models
 from django.core.exceptions import ValidationError
