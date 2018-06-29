@@ -6,4 +6,4 @@ class OfertaForm(forms.ModelForm):
 
     class Meta:
         model = Oferta 
-        fields = '__all__'
+        fields = ['trimestre', 'anio', 'coordinacion']
