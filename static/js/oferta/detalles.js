@@ -1,71 +1,29 @@
-var hidden = false;
-function action() {
-    hidden = !hidden;
-    if(hidden) {
-        document.getElementById('editar').style.visibility = 'hidden';
-        document.getElementById('guardar').style.visibility = 'visible';
-        document.getElementById("mySelect").disabled=false;
-        document.getElementById("anio").contentEditable = true;
-        document.getElementById("table").style.visibility = "visible";
+let editable = false
 
-
-
-    } else {
-        document.getElementById('editar').style.visibility = 'visible';
-        document.getElementById('guardar').style.visibility = 'hidden';
-        document.getElementById("mySelect").disabled=true;
-        document.getElementById("anio").contentEditable = false;
-        document.getElementById("table").style.visibility = "hidden";
-
-    }
-}
-
-function toggleEditable() {
-
-	let editBtn = document.querySelector('.btn--edit');
-
-	if (editBtn.style.display === 'none') {
-
-        let editables = document.querySelectorAll('.editable');
-        contenteditable = 'true';
-
-        editables.forEach((el, i) => {
-            el.style.border = '';
-            el.setAttribute('readonly','readonly');
-        });
-
-        document.querySelector('.btn--submit').style.display = '';
-        document.querySelector('.btn--edit').style.display = '';
-    }
-    else {
-
-        let editables = document.querySelectorAll('.editable');
-
-        editables.forEach((el, i) => {
-            el.style.border = '1px solid #aaa';
-            el.removeAttribute('readonly');
-        });
-
-        document.querySelector('.btn--submit').style.display = 'block';
-        document.querySelector('.btn--edit').style.display = 'none';
-    }
-}
-
-
-function saveChanges(e) {
-	e.preventDefault();
-  toggleEditable();
-}
-
-
-document.querySelector('.btn--edit').addEventListener('click', toggleEditable);
-document.querySelector('.btn--submit').addEventListener('click', saveChanges);
 
 $(function() {
     $(".sortable").sortable({
       connectWith: ".sortable",
       handle: '.handle'
     }).disableSelection();
+
+    $(document).on('click', '#editar', function() {
+        if (!editable) {
+            const $btn = $(this)
+            const trimestre = $('#id_trimestre')
+            const anio = $('#id_anio')
+            const otrasAsignaturas = $('#todas-asignaturas')
+            otrasAsignaturas.removeClass('invisible')
+            trimestre.removeAttr('disabled')
+            anio.removeAttr('disabled')
+            $('.tabla-asignaturas-oferta .hide').removeClass('hide')
+            $('#helper').removeClass('d-none')
+            $('#myInput').attr('onkeyup', 'myFunction2()')
+            $(this).find('span').removeClass('fa-edit')
+            $(this).find('span').addClass('fa-save')
+        } else {
+        }
+    })
 })
 
 $(function() {
@@ -117,5 +75,22 @@ function myFunction() {
             } else {
                     li[i].style.display = "none";
             }
+    }
+}
+function myFunction2() {
+    // Declare variables
+    var input, filter, ul, li, i;
+    input = document.getElementById('myInput');
+    filter = removeAccents(input.value.toUpperCase());
+    ul = document.querySelector("#todas-asignaturas ul");
+    li = ul.getElementsByTagName('li');
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < li.length; i++) {
+        if (removeAccents(li[i].innerHTML.toUpperCase()).indexOf(filter) > -1) {
+                li[i].style.display = "";
+        } else {
+                li[i].style.display = "none";
+        }
     }
 }

@@ -44,7 +44,7 @@
 	}
 
 	li i.handle{
-	  float:right;
+	  float:left;
 	  line-height: 40px;
 	  font-size: 20px;
 	  margin-right: 20px;
@@ -54,7 +54,7 @@
 		margin-left: 0px;
 	}
 
-	.tabla-asignaturas-oferta ul {
+	.tabla-asignaturas-oferta ul, #todas-asignaturas ul {
 		padding-left: 0;
 	}
 	#myInput {
@@ -84,16 +84,15 @@
 	}
 	#id_trimestre {
 		font-size: 28px;
-		border: 0px;
 	}
 
 	#id_trimestre[disabled="true"] {
 		color: black;
+		border: 0px;
 	}
 
 	#id_anio {
 		background-color: #C9C6BB;
-		border: none;
 		font-size: 28px;
 		width: 5rem;
 	}
@@ -101,6 +100,7 @@
 	#id_anio[disabled="true"] {
 		color: black;
 		-webkit-appearance: none;
+		border: none;
 		margin: 0;
 	}
 
@@ -111,6 +111,7 @@
 {% endblock customhead %}
 {% block wrapper %}
 <div class="container-fluid">
+	<form></form>
 	<div class="row">
 		<div class="col-11">
 			<h4>Trimestre: </h4>
@@ -119,14 +120,15 @@
 			{% render_field form.anio class="editable thing-2" disabled="true" %}
 		</div>
 		<div class="col-1">
-			<button id="editar" type="button" class="btn btn--edit" onclick="action();" >
+			<button id="editar" type="button" class="btn btn--edit">
 					<span class="fa fa-edit"></span>
 			</button>
 		</div>
 	</div>
 	<!--Fin del boton-->
 	<div class="container-fluid margin-left">
-		<div class="row">
+		<div class="row" id="input-container">
+			<div id="helper" class="col-md-6 d-none"></div>
 			<div class="col-md-6">
 					<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar...">
 			</div>
@@ -136,7 +138,7 @@
 				<div class="category">Asignaturas de la Oferta</div>
 					<ul class="sortable">
 						{% for asignatura in asignaturas %}
-						<li>{{asignatura.codasig}} - {{asignatura.nombre}}<i class="handle fa fa-bars hide"></i></li>
+						<li><i class="handle fa fa-bars hide"></i>{{asignatura.codasig}} - {{asignatura.nombre}}</li>
 						{% endfor %}
 					</ul>
 			</div>
@@ -144,7 +146,7 @@
 					<div class="category">Todas las Asignaturas</div>
 					<ul class="sortable">
 						{% for asignatura in lista_asignaturas %}
-						<li>{{asignatura.codasig}} - {{asignatura.nombre}}<i class="handle fa fa-bars"></i></li>
+						<li><i class="handle fa fa-bars"></i>{{asignatura.codasig}} - {{asignatura.nombre}}</li>
 						{% endfor %}
 					</ul>
 			</div>
