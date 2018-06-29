@@ -27,6 +27,11 @@ $(document).ready( function () {
         'ajax': tablaUrl
     });
 
+    if ($('#new').attr('data-activar')){
+        console.log($('#new').attr('data-activar'))
+        var url = '/asignaturas/detalles/' + $('#new').attr('data-id')
+        obtenerAsignaturaOferta(url, false);
+    } 
     // Selector que desencadena una llamada AJAX al hacer clic
     // en el botón de agregar una asignatura verificando
     // si los campos introducidos son válidos. En caso de ser
@@ -188,7 +193,7 @@ function show_informacion_modal(agregar){
         $('.editar_asignatura').attr('data-id', $('[name="detail_id"]').val())
     }
     else {
-        activarPlugins()
+        // activarPlugins()
         $('#submit-btn').removeClass('d-none');
         $('.asignatura-btn').addClass('d-none');
     }
@@ -205,6 +210,23 @@ function show_informacion_modal(agregar){
  * @param agregar booleano que dice si es un modal para agregar
  */
 function obtenerAsignatura(btn, url, agregar) {
+    $.ajax({
+        url: url,
+        method: 'GET',
+        success: (form) => {
+            console.log(form)
+            $(asigIdContainer).html(form);
+            // $('#info-pan').tab('show')
+            show_informacion_modal(agregar);
+            edit_mode = false;
+        },
+        error: (err) => {
+            console.log(err)
+        }
+    })
+}
+
+function obtenerAsignaturaOferta(url, agregar) {
     $.ajax({
         url: url,
         method: 'GET',

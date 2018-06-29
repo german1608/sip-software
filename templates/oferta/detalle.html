@@ -85,7 +85,7 @@
 			<div class="category">Asignaturas de la Oferta</div>
 		    <ul class="sortable" id="myUL">
 					{% for asignatura in asignaturas %}
-		      <li>{{asignatura.codasig}} - {{asignatura.nombre}}<i class="handle fa fa-bars hide"></i></li>
+		      <li><a href="{% url 'asignaturas:dashboard' %}?codasig={{asignatura.codasig}}">{{asignatura.codasig}} - {{asignatura.nombre}}<i class="handle fa fa-bars"></i></a></li>
 					{% endfor %}					
 		    </ul>
 		</div>
