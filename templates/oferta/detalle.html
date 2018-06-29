@@ -49,6 +49,37 @@
 	.tabla-asignaturas-oferta{
 		margin-left: 0px;
 	}
+	.botoncito button{
+		background: #FAD534;
+		color: white;
+		margin-left: 600px;
+		margin-bottom: 5%; 
+		margin-left: 5%;
+	}
+	button:hover {
+    	background-color: #FAD534;
+    	color: black;
+
+
+	}
+	.col-sm-4 select{
+		font-size: 28px; 
+		margin-left: 5%;
+		border: 0px;	
+	}
+	.col-sm-4 p{
+		font-size: 28px; 
+		margin-left: 5%;	
+	}
+	.col-sm-4 input{
+		font-size: 28px; 
+		margin-left: 5%;	
+	}
+	div.col-md-6 {
+		visibility: hidden;
+	}
+
+
 </style>
 <link rel="stylesheet" href="{% static 'css/oferta/index.css' %}">
 
@@ -57,13 +88,60 @@
 
 <div class="row">
 
-	<div class="col-12">
-		<p class="title" style="font-size: 28px; margin-left: 5%;">Detalle de la Oferta: {{oferta.get_trimestre_display}} {{oferta.anio}}</p>
+	<div class="col-sm-4">
+
+		<p class="title" >Detalle de la Oferta: </p>
+	</div>
+
+	<label for="thing-1"></label>
+	<div class="col-sm-4">
+		<form>
+		
+		<select id="mySelect" disabled="true" class="editable thing-1">{{oferta.get_trimestre_display}}
+			{% if oferta.get_trimestre_display == "Enero - Marzo" %}
+				<option value="0">Enero - Marzo</option>
+				<option value="1">Abril - Julio</option>
+		  		<option value="2">Septiembre - Diciembre</option>
+
+		  	{% elif oferta.get_trimestre_display == "Abril - Julio" %}
+			    <option value="1">Abril - Julio</option>
+			    <option value="0">Enero - Marzo</option>
+		  		<option value="2">Septiembre - Diciembre</option>
+
+			{% elif oferta.get_trimestre_display == "Septiembre - Diciembre" %}
+				<option value="2">Septiembre - Diciembre</option>
+				<option value="0">Enero - Marzo</option>
+				<option value="1">Abril - Julio</option>
+		  		
+			{% endif %}
+		  
+
+		</select>
+		
+		</form>
+	</div>
+
+	<label for="thing-2"></label>
+	<div class="col-sm-4">
+		<p id="anio" class="editable thing-2"> {{oferta.anio}} </p>
 	</div>
 </div>
+<!--Boton para editar la oferta-->
+
+		<div class="botoncito">
+			<button id="guardar" style="display:none;" type="button" class="btn btn--submit" onClick="action(); ">Guardar</button>
+		</div>
+		<!--Fin del boton-->
+		<div class="botoncito">
+		    <button id="editar" type="button" class="btn btn--edit" onclick="action();" > Editar
+		    
+			<span class="glyphicon glyphicon-pencil" ></span>
+			</button>
+		</div>
+<!--Fin del boton-->
 <div class="container-fluid margin-left">
 	<div class="row">
-		<div class="col-md-6 tabla-asignaturas-oferta">
+		<div class="col-md-5 tabla-asignaturas-oferta">
 			<div class="category">Asignaturas de la Oferta</div>
 		    <ul class="sortable">
 					{% for asignatura in asignaturas %}
@@ -71,7 +149,7 @@
 					{% endfor %}					
 		    </ul>
 		</div>
-		<div class="col-md-6 invisible">
+		<div id ="table" class="col-md-6" >
 		    <div class="category">Todas las Asignaturas</div>
 		    <ul class="sortable">
 					{% for asignatura in lista_asignaturas %}
@@ -88,9 +166,74 @@
 
 </div>
 
+<script>
+    var hidden = false;
+    function action() {
+        hidden = !hidden;
+        if(hidden) {
+            document.getElementById('editar').style.visibility = 'hidden';
+            document.getElementById('guardar').style.visibility = 'visible';
+            document.getElementById("mySelect").disabled=false;
+            document.getElementById("anio").contentEditable = true;
+            document.getElementById("table").style.visibility = "visible";
 
 
 
+        } else {
+            document.getElementById('editar').style.visibility = 'visible';
+            document.getElementById('guardar').style.visibility = 'hidden';
+            document.getElementById("mySelect").disabled=true;
+            document.getElementById("anio").contentEditable = false;
+            document.getElementById("table").style.visibility = "hidden";
+            
+        }
+    }
+
+	function toggleEditable() {
+
+	let editBtn = document.querySelector('.btn--edit');
+
+	if (editBtn.style.display === 'none') {
+  
+  	let editables = document.querySelectorAll('.editable');
+  	contenteditable = 'true';
+    
+    editables.forEach((el, i) => {
+      el.style.border = '';
+      el.setAttribute('readonly','readonly');
+    });  
+    
+    document.querySelector('.btn--submit').style.display = '';
+    document.querySelector('.btn--edit').style.display = '';
+  }
+  else {
+		
+    let editables = document.querySelectorAll('.editable');
+  
+    editables.forEach((el, i) => {
+      el.style.border = '1px solid #aaa';
+      el.removeAttribute('readonly');
+    });
+	
+  	document.querySelector('.btn--submit').style.display = 'block';
+    document.querySelector('.btn--edit').style.display = 'none';
+  }
+}
+
+function makeRequest() {
+	console.log('inside makeRequest');
+}
+
+function saveChanges(e) {
+	e.preventDefault();
+  toggleEditable();
+  makeRequest();
+}
+
+
+document.querySelector('.btn--edit').addEventListener('click', toggleEditable);
+document.querySelector('.btn--submit').addEventListener('click', saveChanges);
+</script>
 
 
 
