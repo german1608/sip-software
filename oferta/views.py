@@ -15,7 +15,7 @@ import datetime
 
 from django.core import serializers
 
-from .forms import OfertaForm
+from .forms import OfertaForm, OfertaDetailsForm
 from .models import Oferta
 
 from .render import Render
@@ -100,6 +100,7 @@ class DetallesOferta(generic.DetailView):
         asignaturas_oferta = oferta.asignatura.all()
         asignaturas_disponibles = [asignatura for asignatura in Asignatura.objects.all() if not asignatura in asignaturas_oferta]
         context['oferta'] = oferta
+        context['form'] = OfertaDetailsForm(instance=oferta)
         context['asignaturas'] = asignaturas_oferta
         context['pagename'] = oferta.get_trimestre_display() + " " + str(oferta.anio)
         context['lista_asignaturas'] = asignaturas_disponibles
