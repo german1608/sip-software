@@ -199,7 +199,8 @@ class TestViewsOferta(TestCase):
             lambda x: {
                 'id': x.id,
                 'trimestre': x.get_trimestre_display(),
-                'anio': x.anio
+                'anio': x.anio,
+                'urledit': reverse('oferta:detalles-oferta', kwargs={'pk': x.id})
             },
             Oferta.objects.all()
         ))
