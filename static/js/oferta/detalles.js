@@ -15,8 +15,20 @@ function submitForm() {
         method: method,
         data: data,
         url: url,
-        success: function(data) {
-            console.log(data)
+        success: function() {
+            const $btn = $('#editar')
+            const trimestre = $('#id_trimestre')
+            const anio = $('#id_anio')
+            const otrasAsignaturas = $('#todas-asignaturas')
+            otrasAsignaturas.addClass('invisible')
+            trimestre.attr('disabled', 'true')
+            anio.attr('disabled', 'true')
+            $('.tabla-asignaturas-oferta span').addClass('hide')
+            $('#helper').addClass('d-none')
+            $('#myInput').attr('onkeyup', 'myFunction()')
+            $('#myInput').val('')
+            $btn.find('span').removeClass('fa-save')
+            $btn.find('span').addClass('fa-edit')
         }
     })
 }
@@ -27,6 +39,9 @@ $(function() {
       handle: '.handle'
     }).disableSelection();
     $(document).on('click', '#editar', function() {
+        $('#myInput').val('')
+        myFunction()
+        myFunction2()
         if (!editable) {
             const $btn = $(this)
             const trimestre = $('#id_trimestre')

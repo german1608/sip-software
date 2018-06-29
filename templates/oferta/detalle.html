@@ -86,7 +86,7 @@
 		font-size: 28px;
 	}
 
-	#id_trimestre[disabled="true"] {
+	#id_trimestre[disabled="disabled"] {
 		color: black;
 		border: 0px;
 	}
@@ -97,7 +97,7 @@
 		width: 5rem;
 	}
 
-	#id_anio[disabled="true"] {
+	#id_anio[disabled="disabled"] {
 		color: black;
 		-webkit-appearance: none;
 		border: none;
@@ -116,9 +116,9 @@
 		<div class="row">
 			<div class="col-11">
 				<h4>Trimestre: </h4>
-				{% render_field form.trimestre disabled="true" class="editable thing-1" %}
+				{% render_field form.trimestre disabled="disabled" class="editable thing-1" %}
 				<h4>Año: </h4>
-				{% render_field form.anio class="editable thing-2" disabled="true" %}
+				{% render_field form.anio class="editable thing-2" disabled="disabled" %}
 				{{form.coordinacion.as_hidden}}
 				{{formset.management_form}}
 				<div id="input-container">
