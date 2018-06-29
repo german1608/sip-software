@@ -10,6 +10,7 @@ from django.views import generic
 from .models import Oferta
 from .forms import OfertaForm
 from coordinacion.models import Coordinacion
+from asignaturas.models import Asignatura
 import datetime
 
 from django.core import serializers
@@ -96,14 +97,13 @@ class DetallesOferta(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetallesOferta, self).get_context_data(**kwargs)
         oferta = Oferta.objects.get(pk=self.kwargs['pk'])
+        asignaturas_oferta = oferta.asignatura.all()
+        asignaturas_disponibles = [asignatura for asignatura in Asignatura.objects.all() if not asignatura in asignaturas_oferta]
         context['oferta'] = oferta
-        context['asignaturas'] = oferta.asignatura.all()
+        context['asignaturas'] = asignaturas_oferta
         context['pagename'] = oferta.get_trimestre_display() + " " + str(oferta.anio)
+        context['lista_asignaturas'] = asignaturas_disponibles
         return context
-# def detalles_ofertas(request, oferta_id):
-#     print(oferta_id)
-#     oferta = Oferta.objects.get(pk=oferta_id)
-#     return render(request, 'oferta/detalles-oferta.html', {'oferta': oferta})
 
 
 # Esta funcion esta encargada de enviar con formato json la informacion de

@@ -74,9 +74,9 @@
 		<div class="col-md-6 invisible">
 		    <div class="category">Todas las Asignaturas</div>
 		    <ul class="sortable">
-		      <li>Ingenieria del Software<i class="handle fa fa-bars"></i></li>
-		      <li>Traductores e Interpretadores<i class="handle fa fa-bars"></i></li>
-					<li>Sistemas de Informacion<i class="handle fa fa-bars"></i></li>
+					{% for asignatura in lista_asignaturas %}
+					<li>{{asignatura.codasig}} - {{asignatura.nombre}}<i class="handle fa fa-bars"></i></li>
+					{% endfor %}
 		    </ul>
 		</div>	
 	</div>
