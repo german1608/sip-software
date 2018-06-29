@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}" type="text/css">
 
+
 <style type="text/css">
 
 	.margin-left{
@@ -169,5 +170,6 @@
 {% endblock wrapper %}
 {% block customscripts %}
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+<script src="{% static 'js/toastr.min.js' %}" charset="utf8"></script>
 <script src="{% static 'js/oferta/detalles.js' %}"></script>
 {%  endblock customscripts %}
