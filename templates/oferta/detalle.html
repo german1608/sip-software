@@ -5,7 +5,7 @@
 
 <style type="text/css">
 	*{margin:0;padding:0}
-	
+
 	.margin-left{
 		margin-left: 37px;
 	  font-family: 'Montserrat', sans-serif;
@@ -62,6 +62,37 @@
 	.hide{
 		display:none !important;
 	}
+	.botoncito button{
+		background: #FAD534;
+		color: white;
+		margin-left: 600px;
+		margin-bottom: 5%;
+		margin-left: 5%;
+	}
+	button:hover {
+    	background-color: #FAD534;
+    	color: black;
+
+
+	}
+	.col-sm-4 select{
+		font-size: 28px;
+		margin-left: 5%;
+		border: 0px;
+	}
+	.col-sm-4 p{
+		font-size: 28px;
+		margin-left: 5%;
+	}
+	.col-sm-4 input{
+		font-size: 28px;
+		margin-left: 5%;
+	}
+	div.col-md-6 {
+		visibility: hidden;
+	}
+
+
 </style>
 <link rel="stylesheet" href="{% static 'css/oferta/index.css' %}">
 
@@ -70,14 +101,61 @@
 
 <div class="row">
 
-	<div class="col-12">
-		<p class="title" style="font-size: 28px; margin-left: 5%;">Detalle de la Oferta: {{oferta.get_trimestre_display}} {{oferta.anio}}</p>
+	<div class="col-sm-4">
+
+		<p class="title" >Detalle de la Oferta: </p>
+	</div>
+
+	<label for="thing-1"></label>
+	<div class="col-sm-4">
+		<form>
+
+		<select id="mySelect" disabled="true" class="editable thing-1">{{oferta.get_trimestre_display}}
+			{% if oferta.get_trimestre_display == "Enero - Marzo" %}
+				<option value="0">Enero - Marzo</option>
+				<option value="1">Abril - Julio</option>
+		  		<option value="2">Septiembre - Diciembre</option>
+
+		  	{% elif oferta.get_trimestre_display == "Abril - Julio" %}
+			    <option value="1">Abril - Julio</option>
+			    <option value="0">Enero - Marzo</option>
+		  		<option value="2">Septiembre - Diciembre</option>
+
+			{% elif oferta.get_trimestre_display == "Septiembre - Diciembre" %}
+				<option value="2">Septiembre - Diciembre</option>
+				<option value="0">Enero - Marzo</option>
+				<option value="1">Abril - Julio</option>
+
+			{% endif %}
+
+
+		</select>
+
+		</form>
+	</div>
+
+	<label for="thing-2"></label>
+	<div class="col-sm-4">
+		<p id="anio" class="editable thing-2"> {{oferta.anio}} </p>
 	</div>
 </div>
+<!--Boton para editar la oferta-->
+
+		<div class="botoncito">
+			<button id="guardar" style="display:none;" type="button" class="btn btn--submit" onClick="action(); ">Guardar</button>
+		</div>
+		<!--Fin del boton-->
+		<div class="botoncito">
+		    <button id="editar" type="button" class="btn btn--edit" onclick="action();" > Editar
+
+			<span class="glyphicon glyphicon-pencil" ></span>
+			</button>
+		</div>
+<!--Fin del boton-->
 <div class="container-fluid margin-left">
 	<div class="row">
 		<div class="col-md-6">
-				<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar..">
+				<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar...">
 		</div>
 	</div>
 	<div class="row">
@@ -86,7 +164,7 @@
 		    <ul class="sortable" id="myUL">
 					{% for asignatura in asignaturas %}
 		      <li>{{asignatura.codasig}} - {{asignatura.nombre}}<i class="handle fa fa-bars hide"></i></li>
-					{% endfor %}					
+					{% endfor %}
 		    </ul>
 		</div>
 		<div class="col-md-6 invisible" id="todas-asignaturas">
@@ -96,19 +174,84 @@
 					<li>{{asignatura.codasig}} - {{asignatura.nombre}}<i class="handle fa fa-bars"></i></li>
 					{% endfor %}
 		    </ul>
-		</div>	
+		</div>
 	</div>
 
 
 
-    
-  
+
+
 
 </div>
 
+<script>
+    var hidden = false;
+    function action() {
+        hidden = !hidden;
+        if(hidden) {
+            document.getElementById('editar').style.visibility = 'hidden';
+            document.getElementById('guardar').style.visibility = 'visible';
+            document.getElementById("mySelect").disabled=false;
+            document.getElementById("anio").contentEditable = true;
+            document.getElementById("table").style.visibility = "visible";
 
 
 
+        } else {
+            document.getElementById('editar').style.visibility = 'visible';
+            document.getElementById('guardar').style.visibility = 'hidden';
+            document.getElementById("mySelect").disabled=true;
+            document.getElementById("anio").contentEditable = false;
+            document.getElementById("table").style.visibility = "hidden";
+
+        }
+    }
+
+	function toggleEditable() {
+
+	let editBtn = document.querySelector('.btn--edit');
+
+	if (editBtn.style.display === 'none') {
+
+  	let editables = document.querySelectorAll('.editable');
+  	contenteditable = 'true';
+
+    editables.forEach((el, i) => {
+      el.style.border = '';
+      el.setAttribute('readonly','readonly');
+    });
+
+    document.querySelector('.btn--submit').style.display = '';
+    document.querySelector('.btn--edit').style.display = '';
+  }
+  else {
+
+    let editables = document.querySelectorAll('.editable');
+
+    editables.forEach((el, i) => {
+      el.style.border = '1px solid #aaa';
+      el.removeAttribute('readonly');
+    });
+
+  	document.querySelector('.btn--submit').style.display = 'block';
+    document.querySelector('.btn--edit').style.display = 'none';
+  }
+}
+
+function makeRequest() {
+	console.log('inside makeRequest');
+}
+
+function saveChanges(e) {
+	e.preventDefault();
+  toggleEditable();
+  makeRequest();
+}
+
+
+document.querySelector('.btn--edit').addEventListener('click', toggleEditable);
+document.querySelector('.btn--submit').addEventListener('click', saveChanges);
+</script>
 
 
 
@@ -119,9 +262,9 @@
 	$(function() {
     $(".sortable").sortable({
       connectWith: ".sortable",
-      handle: '.handle' 
+      handle: '.handle'
     }).disableSelection();
-  
+
 });
 </script>
 
@@ -134,7 +277,7 @@ $(function() {
 	var ul, li, icon, i, is_invisible;
 	is_invisible = $('#todas-asignaturas').hasClass('invisible');
 	if (!is_invisible){
-		// Loop through all list items, and show hamburguers to drag if 
+		// Loop through all list items, and show hamburguers to drag if
 		// below list is not hidden
 		ul = document.getElementById("myUL");
 		li = ul.getElementsByTagName('li');
@@ -159,7 +302,7 @@ function removeAccents(str) {
 		}
 	})
 	return str.join('');
-}	
+}
 </script>
 
 <script>
