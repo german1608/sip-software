@@ -111,53 +111,59 @@
 {% endblock customhead %}
 {% block wrapper %}
 <div class="container-fluid">
-	<form></form>
-	<div class="row">
-		<div class="col-11">
-			<h4>Trimestre: </h4>
-			{% render_field form.trimestre disabled="true" class="editable thing-1" %}
-			<h4>Año: </h4>
-			{% render_field form.anio class="editable thing-2" disabled="true" %}
-		</div>
-		<div class="col-1">
-			<button id="editar" type="button" class="btn btn--edit">
-					<span class="fa fa-edit"></span>
-			</button>
-		</div>
-	</div>
-	<!--Fin del boton-->
-	<div class="container-fluid margin-left">
-		<div class="row" id="input-container">
-			<div id="helper" class="col-md-6 d-none"></div>
-			<div class="col-md-6">
-					<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar...">
-			</div>
-		</div>
+	<form action="{% url 'oferta:detalles-oferta' oferta.pk %}" method="POST" >
+		{% csrf_token %}
 		<div class="row">
-			<div class="col-md-6 tabla-asignaturas-oferta">
-				<div class="category">Asignaturas de la Oferta</div>
-					<ul class="sortable">
-						{% for asignatura in asignaturas %}
-						<li><i class="handle fa fa-bars hide"></i>{{asignatura.codasig}} - {{asignatura.nombre}}</li>
-						{% endfor %}
-					</ul>
+			<div class="col-11">
+				<h4>Trimestre: </h4>
+				{% render_field form.trimestre disabled="true" class="editable thing-1" %}
+				<h4>Año: </h4>
+				{% render_field form.anio class="editable thing-2" disabled="true" %}
+				{{form.coordinacion.as_hidden}}
+				{{formset.management_form}}
+				<div id="input-container">
+				</div>
 			</div>
-			<div class="col-md-6 invisible" id="todas-asignaturas">
-					<div class="category">Todas las Asignaturas</div>
-					<ul class="sortable">
-						{% for asignatura in lista_asignaturas %}
-						<li><i class="handle fa fa-bars"></i>{{asignatura.codasig}} - {{asignatura.nombre}}</li>
-						{% endfor %}
-					</ul>
+			<div class="col-1">
+				<button id="editar" type="button" class="btn btn--edit">
+						<span class="fa fa-edit"></span>
+				</button>
 			</div>
 		</div>
+		<!--Fin del boton-->
+		<div class="container-fluid margin-left">
+			<div class="row" id="input-container">
+				<div id="helper" class="col-md-6 d-none"></div>
+				<div class="col-md-6">
+						<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar...">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 tabla-asignaturas-oferta">
+					<div class="category">Asignaturas de la Oferta</div>
+						<ul class="sortable">
+							{% for asignatura in asignaturas %}
+							<li data-id="{{asignatura.id}}"><i class="handle fa fa-bars hide"></i>{{asignatura.codasig}} - {{asignatura.nombre}}</li>
+							{% endfor %}
+						</ul>
+				</div>
+				<div class="col-md-6 invisible" id="todas-asignaturas">
+						<div class="category">Todas las Asignaturas</div>
+						<ul class="sortable">
+							{% for asignatura in lista_asignaturas %}
+							<li data-id="{{asignatura.id}}"><i class="handle fa fa-bars"></i>{{asignatura.codasig}} - {{asignatura.nombre}}</li>
+							{% endfor %}
+						</ul>
+				</div>
+			</div>
 	
 	
 	
 	
 	
 	
-	</div>
+		</div>
+	</form>
 </div>
 
 {% endblock wrapper %}

@@ -1,5 +1,6 @@
 from django import forms
-
+from django.forms import modelformset_factory
+from asignaturas.models import Asignatura
 from .models import Oferta
 
 class OfertaForm(forms.ModelForm):
@@ -8,10 +9,4 @@ class OfertaForm(forms.ModelForm):
         model = Oferta 
         fields = ['trimestre', 'anio', 'coordinacion']
 
-class OfertaDetailsForm(forms.ModelForm):
-    """
-    Formulario para la vista de detalles
-    """
-    class Meta:
-        model = Oferta
-        fields = '__all__'
+AsignaturaFormset = modelformset_factory(Asignatura, fields=('id',), extra=1)

@@ -15,7 +15,7 @@ import datetime
 
 from django.core import serializers
 
-from .forms import OfertaForm, OfertaDetailsForm
+from .forms import OfertaForm, AsignaturaFormset
 from .models import Oferta
 
 from .render import Render
@@ -100,12 +100,25 @@ class DetallesOferta(generic.DetailView):
         asignaturas_oferta = oferta.asignatura.all()
         asignaturas_disponibles = [asignatura for asignatura in Asignatura.objects.all() if not asignatura in asignaturas_oferta]
         context['oferta'] = oferta
-        context['form'] = OfertaDetailsForm(instance=oferta)
+        context['form'] = OfertaForm(instance=oferta)
+        context['formset'] = AsignaturaFormset(prefix='asignaturas', queryset=Asignatura.objects.none())
         context['asignaturas'] = asignaturas_oferta
         context['pagename'] = oferta.get_trimestre_display() + " " + str(oferta.anio)
         context['lista_asignaturas'] = asignaturas_disponibles
         return context
 
+    def post(self, request, **kwargs):
+        pk = self.kwargs['pk']
+        oferta = Oferta.objects.get(pk=pk)
+        form = OfertaForm(self.request.POST, instance=oferta)
+        formset = AsignaturaFormset(self.request.POST, prefix='asignaturas')
+        if form.is_valid() and formset.is_valid():
+            form.save()
+            form.instance.asignatura.set([])
+            for form1 in formset:
+                oferta.asignatura.add(form1.cleaned_data['id'])
+            form.save()
+        return JsonResponse({})
 
 # Esta funcion esta encargada de enviar con formato json la informacion de
 # todas las ofertas que se han anadido a la base de datos
@@ -223,10 +236,4 @@ def max_anio_oferta():
 # Función que retorna el menor de los años de las ofertas guardadas
 def min_anio_oferta():
     return Oferta.objects.all().aggregate(Min('anio')).get('anio__min')
-
-
-
-# def detallesOferta(request):
-
-#     return render(request, 'oferta/detalle.html', {})
 

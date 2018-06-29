@@ -1,12 +1,31 @@
 let editable = false
 
+function submitForm() {
+    $('.tabla-asignaturas-oferta li').each(function(idx, elem) {
+        const id = $(elem).attr('data-id')
+        $('#input-container').append(`<input type="hidden" name="asignaturas-${idx}-id" value="${id}" />`)
+    })
+
+    $('[name="asignaturas-TOTAL_FORMS"]').val($('.tabla-asignaturas-oferta li').length)
+    const $form = $('form')
+    const url = $form.attr('action')
+    const method = $form.attr('method')
+    const data = $form.serialize()
+    $.ajax({
+        method: method,
+        data: data,
+        url: url,
+        success: function(data) {
+            console.log(data)
+        }
+    })
+}
 
 $(function() {
     $(".sortable").sortable({
       connectWith: ".sortable",
       handle: '.handle'
     }).disableSelection();
-
     $(document).on('click', '#editar', function() {
         if (!editable) {
             const $btn = $(this)
@@ -22,7 +41,9 @@ $(function() {
             $(this).find('span').removeClass('fa-edit')
             $(this).find('span').addClass('fa-save')
         } else {
+            submitForm()
         }
+        editable = !editable
     })
 })
 
