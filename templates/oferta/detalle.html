@@ -151,7 +151,7 @@
 						<div class="category">Todas las Asignaturas</div>
 						<ul class="sortable">
 							{% for asignatura in lista_asignaturas %}
-							<li data-id="{{asignatura.id}}"><i class="handle fa fa-bars"></i>{{asignatura.codasig}} - {{asignatura.nombre}}</li>
+							<li data-id="{{asignatura.id}}"><i class="handle fa fa-bars"></i><a href="{% url 'asignaturas:dashboard' %}?codasig={{asignatura.codasig}}">{{asignatura.codasig}} - {{asignatura.nombre}}</a></li>
 							{% endfor %}
 						</ul>
 				</div>
