@@ -1,5 +1,9 @@
 {% load widget_tweaks %}
 
+<!--
+    Las variables que se encuentran ahi que se llaman form, formset1, formset2 se refieren 
+    al form de las asignaturas, el de horarios y el de los programas de las asignaturas
+-->
 <!--Modal para agregar asignatura-->
 <input type="hidden" name="horario_formset_prefix" value="{{formset1.prefix}}">
 <input type="hidden" name="programa_formset_prefix" value="{{formset2.prefix}}">
@@ -10,20 +14,24 @@
                     <!-- Datos para la informacion basica -->
                     <input type="hidden" name="id" value="{{form.instance.id}}">
                     <div class="form-group">
+                      <!--En esta parte se muestra el nombre de la asignatura si esta si no esta se muestra vacia-->
                       <label for="nombre-asig"><span class="glyphicon glyphicon-pencil"></span> {{ form.nombre.label }}</label>
                       {% render_field form.nombre class="form-control mostrar-only" id="nombre-asig" placeholder="Introduzca el nombre" %}
                     </div>
                     <div class="form-group">
+                      <!--En este input se muestra el numero de creditos que tiene la materia-->
                       <label for="creditos"><span class="glyphicon glyphicon-pencil"></span> {{ form.creditos.label }}</label>
                       {% render_field form.creditos class="form-control mostrar-only" id="creditos" placeholder="Introduzca el número de créditos" %}
                     </div>
                     <div class="form-group">
+                      <!--Y por ultimo en este input se muestra el numero de creditos que tiene la asignatura-->
                       <label for="codigo"><span class="glyphicon glyphicon-file"></span> {{ form.codasig.label }}</label>
                       {% render_field form.codasig class="form-control mostrar-only" id="codigo" placeholder="Introduzca el código" %}
                     </div>
 
 
       <div class="form-group">
+        <!--En este form group se muestran los profesores seleccionables para dar la materia-->
         <label for="profesores"><span class="glyphicon glyphicon-file"></span> {{ form.profesores.label }}</label>
         <div>
           {% render_field form.profesores class="fselect form-control" %}
@@ -32,17 +40,20 @@
       </div>
 
       <div class="form-group">
+        <!--Aqui se muestran las coordinaciones disponibles para escoger la coordinacion a la cual pertenece dicha materia-->
         <label for="coordinacion"><span class="glyphicon glyphicon-file"></span> {{ form.pertenece.label }}</label>
         {% render_field form.pertenece class="form-control" %}
         <span class="text-danger">{{form.pertenece.errors.as_text}}</span>
       </div>
 
       <div class="form-group">
+        <!--Aqui se escoge la fecha de ejecucion de añadir la asignatura-->
         <label for="fecha-de-ejecucion">{{form.fecha_de_ejecucion.label}} <span class="text-secondary font-italic">(mm/dd/yy)</span></label>
         {% render_field form.fecha_de_ejecucion class="datepicker form-control"  %}
         <span class="text-danger">{{form.fecha_de_ejecucion.errors.as_text}}</span>
       </div>
 
+      <!--Es un checkbox que indica si la materia esta vista o no-->
       <div class="form-group">
         <label for="fecha-de-ejecucion">¿{{form.vista.label}}?</label>
         {% render_field form.vista %}
@@ -51,24 +62,28 @@
     </div>
 
     <!-- Informacion de los horarios de la asignatura -->
+    <!-- Esta es la seccion de las asignaturas de la materia que se esta registrando-->
     <div class="tab-pane" id="horario">
       {% for form1 in formset1 %}
       <div class="form-row">
           {{form1.asignatura}}
           {{form1.id}}
         <div class="form-group col-md-6">
+          <!--En esta parte es el div que permite seleccionar un dia de la semana-->
           <label for="dia"><span class="glyphicon glyphicon-pencil"></span> {{ form1.dia.label }}</label>
           {% render_field form1.dia id="dia" class="form-control"%}
           <span class="text-danger">{{form1.dia.errors.as_text}}</span>
         </div>
 
         <div class="form-group col-md-3">
+          <!--En esta parte es el input de la hora del inicio de la asignatura-->
           <label for="hora_inicio"><span class="glyphicon glyphicon-pencil"></span> {{ form1.hora_inicio.label }}</label>
           {% render_field form1.hora_inicio id="hora_inicio" class="form-control horario-input"%}
           <span class="text-danger">{{form1.hora_inicio.errors.as_text}}</span>
         </div>
 
         <div class="form-group col-md-3">
+          <!--Y aqui se coloca la hora en que se termina de impartir la materia-->
           <label for="hora_final"><span class="glyphicon glyphicon-pencil"></span> {{ form1.hora_final.label }}</label>
           {% render_field form1.hora_final id="hora_final" class="form-control horario-input"%}
           <span class="text-danger">{{form1.hora_final.errors.as_text}}</span>
@@ -77,15 +92,12 @@
       </div>
       {% endfor %}
       {{formset1.management_form}}
-
       <input type="hidden" id="type" name="type" value="">
-      {% comment %} <button type="button" data-toggle="tab" class="btn btn-success btn-block"><span
-        class="glyphicon glyphicon-ok"></span> Siguiente
-      </button> {% endcomment %}
     </div>
 
     <!-- Form para los programas  -->
     <div class="tab-pane" id="programa">
+      <!--Este for permite mostrar todas los programas que esta relacionado con la materia-->
         {% for form2 in formset2 %}
           <div class="form-group">
               {{form2.asignatura}}
