@@ -1,3 +1,6 @@
+
+// Este es un plugin que se encarga de mostrar los errores del formulario 
+// de una manera estilizada 
 toastr.options = {
     "closeButton": true,
     "debug": false,
@@ -79,7 +82,6 @@ $(document).ready( function () {
     $('#form-eliminar').on('submit', function (e) {
         e.preventDefault()
         const form = $(this)
-        console.log(form.serialize())
         $.ajax({
             method: form.attr('method'),
             url: form.attr('action'),
@@ -109,12 +111,15 @@ function activarPlugins() {
         'addText': 'Añadir horario',
         'addCssClass': 'btn btn-success anadir-horario-btn'
     })
+    // Al igual 
     $('#programa .form-group').formset({
         prefix: programaPrefix,
         formCssClass: 'dynamic-formset2',
         'addText': 'Añadir programa',
         'addCssClass': 'btn btn-success  anadir-horario-btn'
     })
+    // Es un cuadro que permite seleccionar distintos profesores para
+    // una asignatura 
     $('.fselect').fSelect({
         placeholder: 'Escoja al menos un profesor',
         numDisplayed: 3,
@@ -122,6 +127,7 @@ function activarPlugins() {
         searchText: 'Buscar',
         showSearch: true
     });
+    // Este es el plugin del calendario para escoger una fecha
     $.fn.datepicker.defaults.format = "dd/mm/yyyy";
 
     $('.datepicker').datepicker()
@@ -131,6 +137,7 @@ function activarPlugins() {
  * Habilitar los input para modificar los campos
  * @param btn Boton para habilitar la edicion de la asignatura
  */
+// Esto se hace cuando se presiona el boton de editar
 function habilitar_edicion(btn){
     if (!edit_mode) {
         $.ajax({
@@ -226,6 +233,15 @@ function obtenerAsignatura(btn, url, agregar) {
     })
 }
 
+// Esta funcion permite que cuando se haga click en una asignatura desde la vista 
+// de oferta se rediriga a la vista de asignaturas y se abra el modal que muestra 
+// la informacion de la asignatura en cuestion
+// Se usa ajax para poder hacerlo
+/**
+ * 
+ * @param url direccion donde se obtiene la materia al cual se le dio click 
+ * @param agregar este parametro le permite saber si el modal que se va a mostrar es de edicion o no 
+ */
 function obtenerAsignaturaOferta(url, agregar) {
     $.ajax({
         url: url,
