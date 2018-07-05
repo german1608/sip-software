@@ -1,3 +1,12 @@
+<!--En este html se implementa el front de la vista principal de las ofertas 
+	. Aqui se muestra las ofertas de todas las coordinaciones en forma de tarjetas 
+	con el periodo y el a;o en que se ofrece. Cada tarjeta del tiene un link que al 
+	presionarlo se redirige a una vista que muestra los detalles de la oferta, es decir, las 
+	asignaturas ofrecidas en dicho periodo-->
+
+<!--Este html obtiene su informacion del contralador ubicado en ofertas/views.py especificamente 
+	de la funcion index-->
+
 {% extends "base/base_coordinador.html" %}
 {% load static %}
 {% block customhead %}
@@ -15,6 +24,8 @@
 					<p class="title">Ofertas</p>
 				</div>
 			</div>
+			<!--En este div se implementa los cuadros de input para filtrar 
+				entre el conjunto de ofertas. Puedes filtrar por trimestre y a;os-->
 			<div class="row">
 				<!--Campos para el inicio:-->
 				<div class="col-12 col-sm-5 mt-2">
@@ -96,6 +107,7 @@
 	
 		</div>
 		
+		<!--Este modal permite confirmar si se desea eliminar una oferta -->
 		<div class="modal fade" id="dangerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-primary" role="document">
 			  <div class="modal-content">
