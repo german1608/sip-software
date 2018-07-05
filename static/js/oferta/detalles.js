@@ -108,8 +108,8 @@ $(function() {
 	var ul, li, icon, i, is_invisible;
 	is_invisible = $('#todas-asignaturas').hasClass('invisible');
 	if (!is_invisible){
-		// Loop through all list items, and show hamburguers to drag if
-		// below list is not hidden
+        // Itera sobre toda la lista de asignaturas de la oferta, y muestra permite arrastrar si la
+        // lista de todas las asignaturas no esta escondida
 		ul = document.getElementById("myUL");
 		li = ul.getElementsByTagName('li');
 		for (i = 0; i < li.length; i++) {
