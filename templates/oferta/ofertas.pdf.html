@@ -45,6 +45,7 @@
             <h2>{{oferta.get_trimestre_display}} {{oferta.anio}}</h2>
         </div>
         <table style="border: 1px solid black; padding: 2px;">
+            <!--Columnas de las tablas que seran Asignatura, nombre de la asignatura y profesores -->
             <tr>
                 <th style="background-color: rgb(208, 208, 208);">
                     Asignatura
@@ -60,6 +61,7 @@
             </tr>
 
             <tr>
+                <!--En esta parte se muestran las filas de la tabla que son las asignaturas-->
                 {% if oferta.asignatura.all %}
                     {% for asignatura in oferta.asignatura.all %}
                     <td>
@@ -73,6 +75,7 @@
                     </td>
                     {% endfor %}
                 {% endif %}
+                <!--Si no existen asignaturas entonces se muestra la tabla con un mensaje: "Esta oferta no tiene asignaturas"-->
                 {% if not oferta.asignatura.all %}
                 <td align="center">
                     Esta oferta no tiene asignaturas
