@@ -10,6 +10,9 @@
 
 <!--Este html obtiene su informacion de la vista ofertas/views.py, especificamente 
 	 de la clase DetallesOferta-->
+
+<!--La funcionalidad de esta vista esta incluida en librerias de javascript y un javascript en especifico 
+	que se llama detalles.js-->
 <style type="text/css">
 
 	.margin-left{
@@ -129,6 +132,8 @@
 				{{form.coordinacion.as_hidden}}
 				{{formset.management_form}}
 				<div id="input-container">
+					<!--ESta parte se completa usando jQuery las funciones estan implementadas 
+						en js/oferta/detalles.js-->
 				</div>
 			</div>
 			<!--Implementa el boton de la edicion de la oferta que se esta viendo-->

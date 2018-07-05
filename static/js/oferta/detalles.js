@@ -1,3 +1,5 @@
+// Aqui se importa toastr que es lo que hace posible mostrar los errores o exitos
+// como cuadros en la esquina superior derecha del navegador
 toastr.options = {
     "closeButton": true,
     "debug": false,
@@ -15,6 +17,8 @@ toastr.options = {
     "hideMethod": "fadeOut"
 }
 
+// Esta variable va almacenar el evento de que si el usuario presiono el boton de editar 
+// una oferta o no 
 let editable = false
 
 function submitForm() {
@@ -35,10 +39,14 @@ function submitForm() {
         success: function(json) {
             const valid = json.valid,
             errors = json.errors.__all__
-
+            // Verifica que no se presente errores 
             if (!valid) {
+                // Si se presentan errores entonces se muestra un mensaje de error con el 
+                // siguiente contenido
                 toastr['error']('', 'Oferta con este Trimestre, Año y Coordinacion ya existe')
             } else {
+                // Si no se presenta errores entonces se procede a mandar la informacion 
+                // para que sea guardada 
                 const $btn = $('#editar')
                 const trimestre = $('#id_trimestre')
                 const anio = $('#id_anio')
@@ -66,10 +74,13 @@ $(function() {
       connectWith: ".sortable",
       handle: '.handle'
     }).disableSelection();
+    // Maneja el evento de que si se dio click al boton de editar
     $(document).on('click', '#editar', function() {
         $('#myInput').val('')
         myFunction()
         myFunction2()
+        // si no es editable entonces se muestra la informacion de la oferta 
+        // nada mas y se esconde la lista de todas las asignaturas 
         if (!editable) {
             const $btn = $(this)
             const trimestre = $('#id_trimestre')
@@ -85,13 +96,15 @@ $(function() {
             $(this).find('span').addClass('fa-save')
             editable = !editable
         } else {
+            // si es editable entonces se procede a guardar lo cambiado en la oferta 
+            // se hace submit al formulario 
             submitForm()
         }
     })
 })
 
 $(function() {
-	// Declare variables
+    // Declara las variables que van a almacenar la lista de asignaturas 
 	var ul, li, icon, i, is_invisible;
 	is_invisible = $('#todas-asignaturas').hasClass('invisible');
 	if (!is_invisible){
@@ -115,6 +128,8 @@ function removeAccents(str) {
     let accents = 'ÀÁÂÃÄÅàáâãäåßÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
     let accentsOut = "AAAAAAaaaaaaBOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
     str = str.split('');
+    // Este loop recorre todas las letras de una cadena si consigue una con acento la 
+    // reemplaza con la misma pero sin acento
     str.forEach((letter, index) => {
         let i = accents.indexOf(letter);
         if (i != -1) {
@@ -123,16 +138,23 @@ function removeAccents(str) {
     })
     return str.join('');
 }
-
+/**
+ * Esta funcion implementa la busqueda sobre la lista de 
+ * asignaturas de una oferta
+ */
 function myFunction() {
-    // Declare variables
+    // Declara las variables
+    // Aqui se toma tanto la busqueda que se va a hacer 
+    // y la lista donde se hace la busqueda 
     var input, filter, ul, li, i;
     input = document.getElementById('myInput');
     filter = removeAccents(input.value.toUpperCase());
     ul = document.querySelector(".tabla-asignaturas-oferta ul");
     li = ul.getElementsByTagName('li');
 
-    // Loop through all list items, and hide those who don't match the search query
+    // Itera sobre todas los elementos de la lista de asignaturas y descarta aquellos que no 
+    // coincidan con la busqueda
+    // Esto se hace cada vez que se introduce una letra al cuadro de input de buscar
     for (i = 0; i < li.length; i++) {
             if (removeAccents(li[i].innerHTML.toUpperCase()).indexOf(filter) > -1) {
                     li[i].style.display = "";
@@ -141,15 +163,24 @@ function myFunction() {
             }
     }
 }
+
+/**
+ * Esta funcion implementa la busqueda sobre la lista de todas las asignaturas 
+ * que estan registradas 
+ */
 function myFunction2() {
-    // Declare variables
+    // Declara las variables 
+    // Aqui se toma la busqueda que se va hacer que es la informacion introducida 
+    // por el usuario en el box de buscar
+    // Y la lista de todas las asignaturas 
     var input, filter, ul, li, i;
     input = document.getElementById('myInput');
     filter = removeAccents(input.value.toUpperCase());
     ul = document.querySelector("#todas-asignaturas ul");
     li = ul.getElementsByTagName('li');
 
-    // Loop through all list items, and hide those who don't match the search query
+    // Aqui se itera sobre toda la lista y se ve quitando las asignaturas que no 
+    // coincidan con la busqueda que esta realizando el usuario
     for (i = 0; i < li.length; i++) {
         if (removeAccents(li[i].innerHTML.toUpperCase()).indexOf(filter) > -1) {
                 li[i].style.display = "";
