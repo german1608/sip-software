@@ -353,7 +353,7 @@ class TestInterfaceOferta(StaticLiveServerTestCase):
                 creditos=i,
                 pertenece=self.coordinacion
                 )
-            for i in range(10)
+            for i in range(5)
         ]
         for oferta in self.ofertas: oferta.save()
         for asignatura in self.asignaturas: asignatura.save()
@@ -498,12 +498,44 @@ class TestInterfaceOferta(StaticLiveServerTestCase):
 
         edit_btn = self.selenium.find_element_by_id('editar')
         edit_btn.click()
-        asignaturas_no_anadidas = self.selenium.find_elements_by_css_selector('.tabla-asignaturas-oferta .handle')
+        asignaturas_anadidas = self.selenium.find_elements_by_css_selector('.tabla-asignaturas-oferta .handle')
         destino = self.selenium.find_element_by_css_selector('#todas-asignaturas .sortable')
-        for asignatura in asignaturas_no_anadidas:
+        for asignatura in asignaturas_anadidas:
             action_chains = ActionChains(self.selenium)
             action_chains.drag_and_drop(asignatura, destino).perform()
         edit_btn.click()
         time.sleep(1)
         # verificamos que se hayan elimnado todas
         self.assertEqual(self.ofertas[0].asignatura.all().count(), 0)
+
+    def test_buscar_asignatura_anadida(self):
+        """
+        Prueba el buscar sobre las asignaturas anadidas a una oferta
+        """
+        oferta_a_editar = self.ofertas[0].pk
+        for asignatura in self.asignaturas:
+            self.ofertas[0].asignatura.add(asignatura)
+
+        self.selenium.get('%s%s' % (self.live_server_url, reverse('oferta:detalles-oferta',kwargs={
+            'pk':oferta_a_editar
+            }))
+        )
+
+        input_elm = self.selenium.find_element_by_id('myInput')
+        input_elm.clear()
+        input_elm.send_keys('1')
+        asignaturas_anadidas = self.selenium.find_elements_by_css_selector('.tabla-asignaturas-oferta li:not([style="display: none;"])')
+        # todas las asignaturas tienen 1, asi que deberian estar todas
+        self.assertEqual(len(asignaturas_anadidas), len(self.asignaturas))
+        input_elm.clear()
+        input_elm.send_keys('') # caso frontera, vacio
+        asignaturas_anadidas = self.selenium.find_elements_by_css_selector('.tabla-asignaturas-oferta li:not([style="display: none;"])')
+        self.assertEqual(len(asignaturas_anadidas), len(self.asignaturas))
+        input_elm.clear()
+        input_elm.send_keys('ásígnáturá') # caso malicioso, acentos
+        asignaturas_anadidas = self.selenium.find_elements_by_css_selector('.tabla-asignaturas-oferta li:not([style="display: none;"])')
+        self.assertEqual(len(asignaturas_anadidas), len(self.asignaturas))
+        input_elm.clear()
+        input_elm.send_keys('3') # caso malicioso, unico
+        asignaturas_anadidas = self.selenium.find_elements_by_css_selector('.tabla-asignaturas-oferta li:not([style="display: none;"])')
+        self.assertEqual(len(asignaturas_anadidas), 1)
