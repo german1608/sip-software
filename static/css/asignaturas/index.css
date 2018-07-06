@@ -1,9 +1,21 @@
-/*Botones de Eliminar y Editar*/
+/*
+ * Hoja de estilo : asignaturas/index.css
+ * Aqui se encuentran los estilos usados en el template asignatura,
+ * importada en el template/asigaturas/index.htmml
+ *
+ */
+
+
+/*
+ * Estilo botones de Eliminar y Editar 
+ */
 #t_asignaturas .asignatura-btn-1 {
     float: right;
     margin-right: 3px;
 }
-
+/* 
+ * Estilo para el buscador de la tabla
+ */
 .search__container {
     padding-top: 64px;
 }
@@ -50,7 +62,13 @@
     border-radius: 0;
     background-position: 100% center;
 }
+/*
+ * END estilo para el buscador de la tabla
+ */
 
+/*
+ * Estilo para los creditos en la tabla
+ */
 .credits__container {
     margin-top: 24px;
 }
@@ -71,3 +89,6 @@
         .credits__link:focus {
     color: rgb(191, 137, 135);
 }
+/*
+ * END estilo para los creditos en la tabla
+ */
