@@ -73,7 +73,6 @@ class TestUrls(SimpleTestCase):
         """
         reverse('oferta:detalles-oferta', kwargs={'pk': 1})
 
-
 class TestFormOferta(TestCase):
     """
     Clase que tendra nuestra Suite de pruebas para el formulario.
@@ -398,6 +397,7 @@ class TestInterfaceOferta(StaticLiveServerTestCase):
         cartica = self.selenium.find_element_by_id('editar-oferta-box-{}'.format(primera_oferta.pk))
         hover = ActionChains(self.selenium).move_to_element(cartica)
         hover.perform()
+        time.sleep(0.5)
         # luego tengo que hacer click sobre la equis
         equis = self.selenium.find_element_by_css_selector(
             '[data-url="{}"]'.format(reverse('oferta:eliminar-oferta', kwargs={
@@ -411,3 +411,34 @@ class TestInterfaceOferta(StaticLiveServerTestCase):
         eliminar_btn.click()
         # verificamos eliminacion
         self.assertEqual(Oferta.objects.all().count(), antes - 1)
+
+    def test_editar_oferta(self):
+        """
+        Prueba la edicion de la oferta mediante la vista de detalles.
+        Casos fronteras sobre el trimestre
+        """
+        oferta_a_editar = Oferta.objects.create(trimestre=1, anio=2020, coordinacion=self.coordinacion).pk
+        self.selenium.get('%s%s' % (self.live_server_url, reverse('oferta:detalles-oferta',kwargs={
+            'pk':oferta_a_editar
+            }))
+        )
+        # cliqueamos el boton de edicion
+        edit_btn = self.selenium.find_element_by_id('editar')
+        edit_btn.click()
+        # Buscamos el formulario
+        form = self.selenium.find_element_by_css_selector('form')
+        # colocamos trimestre 0
+        trimestre_input = Select(form.find_element_by_name('trimestre'))
+        trimestre_input.select_by_value('0')
+        # guardamos
+        edit_btn.click()
+        time.sleep(1)
+        self.assertEqual(Oferta.objects.get(pk=oferta_a_editar).trimestre, 0)
+        # iniciamos nuevamente la edicion
+        edit_btn.click()
+        # trimestre 2
+        trimestre_input.select_by_value('2')
+        # guardamos
+        edit_btn.click()
+        time.sleep(1)
+        self.assertEqual(Oferta.objects.get(pk=oferta_a_editar).trimestre, 2)
