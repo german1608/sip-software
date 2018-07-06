@@ -23,11 +23,13 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver import ActionChains
 
 from coordinacion.models import Coordinacion
 # Modelos necesarios para las pruebas
 from oferta.forms import OfertaForm
 from oferta.models import Oferta
+from asignaturas.models import Asignatura
 
 # Create your tests here.
 
@@ -344,7 +346,17 @@ class TestInterfaceOferta(StaticLiveServerTestCase):
             for i in range(3) for j in range(anio_actual, anio_actual + 1)
         ]
 
+        self.asignaturas = [
+            Asignatura(
+                codasig='CO-{}111'.format(i),
+                nombre='Asignatura {}'.format(i),
+                creditos=i,
+                pertenece=self.coordinacion
+                )
+            for i in range(10)
+        ]
         for oferta in self.ofertas: oferta.save()
+        for asignatura in self.asignaturas: asignatura.save()
 
     def test_agregar_oferta_valida(self):
         """
@@ -442,3 +454,56 @@ class TestInterfaceOferta(StaticLiveServerTestCase):
         edit_btn.click()
         time.sleep(1)
         self.assertEqual(Oferta.objects.get(pk=oferta_a_editar).trimestre, 2)
+
+    def test_vincular_asignatura_a_oferta(self):
+        """
+        Prueba la agregacion de la oferta mediante la vista de detalles.
+        Casos frontera sobre la cantidad de asignaturas: todas las asignaturas
+        """
+        oferta_a_editar = self.ofertas[0].pk
+        self.selenium.get('%s%s' % (self.live_server_url, reverse('oferta:detalles-oferta',kwargs={
+            'pk':oferta_a_editar
+            }))
+        )
+        # cliqueamos el boton de edicion
+        edit_btn = self.selenium.find_element_by_id('editar')
+        edit_btn.click()
+        # Buscamos las asignaturas
+        # primer caso, vincular TODAS
+        asignaturas_no_anadidas = self.selenium.find_elements_by_css_selector('#todas-asignaturas .handle')
+        destino = self.selenium.find_element_by_css_selector('.tabla-asignaturas-oferta .sortable')
+        for asignatura in asignaturas_no_anadidas:
+            action_chains = ActionChains(self.selenium)
+            action_chains.drag_and_drop(asignatura, destino).perform()
+        edit_btn.click()
+        time.sleep(1)
+        # verificamos que se hayan anadido todas
+        self.assertEqual(self.ofertas[0].asignatura.all().count(), len(self.asignaturas))
+
+    def test_vincular_asignatura_a_oferta_eliminar(self):
+        """
+        Prueba la elimnacion de la oferta mediante la vista de detalles.
+        Casos frontera sobre la cantidad de asignaturas: conjunto vacio de ofertas
+
+        """
+        # iniciamos la edicion otra vez
+        oferta_a_editar = self.ofertas[0].pk
+        for asignatura in self.asignaturas:
+            self.ofertas[0].asignatura.add(asignatura)
+
+        self.selenium.get('%s%s' % (self.live_server_url, reverse('oferta:detalles-oferta',kwargs={
+            'pk':oferta_a_editar
+            }))
+        )
+
+        edit_btn = self.selenium.find_element_by_id('editar')
+        edit_btn.click()
+        asignaturas_no_anadidas = self.selenium.find_elements_by_css_selector('.tabla-asignaturas-oferta .handle')
+        destino = self.selenium.find_element_by_css_selector('#todas-asignaturas .sortable')
+        for asignatura in asignaturas_no_anadidas:
+            action_chains = ActionChains(self.selenium)
+            action_chains.drag_and_drop(asignatura, destino).perform()
+        edit_btn.click()
+        time.sleep(1)
+        # verificamos que se hayan elimnado todas
+        self.assertEqual(self.ofertas[0].asignatura.all().count(), 0)
