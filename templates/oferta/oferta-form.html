@@ -1,5 +1,9 @@
 {% load widget_tweaks %}
 
+<!-- Este es el html del formulario que se muestra cundo se intenta añadir o editar una oferta.
+  Contiene todos los campos requeridos en una oferta como coordinacion, trimestre y anio
+-->
+
 <form action="{% url 'oferta:anadir-oferta' %}" method="POST" id="form-oferta">
   {% csrf_token %}
 

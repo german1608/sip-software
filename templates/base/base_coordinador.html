@@ -3,6 +3,17 @@
 
     {% block content %}
 
+    <!-- Un archivo base de rol es un archivo base (valga la redundancia) que tiene como finalidad 
+        separar el menú lateral izquierdo, superior y derecho por cada rol presente en el sistema. 
+        Es importado por todas las páginas que pertenezcan a rol. 
+        
+        Este archivo contienen los siguientes elementos:
+        - Navbar: este es el bloque de navegación superior que contiene el logo del sistema, 
+        botón para cerrar la navegación.
+        - Sidebar: bloque de navegación izquierdo donde están las páginas agrupadas por secciones.
+        - Wrapper: en este bloque va el contenido de la página.
+        - Footer: pie de página.
+    -->
 
     <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
 
