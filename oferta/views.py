@@ -76,7 +76,6 @@ class OfertaAgregar(AjaxableResponseMixin, CreateView):
     model = Oferta
     template_name = 'oferta/oferta-form.html'
     form_class = OfertaForm
-    success_url = 'success'
 
     def get_initial(self):
         initial = super(OfertaAgregar, self).get_initial()

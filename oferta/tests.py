@@ -22,6 +22,7 @@ from django.urls.exceptions import NoReverseMatch
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.action_chains import ActionChains
 
 from coordinacion.models import Coordinacion
 # Modelos necesarios para las pruebas
@@ -198,7 +199,6 @@ class TestModelOferta(TestCase):
                 coordinacion=self.oferta.coordinacion,
             ).save()
 
-
 class TestViewsOferta(TestCase):
     """
     Suite de pruebas para las vistas de el modulo de ofertas. Se usa el cliente integrado
@@ -218,6 +218,7 @@ class TestViewsOferta(TestCase):
         Igual que las otras, esta funcion se ejecuta antes de cada test.
         """
         self.coordinacion = Coordinacion.objects.create(nombre='Coordinacion 1', codigo='CI')
+        self.factory = RequestFactory()
 
     def test_ofertas_index(self):
         """
@@ -281,6 +282,44 @@ class TestViewsOferta(TestCase):
         Test para probar la existencia del url para la creacion de ofertas.
         """
         response = self.client.get(reverse('oferta:anadir-oferta'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_anadir_trimestre_fronteras(self):
+        """
+        Prueba los trimestres frontera que se le pasaran a la vista
+        que crea la oferta. La forma en la que se prueba esto es
+        verificando que redirija a donde debe.
+        """
+        # data que se usara en cada post
+        data = {
+            'anio': 123,
+            'trimestre': 1,
+            'coordinacion': self.coordinacion.pk
+        }
+        # deberia crear la oferta sin ningun problema
+        index_route = reverse('oferta:dashboard')
+        anadir_route = reverse('oferta:anadir-oferta')
+        data['trimestre'] = 0 # frontera
+        response = self.client.post(anadir_route, data)
+        self.assertRedirects(response, index_route)
+        data['trimestre'] = 2 # frontera
+        response = self.client.post(anadir_route, data)
+        self.assertRedirects(response, index_route)
+        self.assertEqual(Oferta.objects.all().count(), 2)
+
+    def test_anadir_trimestre_ya_existente(self):
+        """
+        Prueba para la vista de crear asignatura, se prueba
+        la unicidad
+        """
+        data = {
+            'trimestre': 0,
+            'coordinacion': self.coordinacion.pk,
+            'anio': 123,
+        }
+        self.client.post(reverse('oferta:anadir-oferta'), data)
+        response = self.client.post(reverse('oferta:anadir-oferta'), data)
+        # no deberia redirijir, deberia mostrar la misma pagina
         self.assertEqual(response.status_code, 200)
 
 @tag('selenium')
@@ -347,3 +386,28 @@ class TestInterfaceOferta(StaticLiveServerTestCase):
         self.selenium.find_element_by_id('toast-container')
         self.assertEqual(len(self.selenium.find_elements_by_class_name('oferta')), num_ofertas + 2)
         self.assertEqual(Oferta.objects.all().count(), num_ofertas + 1)
+
+    def test_eliminar_oferta(self):
+        """
+        Prueba la interfaz mediante la eliminacion
+        """
+        antes = len(self.ofertas)
+        self.selenium.get('%s%s' % (self.live_server_url, reverse('oferta:dashboard')))
+        primera_oferta = self.ofertas[0]
+        # primero tengo que hacer hover sobre la cartica
+        cartica = self.selenium.find_element_by_id('editar-oferta-box-{}'.format(primera_oferta.pk))
+        hover = ActionChains(self.selenium).move_to_element(cartica)
+        hover.perform()
+        # luego tengo que hacer click sobre la equis
+        equis = self.selenium.find_element_by_css_selector(
+            '[data-url="{}"]'.format(reverse('oferta:eliminar-oferta', kwargs={
+                'pk': primera_oferta.pk
+            }))
+        )
+        equis.click()
+        # esperamos por el modal
+        time.sleep(1)
+        eliminar_btn = self.selenium.find_element_by_id('eliminar_oferta_button')
+        eliminar_btn.click()
+        # verificamos eliminacion
+        self.assertEqual(Oferta.objects.all().count(), antes - 1)
