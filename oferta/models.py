@@ -19,8 +19,9 @@ from asignaturas.models import Asignatura
 from coordinacion.models import Coordinacion
 
 
-# Create your models here.
 def anio_oferta_valido(anio_oferta):
+    """Verifica que no se anada una oferta con un ano menor al ano actual
+    """
     anio_hoy = datetime.datetime.now().year
 
     if anio_oferta < anio_hoy:
@@ -33,6 +34,14 @@ def trimestre_valido(trim):
     return trim in [0, 1, 2]
 
 class Oferta(models.Model):
+    """Modelo de la Base de Datos para una oferta.
+    Contiene trimestre, anio, coordinacion y asignatura. Cada entrada en la base de datos
+    de Oferta tiene que tener una combinacion unica de trimestre, anio y coordinacion.
+    
+    Se anaden choices de trimestre para el formulario de seleccion de este en la oferta
+    lo cual permite guardar estas opciones como enteros en la base de datos pero obtener 
+    la representacion textual de los valores 0, 1 y 2.
+    """
     TRIMESTRE_ENEMAR = 0
     TRIMESTRE_ABRJUL = 1
     TRIMESTRE_SEPDIC = 2
