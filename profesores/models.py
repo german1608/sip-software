@@ -11,6 +11,10 @@ from django.db import models
 
 
 def fecha_nacimiento_valida(fecha):
+    """ 
+    Verifica que el día de nacimiento de un profesor no es un día posterior
+    al día de hoy.
+    """
     hoy = datetime.date.today()
     if fecha > hoy:
         raise ValidationError('La fecha de nacimiento no puede ser despues de hoy')
@@ -39,7 +43,10 @@ class Profesor(models.Model):
     fecha_nacimiento = models.DateField(validators=[fecha_nacimiento_valida],
         verbose_name='Fecha de Nacimiento')
 
-    # Se agrega la funcion para imprimir el objeto Profesor de una manera 
-    # user friendly 
+
     def __str__(self):
+        """ 
+        Se agrega la funcion para imprimir el objeto Profesor de una manera 
+        amigable para el usuario.
+        """
         return self.primer_nombre + " " + self.primer_apellido

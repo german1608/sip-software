@@ -1,5 +1,6 @@
 """
-Vistas del modulo de asignaturas. Aqui se hace la interaccion
+Vistas del modulo de asignaturas.
+EN esta vista se hace la interaccion
 usuario-sistema.
 """
 
@@ -85,11 +86,10 @@ class Index(TemplateView):
             context['form'] = form
             context['formset1'] = formset1
             context['formset2'] = formset2
-
-
-        '''
-        Borrar los forms borrados
-        '''
+        """
+        Aqui eliminamos los forms borrados.
+        
+        """
         for form1 in formset1.deleted_forms:
             form1.instance.delete()
 
@@ -97,10 +97,15 @@ class Index(TemplateView):
             form2.instance.delete()
 
         return render(request, self.template_name, context)
-
-    # Determinar colision en la lista de horarios.
-    # Falso significa que existe una colisión.
+      
     def horario_valido(self,lista):
+        """
+
+        Esta funcion se encarga de la determinación de colisiones
+        en la lista de horarios.
+        Cuando se obtiene el valor de falso significa que existe una colisión.
+
+        """
         for i in lista:
             for x in lista:
                 if i!=x:
@@ -110,7 +115,12 @@ class Index(TemplateView):
 
         return True
 
-# Vista para eliminar asignatura
+
+"""
+Aquí se encuentra la vista para eliminar una asignatura.
+
+"""
+
 class EliminarAsignaturaView(TemplateView):
     """
     Vista que maneja la eliminación de asignaturas.
@@ -231,7 +241,7 @@ class AnadirAsignaturaView(View):
             formset2 = ProgramaFormset(request.POST, prefix=PROGRAMAS_PREFIX)
 
         context = {}
-        # Se guardan en una lista los formularios de horarios
+        """ Se guardan en una lista los formularios de horarios """
         horarios = [form1.instance for form1 in formset1]
 
         if form.is_valid() and formset1.is_valid()\
@@ -301,9 +311,11 @@ class EditarAsignaturaView(View):
     de edición de una asignatura.
     """
     def get(self, request, *args, **kwargs):
-        # Se obtiene la asignatura a editar, se busca en la base
-        # de datos y se toman instancias de los formularios de
-        # asignaturas para llevarlos a la vista.
+        """ 
+        Se obtiene la asignatura a editar, se busca en la base
+        de datos y se toman instancias de los formularios de
+        asignaturas para llevarlos a la vista.
+        """
         pk = request.GET.get('id', '')
         asig = Asignatura.objects.get(pk=pk)
         context = {
@@ -322,6 +334,7 @@ class AsignaturasAsJson(View):
     utilizando AJAX.
     """
     def get(self, *args, **kwargs):
+        """ Obtiene los detalles de la asignatura"""
         asignaturas = list(map(
             lambda x: [
                 '''<a href="#"
@@ -349,6 +362,9 @@ class AsignaturaDetallesView(TemplateView):
     template_name = 'asignaturas/asignatura_details.html'
 
     def get_context_data(self, **kwargs):
+        """
+        Obtiene los datos de los contextos: asignatura; programas; horarios.
+        """
         context = super().get_context_data(**kwargs)
         asignatura = Asignatura.objects.get(id=kwargs['pk'])
         context['asignatura'] = asignatura
@@ -357,8 +373,14 @@ class AsignaturaDetallesView(TemplateView):
         return context
 
 class Ofertas(TemplateView):
+    """
+    Vista para las ofertas
+    """
     template_name = 'oferta/index.html'
 
     def get_context_data(self, **kwargs):
+        """
+        Obtiene los datos del contexto.
+        """
         context = super().get_context_data(**kwargs)
         return context

@@ -17,8 +17,6 @@ from django.db import models
 from coordinacion.models import Coordinacion
 from profesores.models import Profesor
 
-# Create your models here.
-
 class Asignatura(models.Model):
     """
     Entidad Asignatura. Tiene los atributos necesarios para representar
@@ -51,6 +49,7 @@ class Asignatura(models.Model):
     vista = models.BooleanField(default=False, verbose_name='Asignatura Vista')
 
     def __str__(self):
+        """Forma de devolver la asignatura."""
         return self.codasig + ": " + self.nombre
 
 class ProgramaAsignatura(models.Model):
@@ -65,11 +64,14 @@ class ProgramaAsignatura(models.Model):
         related_name='programas', on_delete=models.CASCADE, verbose_name='Asignatura')
 
     def __str__(self):
+        """  """
         return self.codigo + ": " + str(self.asignatura.nombre)
     class Meta:
+        """  """
         unique_together = ('url', 'asignatura')
 
 def hora_valida(x):
+    """ Verificación de que el rango para una hora debe ser entre 1 y 12"""
     if not (1 <= x <= 12):
         raise ValidationError('{} no está entre 1 y 12'.format(x))
 
@@ -104,7 +106,9 @@ class Horario(models.Model):
         related_name='horarios', on_delete=models.CASCADE)
 
     def __str__(self):
+        """Muestra un formato para dia con horario de inicio y fin."""
         return self.get_dia_display() + ": " + str(self.hora_inicio) + "-" + str(self.hora_final)
 
     class Meta:
+        """ Hace unica la tupla."""
         unique_together = ('asignatura', 'hora_inicio', 'hora_final', 'dia')

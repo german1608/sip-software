@@ -33,16 +33,25 @@ class AsignaturaForm(forms.ModelForm):
         model = Asignatura
         fields = '__all__'
 
-    # Validador de creditos. Deben ser positivos.    
+    
     def clean_creditos(self):
+        """
+        Se encarga de la validación 
+        respecto a la cantidad de créditos. Verifica que 
+        deben ser positivos.
+        """
         creditos = self.cleaned_data['creditos']
         if creditos <= 0 :
             raise ValidationError('Los créditos deben ser mayor a cero')
         return creditos
 
-    # Validador de fecha de ejecucion. Una asignatura no puede
-    # tener una fecha de ejecución en el futuro.
+    
     def clean_fecha_de_ejecucion(self):
+        """
+        Se encarga de la validación 
+        respecto a la fecha de ejecución. Verifica que una asignatura
+        no puede tener una fecha de ejecución en el futuro.
+        """
         fecha_de_ejecucion = self.cleaned_data['fecha_de_ejecucion']
         if fecha_de_ejecucion > datetime.date.today() :
             raise ValidationError('La fecha de ejecución debe ser hoy o antes de hoy')
@@ -59,6 +68,9 @@ class HorarioForm(forms.ModelForm):
     mediante el metodo clean.
     """
     def clean(self):
+        """
+        Verifica que la horade inicio debe ser menor que la hora final.
+        """
         cleaned_data = super().clean()
         hora_inicio = cleaned_data.get("hora_inicio")
         hora_final = cleaned_data.get("hora_final")

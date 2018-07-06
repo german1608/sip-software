@@ -11,7 +11,9 @@ from .forms import AsignaturaForm, HorarioForm, HorarioFormset, ProgramaForm
 from .models import *
 from .views import horario_valido
 
-# Create your tests here.
+"""
+En esta sección se implementas las pruebas
+"""
 
 class Base(TestCase):
     def setUp(self):
