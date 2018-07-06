@@ -86,17 +86,6 @@ class OfertaAgregar(AjaxableResponseMixin, CreateView):
         # etc...
         return initial
 
-class OfertaEditar(AjaxableResponseMixin, UpdateView):
-    """
-    Vista en forma de Clase que facilita la edicion de ofertas al extender
-    la vista generica UpdateView. Tambien hereda de AjaxableResponseMixin
-    para facilitar el uso de esta vista via AJAX.
-    """
-    # Esto realiza la conexion con el html
-    model = Oferta
-    template_name = 'oferta/oferta-form.html'
-    form_class = OfertaForm
-
 class DetallesOferta(generic.DetailView):
     """
     Esta clase es una vista que va a mostrar los detalles de una oferta,

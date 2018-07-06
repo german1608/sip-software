@@ -48,12 +48,6 @@ class TestUrls(SimpleTestCase):
         """
         reverse('oferta:anadir-oferta')
 
-    def test_oferta_url_editar(self):
-        """
-        Verifica la existencia del url 'editar'
-        """
-        reverse('oferta:editar-oferta', kwargs={'pk': 1})
-
     def test_oferta_url_json(self):
         """
         Verifica la existencia del url 'json'
