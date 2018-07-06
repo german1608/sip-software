@@ -8,6 +8,16 @@
 * Licensed under MIT (https://coreui.io/license)
 -->
 
+<!-- Contiene etiquetas mínimas necesarias de un documento html, excepto la etiqueta body. 
+  Importa estilos css y scripts js mínimos para que el tema funcione.
+  
+  En la etiqueta <title> se encuentra una variable pagename cuya utilidad es automatizar el trabajo 
+  de colocar el título a las páginas. Así, se debe enviar en el contexto de las vistas esta variable de 
+  tipo string con el título de la página.
+  
+  Contiene un bloque de encabezado personalizado para añadir codigo CSS especifico para cada pagina
+-->
+
 <html lang="en">
   
   <head>
@@ -21,10 +31,7 @@
     <title>SIP - {{pagename}}</title>
     {% block stylesheets %}
     <!-- Icons-->
-    <link href="{% static 'core-ui/vendors/@coreui/icons/css/coreui-icons.min.css' %}" rel="stylesheet">
-    <link href="{% static 'core-ui/vendors/flag-icon-css/css/flag-icon.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/fontawesome-all.css' %}" rel="stylesheet">
-    <link href="{% static 'core-ui/vendors/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet">
     <!-- Main styles for this application-->
     <link href="{% static 'core-ui/css/style.css' %}" rel="stylesheet">
     <link href="{% static 'core-ui/vendors/pace-progress/css/pace.min.css' %}" rel="stylesheet">

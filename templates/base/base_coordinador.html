@@ -3,10 +3,21 @@
 
     {% block content %}
 
-    
-    <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+    <!-- Un archivo base de rol es un archivo base (valga la redundancia) que tiene como finalidad 
+        separar el menú lateral izquierdo, superior y derecho por cada rol presente en el sistema. 
+        Es importado por todas las páginas que pertenezcan a rol. 
         
-        {% block navbar %}  
+        Este archivo contienen los siguientes elementos:
+        - Navbar: este es el bloque de navegación superior que contiene el logo del sistema, 
+        botón para cerrar la navegación.
+        - Sidebar: bloque de navegación izquierdo donde están las páginas agrupadas por secciones.
+        - Wrapper: en este bloque va el contenido de la página.
+        - Footer: pie de página.
+    -->
+
+    <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+
+        {% block navbar %}
         <header class="app-header navbar">
             <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
                 <span class="navbar-toggler-icon"></span>
@@ -21,10 +32,10 @@
         </header>
         {% endblock navbar %}
 
-        
+
 
         <div class="app-body">
-            
+
             {% block sidebar %}
             <div class="sidebar" style="background-color:#373736">
                 <nav class="sidebar-nav">
@@ -33,33 +44,29 @@
                             <a id="db" class="nav-link" href="#" style="color:#FAD534">Dashboard
                             </a>
                         </li>
-                        <li class="nav-title">Coordinador</li>                            
+                        <li class="nav-title">Coordinador</li>
                         <li class="nav-item">
-                            <a id="as" href="{% url 'asignaturas:dashboard' %}" class="nav-link"> 
-                            <i class="nav-icon icon-pencil"></i> 
+                            <a id="as" href="{% url 'asignaturas:dashboard' %}" class="nav-link">
+                            <i class="nav-icon far fa-edit"></i>
                             ASIGNATURAS
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{% url 'oferta:dashboard' %}" class="nav-link" >
-                            <i class="nav-icon icon-pencil"></i> OFERTAS</a>
+                            <i class="nav-icon far fa-edit"></i> OFERTAS</a>
                         </li>
                     </ul>
                 </nav>
                 <button class="sidebar-minimizer brand-minimizer" type="button"></button>
-                
-                <!-- funcion para cambiar color -->
-                <script>
-                </script>
             </div>
-            
+
             {% endblock sidebar %}
 
             <main class="main" style="background-color:#C9C6BB">
                 <!-- Breadcrumb-->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Inicio</li>
-                    <li class="breadcrumb-item active">{{pagename}}</li>                
+                    <li class="breadcrumb-item active">{{pagename}}</li>
                 </ol>
                 {% block wrapper %}
 

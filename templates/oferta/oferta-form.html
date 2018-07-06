@@ -1,0 +1,35 @@
+{% load widget_tweaks %}
+
+<!-- Este es el html del formulario que se muestra cundo se intenta añadir o editar una oferta.
+  Contiene todos los campos requeridos en una oferta como coordinacion, trimestre y anio
+-->
+
+<form action="{% url 'oferta:anadir-oferta' %}" method="POST" id="form-oferta">
+  {% csrf_token %}
+
+      <input type="hidden" name="id" value="{{form.instance.id|default:''}}">
+      <span class="text-danger">{{form.non_field_errors}}</span>
+      {% render_field form.coordinacion class="hide" %}
+      <!-- {{form.errors}} -->
+
+      
+      <div class="form-group">
+        <label for="trimestre"><span class="glyphicon glyphicon-pencil"></span> {{ form.trimestre.label }}</label>
+        {% render_field form.trimestre id="trimestre" %}
+        <span class="text-danger">{{form.trimestre.errors.as_text}}</span>
+      </div>
+      <div class="form-group">
+        <label for="anio"><span class="glyphicon glyphicon-pencil"></span> {{ form.anio.label }}</label>
+        {% render_field form.anio id="anio" %}
+        <span class="text-danger">{{form.anio.errors.as_text}}</span>
+      </div>
+
+
+      <button type="submit" class="btn btn-primary btn-block" id="boton-agregar"><span
+        class="glyphicon glyphicon-ok"></span> Guardar
+      </button>
+
+      <button hidden class="btn btn-primary btn-block" id="boton-editar"><span
+        class="glyphicon glyphicon-ok"></span> Guardar
+      </button>
+</form>

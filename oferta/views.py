@@ -22,7 +22,6 @@ from .models import Oferta
 from .render import Render
 
 
-# Create your views here.
 def index(request):
     """
     Esta es la unica peticion que hace el navegador directamente.
@@ -63,7 +62,6 @@ class AjaxableResponseMixin:
         else:
             return response
 
-# Se crea la vista para agregar una nueva oferta a la lista
 class OfertaAgregar(AjaxableResponseMixin, CreateView):
     """
     Vista en forma de Clase que facilita la creacion al extender
@@ -88,7 +86,6 @@ class OfertaAgregar(AjaxableResponseMixin, CreateView):
         # etc...
         return initial
 
-# Se crea la vista para editar una oferta de la lista
 class OfertaEditar(AjaxableResponseMixin, UpdateView):
     """
     Vista en forma de Clase que facilita la edicion de ofertas al extender
@@ -99,7 +96,6 @@ class OfertaEditar(AjaxableResponseMixin, UpdateView):
     model = Oferta
     template_name = 'oferta/oferta-form.html'
     form_class = OfertaForm
-
 
 class DetallesOferta(generic.DetailView):
     """
@@ -124,6 +120,10 @@ class DetallesOferta(generic.DetailView):
         return context
 
     def post(self, request, **kwargs):
+        """Al hacerse una solicitud mediante POST, si el formulario es correcto,
+        se añade una oferta a la base de datos, en caso contrario se devuelven
+        como JSON los errores.
+        """
         pk = self.kwargs['pk']
         oferta = Oferta.objects.get(pk=pk)
         form = OfertaForm(self.request.POST, instance=oferta)
@@ -137,10 +137,11 @@ class DetallesOferta(generic.DetailView):
             return JsonResponse({'errors': '', 'valid': True})
         return JsonResponse({'errors': form.errors, 'valid': False})      
 
-# Esta funcion esta encargada de enviar con formato json la informacion de
-# todas las ofertas que se han anadido a la base de datos
 def oferta_json(request):
-    """Envia informacion sobre las asignaturas como objeto JSON
+    """Envia informacion sobre las asignaturas como objeto JSON.
+    
+    Esta funcion esta encargada de enviar con formato json la informacion de 
+    todas las ofertas que se han anadido a la base de datos
     """
     if request.method == 'GET':
         if not Oferta.objects.all():
@@ -208,7 +209,6 @@ class EliminarOferta(DeleteView):
         self.object.delete()
         return JsonResponse({'ok': True})
 
-# Vista para descargar las ofertas como PDF
 class DescargarOfertasView(View):
     """
     Vista que genera el PDF tomando los filtros adecuados.
@@ -230,7 +230,6 @@ class DescargarOfertasView(View):
         # checkeamos si no es null
         anio_final = anio_final if anio_final else max_anio_oferta()
 
-
         # Conjunto de ofertas que cumplen con los criterios especificados
         ofertas = Oferta.objects.filter(trimestre__gte=trim_inicio) \
             .filter(trimestre__lte=trim_final).filter(anio__gte=anio_inicio) \
@@ -248,10 +247,12 @@ class DescargarOfertasView(View):
 
         return Render.render('oferta/ofertas.pdf.html', context)
 
-# Función que retorna el mayor de los años de las ofertas guardadas
 def max_anio_oferta():
+    """Función que retorna el mayor de los años de las ofertas guardadas
+    """
     return Oferta.objects.all().aggregate(Max('anio')).get('anio__max')
 
-# Función que retorna el menor de los años de las ofertas guardadas
 def min_anio_oferta():
+    """Función que retorna el menor de los años de las ofertas guardadas
+    """
     return Oferta.objects.all().aggregate(Min('anio')).get('anio__min')

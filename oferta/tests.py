@@ -129,15 +129,14 @@ class TestModelOferta(TestCase):
         oferta.coordinacion = self.coordinacion
         self.oferta = oferta
 
-    """
-    El trimestre debe ser un numero del 0 al 2
-    0 -> Ene-Mar
-    1 -> Abr-Jul
-    2 -> Sep-Dic
-    Esta validacion pasa en los formularios, pero no en los modelos.
-    Estas pruebas van a probar solamente el 3 y el -1 (frontera y esquina, en este caso)
-    """
     def test_trimestre_attribute_menos_1(self):
+        """El trimestre debe ser un numero del 0 al 2
+        0 -> Ene-Mar
+        1 -> Abr-Jul
+        2 -> Sep-Dic
+        Esta validacion pasa en los formularios, pero no en los modelos.
+        Estas pruebas van a probar solamente el 3 y el -1 (frontera y esquina, en este caso)
+        """
         # caso esquina: trimestre = -1
         self.oferta.trimestre = -1
         with self.assertRaises(ValidationError):
@@ -191,10 +190,10 @@ class TestModelOferta(TestCase):
     def test_oferta_anio_que_viene_trim_tres(self):
         self.helper_test_mixed_to_fail(3, self.oferta.anio)
 
-    """
-    Pruebas para la unicidad de la oferta
-    """
     def test_oferta_unicity(self):
+        """
+        Pruebas para la unicidad de la oferta
+        """
         # guardamos la oferta en la base de datos
         self.oferta.save()
         with self.assertRaises(IntegrityError):
