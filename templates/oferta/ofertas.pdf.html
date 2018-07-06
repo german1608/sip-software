@@ -60,10 +60,10 @@
                 {% endif %}
             </tr>
 
+            <!--En esta parte se muestran las filas de la tabla que son las asignaturas-->
+            {% if oferta.asignatura.all %}
+                {% for asignatura in oferta.asignatura.all %}
             <tr>
-                <!--En esta parte se muestran las filas de la tabla que son las asignaturas-->
-                {% if oferta.asignatura.all %}
-                    {% for asignatura in oferta.asignatura.all %}
                     <td>
                         {{asignatura.codasig}}
                     </td>
@@ -74,15 +74,19 @@
                         {{ asignatura.profesores.all|join:', ' }}
                     </td>
                     {% endfor %}
-                {% endif %}
-                <!--Si no existen asignaturas entonces se muestra la tabla con un mensaje: "Esta oferta no tiene asignaturas"-->
-                {% if not oferta.asignatura.all %}
+                
+            </tr>
+            {% endif %}
+             <!--Si no existen asignaturas entonces se muestra la tabla con un mensaje: "Esta oferta no tiene asignaturas"-->
+
+            {% if not oferta.asignatura.all %}
+            <tr>
+                
                 <td align="center">
                     Esta oferta no tiene asignaturas
                 </td>
-                {% endif %}
-
             </tr>
+            {% endif %}
 
         </table>
         {% endfor %}
