@@ -1,13 +1,24 @@
+
+/*
+ * Hoja de estilo : oferta/index.css
+ * Aqui se encuentran los estilos usados en el template oferta,
+ * importada en el template/oferta/index.htmml
+ *
+ */
 .main {
   overflow-x: hidden;
 }
-
+/*
+ * Estilo para el titulo de la pagina
+ */ 
 .title{
   font-size: 40px;
   margin-top: 2%;
   color: #494949;
 }
-
+/* 
+ *Estilo para el boton de agregar oferta
+ */
 .botonAgregar{
   padding: 25px 18px;
   background-color: #FAD534;
@@ -15,6 +26,9 @@
   border-radius: 50%;
   margin-left: -150px;
 }
+/* 
+ *Estilo para el boton de descarga de oferta
+*/
 .botonDescargar{
     padding: 20px 18px;
     background-color: #FAD534; 
@@ -27,6 +41,9 @@
   margin-top: 1%;
 
   }
+/*
+ * Estilo para el buscador de ofertas
+*/ 
 .buscador{
   padding: 12px 24px;
   color: #575757;
@@ -42,7 +59,10 @@
     backface-visibility: hidden;
     transform-style: preserve-3d;
 }
-
+/*
+ * Card para agregar oferta
+ * Clases vinculadas al card usado para agregar una oferta
+ */
 .flip3D {
   height: 18rem;
 }
@@ -97,42 +117,6 @@
   font-size: 1.3em;
 }
 
-input[type="number"]{
-  width: 70px;
-  border:none;
-  background-color: #FAD534;
-  border-bottom: 2px solid #494949;
-}
-
-form {
-  color: #494949;
-}
-
-select {
-  width: 100%;
-  box-shadow: none;
-  color: #494949;
-  background-color: transparent;
-  background-position: 95% center;
-  border-radius: 50px;
-  border: 1px solid rgb(66, 65, 61);
-  transition: all 250ms ease-in-out;
-}
-
-option {
-  background-color: white;
-}
-
-#descargar_form label {
-  margin-top: 15px;
-}
-
-#filtrar_btn {
-  margin-top: 15px;
-  margin-bottom: 15px;
-  align-self: center;
-}
-
 #create-oferta-box {
   display: flex;
   justify-content: center;
@@ -161,7 +145,69 @@ option {
 .front:hover .management-btns {
   display: block;
 }
+/*
+ * END estilos de card para agregar
+ */
 
+
+/*
+ * Estilo para los input de tipo number usados
+ * en el template oferta
+ */ 
+input[type="number"]{
+  width: 70px;
+  border:none;
+  background-color: #FAD534;
+  border-bottom: 2px solid #494949;
+}
+
+/*
+ * Estilo para los form usados
+ * en el template oferta
+ */ 
+form {
+  color: #494949;
+}
+/*
+ * Estilo para los select usados
+ * en el template oferta
+ */ 
+select {
+  width: 100%;
+  box-shadow: none;
+  color: #494949;
+  background-color: transparent;
+  background-position: 95% center;
+  border-radius: 50px;
+  border: 1px solid rgb(66, 65, 61);
+  transition: all 250ms ease-in-out;
+}
+/*
+ * Estilo para las opciones de los select usados
+ * en el template oferta
+ */ 
+option {
+  background-color: white;
+}
+/*
+ * Estilos para las label del formulario de descarga
+ */
+#descargar_form label {
+  margin-top: 15px;
+}
+/*
+ * Estilo para el boton que activa los filtros
+ */
+
+#filtrar_btn {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  align-self: center;
+}
+
+/*
+ * Estilo para editar oferta
+ */
 .editar-oferta{
   background-color: #FAD534;
   border: none;
