@@ -49,73 +49,6 @@ class Index(TemplateView):
             context['activar_modal'] = True
         return context
 
-    def post(self, request, *args, **kwargs):
-        """
-        Metodo que maneja la creacion de una nueva asignatura al
-        hacer un post sobre el formulario de asignaturas.
-        """
-        id = request.POST.get('id', '')
-        try:
-            # Vemos si ya la asignatura existe
-            asignatura = Asignatura.objects.get(id=id)
-            form = AsignaturaForm(request.POST, instance=asignatura)
-            formset1 = HorarioFormset(request.POST, instance=asignatura, prefix=HORARIOS_PREFIX)
-            formset2 = ProgramaFormset(request.POST, instance=asignatura, prefix=PROGRAMAS_PREFIX)
-        except Exception as e:
-            # Crear asignatura
-            form = AsignaturaForm(request.POST)
-            formset1 = HorarioFormset(request.POST, prefix=HORARIOS_PREFIX)
-            formset2 = ProgramaFormset(request.POST, prefix=PROGRAMAS_PREFIX)
-
-        context = self.get_context_data()
-        """
-        Validamos los distintos formularios completados al crear
-        una asignatura y se hacen las conexiones a nivel de base
-        de datos entre la asignatura, el horario y el programa.
-        """
-        if form.is_valid() and formset1.is_valid() and formset2.is_valid():
-            form.save()
-            for instance in formset1.save(commit=False):
-                instance.asignatura = form.instance
-                instance.save()
-            for instance in formset2.save(commit=False):
-                instance.asignatura = form.instance
-                instance.save()
-
-        else:
-            context['form'] = form
-            context['formset1'] = formset1
-            context['formset2'] = formset2
-        """
-        Aqui eliminamos los forms borrados.
-        
-        """
-        for form1 in formset1.deleted_forms:
-            form1.instance.delete()
-
-        for form2 in formset2.deleted_forms:
-            form2.instance.delete()
-
-        return render(request, self.template_name, context)
-      
-    def horario_valido(self,lista):
-        """
-
-        Esta funcion se encarga de la determinación de colisiones
-        en la lista de horarios.
-        Cuando se obtiene el valor de falso significa que existe una colisión.
-
-        """
-        for i in lista:
-            for x in lista:
-                if i!=x:
-                    if i.dia==x.dia:
-                        if (i.hora_inicio>=x.hora_inicio and i.hora_inicio<=x.hora_final) or (i.hora_final>=x.hora_inicio and i.hora_final<=x.hora_final) or (i.hora_inicio>x.hora_inicio and i.hora_final<x.hora_final) or (i.hora_inicio<x.hora_inicio and i.hora_final>x.hora_final):
-                            return False
-
-        return True
-
-
 """
 Aquí se encuentra la vista para eliminar una asignatura.
 
@@ -304,30 +237,6 @@ class AnadirAsignaturaView(View):
                 'errors': errors
             })
 
-class EditarAsignaturaView(View):
-    """
-    Permite renderizar el formulario de añadir una asignatura con
-    los datos de una asignatura existente para crear una vista
-    de edición de una asignatura.
-    """
-    def get(self, request, *args, **kwargs):
-        """ 
-        Se obtiene la asignatura a editar, se busca en la base
-        de datos y se toman instancias de los formularios de
-        asignaturas para llevarlos a la vista.
-        """
-        pk = request.GET.get('id', '')
-        asig = Asignatura.objects.get(pk=pk)
-        context = {
-            'form': AsignaturaForm(instance=asig),
-            'formset1': HorarioFormset(instance=asig, prefix=HORARIOS_PREFIX),
-            'formset2': ProgramaFormset(instance=asig, prefix=PROGRAMAS_PREFIX)
-        }
-        rendered = render_to_string('asignaturas/asignatura_form.html', context=context, request=request)
-        data = rendered
-        return JsonResponse(data, safe=False)
-
-
 class AsignaturasAsJson(View):
     """
     Clase que devuelve la lista de asignaturas al ser llamada con método GET
@@ -370,17 +279,4 @@ class AsignaturaDetallesView(TemplateView):
         context['asignatura'] = asignatura
         context['programas'] = asignatura.programas.all()
         context['horarios'] = asignatura.horarios.all()
-        return context
-
-class Ofertas(TemplateView):
-    """
-    Vista para las ofertas
-    """
-    template_name = 'oferta/index.html'
-
-    def get_context_data(self, **kwargs):
-        """
-        Obtiene los datos del contexto.
-        """
-        context = super().get_context_data(**kwargs)
         return context
