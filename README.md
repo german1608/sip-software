@@ -1,8 +1,6 @@
 # SIP: Sistema de Inscripción de Posgrado
 
-######################################################
 ## La siguiente es una descripción del sistema SIP: ##
-######################################################
 
 El Sistema de Inscripción de Postgrado (SIP) a desarrollar en la materia _Ingeniería de Software_ en el trimestre Abril-Julio 2018 en la Universidad Simón Bolívar es un sistema que facilitará la inscripción a los alumnos de postgrado a los estudiantes de la institución.
 
@@ -18,9 +16,7 @@ Y al estudiante de Postgrado:
 - Modificar la inscripción.
 - Pagar la inscripción mediante crédito, transferencia, depósito o débito.
 
-###################################
 ## Sobre el equipo de desarrollo. ##
-###################################
 
 El equipo se llama Oozma Kappa y sus integrantes son:
 
@@ -33,9 +29,7 @@ El equipo se llama Oozma Kappa y sus integrantes son:
 - Nairelys Hernández, 12-10199
 - Jawil Ricauter, 13-11199
 
-##########################
 ## Herramientas usadas: ##
-##########################
 
 
 - [Django](https://www.djangoproject.com/): Framework de desarrollo web para el backend.
@@ -45,8 +39,6 @@ El equipo se llama Oozma Kappa y sus integrantes son:
 - [Bootstrap](https://getbootstrap.com/): Framework CSS y JS.
 
 
-############################################
 ## Para los detalles sobre como instalar: ##
-############################################
 
 Ver el archivo INSTALL.md
