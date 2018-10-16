@@ -3,8 +3,10 @@ addons:
   firefox: latest
 python:
   - "3.6"
+env:
+  - MOZ_HEADLESS=1
 install:
   - pip install -r requirements.txt
   - ./install.sh
 script:
-  - xvfb-run --server-args="-screen 0 1366x768x24" python manage.py test
+  - python manage.py test
