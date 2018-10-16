@@ -1,4 +1,6 @@
 language: python
+addons:
+  firefox: latest
 python:
   - "3.6"
 install:
