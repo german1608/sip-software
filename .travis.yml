@@ -7,4 +7,4 @@ install:
   - pip install -r requirements.txt
   - ./install.sh
 script:
-  - xvfb-run python manage.py test
+  - xvfb-run --server-args="-screen 0 1366x768x24" python manage.py test
