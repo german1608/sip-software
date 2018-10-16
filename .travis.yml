@@ -5,4 +5,4 @@ install:
   - pip install -r requirements.txt
   - ./install.sh
 script:
-  - python manage.py test --exclude=selenium
+  - python manage.py test
